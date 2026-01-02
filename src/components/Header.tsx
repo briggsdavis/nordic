@@ -1,10 +1,21 @@
 import { useState, useEffect } from "react";
-import { Menu, X, ShoppingCart, User } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Menu, X, ShoppingCart, User, LogOut, Shield, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, profile, role, signOut, loading } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,6 +29,26 @@ const Header = () => {
     { href: "#origin", label: "Origin" },
     { href: "#collection", label: "Collection" },
   ];
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
+
+  const handleCartClick = () => {
+    if (!user) {
+      navigate("/auth");
+    }
+    // Cart functionality will be added later
+  };
+
+  const handlePortalClick = () => {
+    if (user) {
+      navigate("/portal");
+    } else {
+      navigate("/auth");
+    }
+  };
 
   return (
     <header
@@ -63,17 +94,56 @@ const Header = () => {
             <Button
               variant="ghost"
               size="icon"
+              onClick={handleCartClick}
               className={isScrolled ? "text-foreground" : "text-card hover:bg-card/10"}
             >
               <ShoppingCart className="w-5 h-5" />
             </Button>
-            <Button
-              variant={isScrolled ? "outline" : "secondary"}
-              className={`gap-2 ${!isScrolled && "bg-card/10 border-card/30 text-card hover:bg-card/20"}`}
-            >
-              <User className="w-4 h-4" />
-              <span className="text-sm font-medium">Portal</span>
-            </Button>
+            
+            {loading ? (
+              <div className="w-24 h-9 bg-muted/50 rounded animate-pulse" />
+            ) : user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant={isScrolled ? "outline" : "secondary"}
+                    className={`gap-2 ${!isScrolled && "bg-card/10 border-card/30 text-card hover:bg-card/20"}`}
+                  >
+                    <User className="w-4 h-4" />
+                    <span className="text-sm font-medium max-w-[100px] truncate">
+                      {profile?.full_name?.split(" ")[0] || "Account"}
+                    </span>
+                    <ChevronDown className="w-3 h-3" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem onClick={() => navigate("/portal")} className="gap-2 cursor-pointer">
+                    <User className="w-4 h-4" />
+                    Client Portal
+                  </DropdownMenuItem>
+                  {role === "admin" && (
+                    <DropdownMenuItem onClick={() => navigate("/admin")} className="gap-2 cursor-pointer">
+                      <Shield className="w-4 h-4" />
+                      Admin Dashboard
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut} className="gap-2 cursor-pointer text-destructive">
+                    <LogOut className="w-4 h-4" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button
+                variant={isScrolled ? "outline" : "secondary"}
+                className={`gap-2 ${!isScrolled && "bg-card/10 border-card/30 text-card hover:bg-card/20"}`}
+                onClick={handlePortalClick}
+              >
+                <User className="w-4 h-4" />
+                <span className="text-sm font-medium">Portal</span>
+              </Button>
+            )}
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -99,12 +169,59 @@ const Header = () => {
                   {link.label}
                 </a>
               ))}
-              <div className="flex gap-3 pt-4">
-                <Button variant="outline" className="flex-1 gap-2">
-                  <User className="w-4 h-4" />
-                  Portal
-                </Button>
-                <Button variant="ghost" size="icon">
+              <div className="flex flex-col gap-3 pt-4">
+                {user ? (
+                  <>
+                    <Button 
+                      variant="outline" 
+                      className="w-full gap-2"
+                      onClick={() => {
+                        navigate("/portal");
+                        setIsMobileMenuOpen(false);
+                      }}
+                    >
+                      <User className="w-4 h-4" />
+                      Client Portal
+                    </Button>
+                    {role === "admin" && (
+                      <Button 
+                        variant="outline" 
+                        className="w-full gap-2"
+                        onClick={() => {
+                          navigate("/admin");
+                          setIsMobileMenuOpen(false);
+                        }}
+                      >
+                        <Shield className="w-4 h-4" />
+                        Admin Dashboard
+                      </Button>
+                    )}
+                    <Button 
+                      variant="ghost" 
+                      className="w-full gap-2 text-destructive"
+                      onClick={() => {
+                        handleSignOut();
+                        setIsMobileMenuOpen(false);
+                      }}
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Sign Out
+                    </Button>
+                  </>
+                ) : (
+                  <Button 
+                    variant="outline" 
+                    className="w-full gap-2"
+                    onClick={() => {
+                      navigate("/auth");
+                      setIsMobileMenuOpen(false);
+                    }}
+                  >
+                    <User className="w-4 h-4" />
+                    Portal
+                  </Button>
+                )}
+                <Button variant="ghost" size="icon" onClick={handleCartClick}>
                   <ShoppingCart className="w-5 h-5" />
                 </Button>
               </div>
