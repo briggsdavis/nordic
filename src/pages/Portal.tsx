@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useOrders } from "@/hooks/useOrders";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,14 +19,19 @@ import {
   X,
   Building2,
   Home,
-  Shield
+  Shield,
+  ShoppingBag
 } from "lucide-react";
+import { OrderCard } from "@/components/orders/OrderCard";
 import type { Database } from "@/integrations/supabase/types";
 
 type AccountType = Database["public"]["Enums"]["account_type"];
 
 const Portal = () => {
   const { user, profile, role, signOut, refreshProfile } = useAuth();
+  const { orders, currentOrders, pastOrders, isLoading: ordersLoading } = useOrders();
+  const [searchParams] = useSearchParams();
+  const defaultTab = searchParams.get("tab") || "dashboard";
   const navigate = useNavigate();
   const { toast } = useToast();
   
@@ -130,7 +136,7 @@ const Portal = () => {
           </p>
         </div>
 
-        <Tabs defaultValue="dashboard" className="space-y-6">
+        <Tabs defaultValue={defaultTab} className="space-y-6">
           <TabsList className="bg-card border">
             <TabsTrigger value="dashboard" className="gap-2">
               <Home className="h-4 w-4" />
@@ -150,25 +156,28 @@ const Portal = () => {
             </TabsTrigger>
           </TabsList>
 
-          {/* Dashboard Tab */}
           <TabsContent value="dashboard" className="space-y-6">
             <div className="grid md:grid-cols-3 gap-6">
               <Card>
                 <CardHeader className="pb-2">
                   <CardDescription>Total Orders</CardDescription>
-                  <CardTitle className="text-3xl">0</CardTitle>
+                  <CardTitle className="text-3xl">{orders.length}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">No orders yet</p>
+                  <p className="text-xs text-muted-foreground">
+                    {orders.length === 0 ? "No orders yet" : `${currentOrders.length} active`}
+                  </p>
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader className="pb-2">
-                  <CardDescription>Pending Orders</CardDescription>
-                  <CardTitle className="text-3xl">0</CardTitle>
+                  <CardDescription>In Progress</CardDescription>
+                  <CardTitle className="text-3xl">{currentOrders.length}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">All orders complete</p>
+                  <p className="text-xs text-muted-foreground">
+                    {currentOrders.length === 0 ? "All orders complete" : "Active orders"}
+                  </p>
                 </CardContent>
               </Card>
               <Card>
@@ -187,35 +196,79 @@ const Portal = () => {
             <Card>
               <CardHeader>
                 <CardTitle>Recent Orders</CardTitle>
-                <CardDescription>Your latest orders will appear here</CardDescription>
+                <CardDescription>Your latest orders</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-center py-12 text-muted-foreground">
-                  <Package className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p>No orders yet</p>
-                  <Button className="mt-4" onClick={() => navigate("/#collection")}>
-                    Browse Products
-                  </Button>
-                </div>
+                {ordersLoading ? (
+                  <div className="text-center py-8 text-muted-foreground">Loading orders...</div>
+                ) : currentOrders.length === 0 ? (
+                  <div className="text-center py-12 text-muted-foreground">
+                    <Package className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p>No active orders</p>
+                    <Button className="mt-4" onClick={() => navigate("/#collection")}>
+                      <ShoppingBag className="mr-2 h-4 w-4" />
+                      Browse Products
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {currentOrders.slice(0, 3).map((order) => (
+                      <OrderCard key={order.id} order={order} />
+                    ))}
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
 
           {/* Orders Tab */}
-          <TabsContent value="orders">
-            <Card>
-              <CardHeader>
-                <CardTitle>Order History</CardTitle>
-                <CardDescription>View and track all your orders</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-12 text-muted-foreground">
-                  <Package className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p>No orders yet</p>
-                  <p className="text-sm mt-2">Your order history will appear here once you make a purchase.</p>
-                </div>
-              </CardContent>
-            </Card>
+          <TabsContent value="orders" className="space-y-6">
+            <Tabs defaultValue="current">
+              <TabsList>
+                <TabsTrigger value="current">Current Orders ({currentOrders.length})</TabsTrigger>
+                <TabsTrigger value="past">Past Orders ({pastOrders.length})</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="current" className="mt-4">
+                {ordersLoading ? (
+                  <div className="text-center py-8 text-muted-foreground">Loading orders...</div>
+                ) : currentOrders.length === 0 ? (
+                  <Card>
+                    <CardContent className="text-center py-12 text-muted-foreground">
+                      <Package className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                      <p>No current orders</p>
+                      <p className="text-sm mt-2">Your active orders will appear here.</p>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <div className="space-y-4">
+                    {currentOrders.map((order) => (
+                      <OrderCard key={order.id} order={order} />
+                    ))}
+                  </div>
+                )}
+              </TabsContent>
+
+              <TabsContent value="past" className="mt-4">
+                {ordersLoading ? (
+                  <div className="text-center py-8 text-muted-foreground">Loading orders...</div>
+                ) : pastOrders.length === 0 ? (
+                  <Card>
+                    <CardContent className="text-center py-12 text-muted-foreground">
+                      <Package className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                      <p>No past orders</p>
+                      <p className="text-sm mt-2">Your completed orders will appear here.</p>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <div className="space-y-4">
+                    {pastOrders.map((order) => (
+                      <OrderCard key={order.id} order={order} />
+                    ))}
+                  </div>
+                )}
+              </TabsContent>
+            </Tabs>
           </TabsContent>
 
           {/* Certificates Tab */}
@@ -226,11 +279,44 @@ const Portal = () => {
                 <CardDescription>Health and origin certificates for your orders</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-center py-12 text-muted-foreground">
-                  <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p>No certificates available</p>
-                  <p className="text-sm mt-2">Certificates will be available after your first order is shipped.</p>
-                </div>
+                {ordersLoading ? (
+                  <div className="text-center py-8 text-muted-foreground">Loading certificates...</div>
+                ) : orders.filter(o => o.order_certificates.length > 0).length === 0 ? (
+                  <div className="text-center py-12 text-muted-foreground">
+                    <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p>No certificates available</p>
+                    <p className="text-sm mt-2">Certificates will be available after your orders are shipped.</p>
+                  </div>
+                ) : (
+                  <div className="space-y-6">
+                    {orders
+                      .filter((o) => o.order_certificates.length > 0)
+                      .map((order) => (
+                        <div key={order.id} className="border rounded-lg p-4">
+                          <h4 className="font-medium mb-3">Order {order.reference_number}</h4>
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                            {order.order_certificates.map((cert) => (
+                              <a
+                                key={cert.id}
+                                href={cert.file_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 p-3 border rounded-lg hover:bg-muted transition-colors"
+                              >
+                                <FileText className="h-4 w-4 text-primary" />
+                                <div className="min-w-0">
+                                  <p className="text-sm font-medium truncate">{cert.certificate_type}</p>
+                                  <p className="text-xs text-muted-foreground truncate">
+                                    {cert.certificate_name}
+                                  </p>
+                                </div>
+                              </a>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>

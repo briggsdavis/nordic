@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Menu, X, ShoppingCart, User, LogOut, Shield, ChevronDown } from "lucide-react";
+import { Menu, X, User, LogOut, Shield, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/contexts/AuthContext";
+import { CartSheet } from "@/components/cart/CartSheet";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -33,13 +34,6 @@ const Header = () => {
   const handleSignOut = async () => {
     await signOut();
     navigate("/");
-  };
-
-  const handleCartClick = () => {
-    if (!user) {
-      navigate("/auth");
-    }
-    // Cart functionality will be added later
   };
 
   const handlePortalClick = () => {
@@ -91,14 +85,7 @@ const Header = () => {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleCartClick}
-              className={isScrolled ? "text-foreground" : "text-card hover:bg-card/10"}
-            >
-              <ShoppingCart className="w-5 h-5" />
-            </Button>
+            <CartSheet />
             
             {loading ? (
               <div className="w-24 h-9 bg-muted/50 rounded animate-pulse" />
@@ -221,9 +208,7 @@ const Header = () => {
                     Portal
                   </Button>
                 )}
-                <Button variant="ghost" size="icon" onClick={handleCartClick}>
-                  <ShoppingCart className="w-5 h-5" />
-                </Button>
+                <CartSheet />
               </div>
             </nav>
           </div>

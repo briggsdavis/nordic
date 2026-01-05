@@ -14,6 +14,197 @@ export type Database = {
   }
   public: {
     Tables: {
+      cart_items: {
+        Row: {
+          created_at: string
+          id: string
+          product_id: string
+          quantity: number
+          updated_at: string
+          user_id: string
+          variant: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          product_id: string
+          quantity?: number
+          updated_at?: string
+          user_id: string
+          variant: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          product_id?: string
+          quantity?: number
+          updated_at?: string
+          user_id?: string
+          variant?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cart_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      order_certificates: {
+        Row: {
+          certificate_name: string
+          certificate_type: string
+          created_at: string
+          file_url: string
+          id: string
+          order_id: string
+          uploaded_by: string
+        }
+        Insert: {
+          certificate_name: string
+          certificate_type: string
+          created_at?: string
+          file_url: string
+          id?: string
+          order_id: string
+          uploaded_by: string
+        }
+        Update: {
+          certificate_name?: string
+          certificate_type?: string
+          created_at?: string
+          file_url?: string
+          id?: string
+          order_id?: string
+          uploaded_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_certificates_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      order_items: {
+        Row: {
+          created_at: string
+          id: string
+          order_id: string
+          product_id: string
+          product_name: string
+          quantity: number
+          subtotal: number
+          unit_price: number
+          variant: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          order_id: string
+          product_id: string
+          product_name: string
+          quantity: number
+          subtotal: number
+          unit_price: number
+          variant: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          order_id?: string
+          product_id?: string
+          product_name?: string
+          quantity?: number
+          subtotal?: number
+          unit_price?: number
+          variant?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          additional_comments: string | null
+          contact_name: string
+          contact_phone: string
+          created_at: string
+          delivery_address: string
+          expected_delivery_date: string
+          id: string
+          location_description: string | null
+          logistics_stage: Database["public"]["Enums"]["logistics_stage"] | null
+          payment_receipt_url: string | null
+          payment_status: Database["public"]["Enums"]["payment_status"]
+          preferred_delivery_time: string | null
+          reference_number: string
+          status: Database["public"]["Enums"]["order_status"]
+          total_amount: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          additional_comments?: string | null
+          contact_name: string
+          contact_phone: string
+          created_at?: string
+          delivery_address: string
+          expected_delivery_date: string
+          id?: string
+          location_description?: string | null
+          logistics_stage?:
+            | Database["public"]["Enums"]["logistics_stage"]
+            | null
+          payment_receipt_url?: string | null
+          payment_status?: Database["public"]["Enums"]["payment_status"]
+          preferred_delivery_time?: string | null
+          reference_number: string
+          status?: Database["public"]["Enums"]["order_status"]
+          total_amount: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          additional_comments?: string | null
+          contact_name?: string
+          contact_phone?: string
+          created_at?: string
+          delivery_address?: string
+          expected_delivery_date?: string
+          id?: string
+          location_description?: string | null
+          logistics_stage?:
+            | Database["public"]["Enums"]["logistics_stage"]
+            | null
+          payment_receipt_url?: string | null
+          payment_status?: Database["public"]["Enums"]["payment_status"]
+          preferred_delivery_time?: string | null
+          reference_number?: string
+          status?: Database["public"]["Enums"]["order_status"]
+          total_amount?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       products: {
         Row: {
           created_at: string
@@ -127,6 +318,23 @@ export type Database = {
     Enums: {
       account_type: "business" | "individual"
       app_role: "admin" | "client"
+      logistics_stage:
+        | "origin_warehouse"
+        | "customs_origin"
+        | "in_transit_air"
+        | "in_transit_sea"
+        | "customs_destination"
+        | "local_delivery"
+        | "delivered"
+      order_status:
+        | "pending"
+        | "payment_verified"
+        | "processing"
+        | "in_transit"
+        | "delivered"
+        | "completed"
+        | "cancelled"
+      payment_status: "pending" | "uploaded" | "verified" | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -256,6 +464,25 @@ export const Constants = {
     Enums: {
       account_type: ["business", "individual"],
       app_role: ["admin", "client"],
+      logistics_stage: [
+        "origin_warehouse",
+        "customs_origin",
+        "in_transit_air",
+        "in_transit_sea",
+        "customs_destination",
+        "local_delivery",
+        "delivered",
+      ],
+      order_status: [
+        "pending",
+        "payment_verified",
+        "processing",
+        "in_transit",
+        "delivered",
+        "completed",
+        "cancelled",
+      ],
+      payment_status: ["pending", "uploaded", "verified", "rejected"],
     },
   },
 } as const
