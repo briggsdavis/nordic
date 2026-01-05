@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      products: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          is_available: boolean
+          name: string
+          price_per_kg: number
+          slug: string
+          updated_at: string
+          weight_range: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_available?: boolean
+          name: string
+          price_per_kg: number
+          slug: string
+          updated_at?: string
+          weight_range?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_available?: boolean
+          name?: string
+          price_per_kg?: number
+          slug?: string
+          updated_at?: string
+          weight_range?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           account_type: Database["public"]["Enums"]["account_type"]
