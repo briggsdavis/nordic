@@ -14,8 +14,10 @@ import {
   Home,
   CheckCircle2,
   Clock,
-  XCircle
+  XCircle,
+  ShoppingBag
 } from "lucide-react";
+import { ProductsTab } from "@/components/admin/ProductsTab";
 import type { Database } from "@/integrations/supabase/types";
 
 type Profile = Database["public"]["Tables"]["profiles"]["Row"];
@@ -99,6 +101,10 @@ const Admin = () => {
             <TabsTrigger value="orders" className="gap-2">
               <Package className="h-4 w-4" />
               Orders
+            </TabsTrigger>
+            <TabsTrigger value="products" className="gap-2">
+              <ShoppingBag className="h-4 w-4" />
+              Products
             </TabsTrigger>
             <TabsTrigger value="logistics" className="gap-2">
               <Truck className="h-4 w-4" />
@@ -202,6 +208,11 @@ const Admin = () => {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Products Tab */}
+          <TabsContent value="products">
+            <ProductsTab />
           </TabsContent>
 
           {/* Logistics Tab */}
