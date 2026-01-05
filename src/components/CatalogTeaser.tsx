@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useProducts } from "@/hooks/useProducts";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useNavigate } from "react-router-dom";
 
 const landscapes = [
   {
@@ -16,6 +17,7 @@ const landscapes = [
 
 const CatalogTeaser = () => {
   const { data: products, isLoading } = useProducts();
+  const navigate = useNavigate();
 
   return (
     <section id="collection" className="py-24 lg:py-32 bg-background">
@@ -53,6 +55,7 @@ const CatalogTeaser = () => {
               <div
                 key={product.id}
                 className="group cursor-pointer"
+                onClick={() => navigate(`/products/${product.slug}`)}
               >
                 <div className="aspect-[4/3] rounded-lg overflow-hidden mb-4 bg-muted">
                   <img

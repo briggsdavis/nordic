@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { useAdminOrders } from "@/hooks/useAdminOrders";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -15,9 +16,12 @@ import {
   CheckCircle2,
   Clock,
   XCircle,
-  ShoppingBag
+  ShoppingBag,
+  DollarSign
 } from "lucide-react";
 import { ProductsTab } from "@/components/admin/ProductsTab";
+import { OrdersTab } from "@/components/admin/OrdersTab";
+import { LogisticsTab } from "@/components/admin/LogisticsTab";
 import type { Database } from "@/integrations/supabase/types";
 
 type Profile = Database["public"]["Tables"]["profiles"]["Row"];
@@ -25,6 +29,7 @@ type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 const Admin = () => {
   const { profile, signOut } = useAuth();
   const navigate = useNavigate();
+  const { orders, pendingPaymentOrders, inTransitOrders, totalRevenue } = useAdminOrders();
   const [users, setUsers] = useState<Profile[]>([]);
   const [loadingUsers, setLoadingUsers] = useState(true);
 
@@ -121,8 +126,19 @@ const Admin = () => {
             <div className="grid md:grid-cols-4 gap-6">
               <Card>
                 <CardHeader className="pb-2">
+                  <CardDescription>Total Revenue</CardDescription>
+                  <CardTitle className="text-3xl text-green-600">
+                    ${totalRevenue.toLocaleString()}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-xs text-muted-foreground">Verified payments</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="pb-2">
                   <CardDescription>Total Orders</CardDescription>
-                  <CardTitle className="text-3xl">0</CardTitle>
+                  <CardTitle className="text-3xl">{orders.length}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-xs text-muted-foreground">All time orders</p>
@@ -131,28 +147,19 @@ const Admin = () => {
               <Card>
                 <CardHeader className="pb-2">
                   <CardDescription>Pending Approval</CardDescription>
-                  <CardTitle className="text-3xl text-amber-600">0</CardTitle>
+                  <CardTitle className="text-3xl text-amber-600">{pendingPaymentOrders.length}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">Awaiting payment</p>
+                  <p className="text-xs text-muted-foreground">Awaiting payment verification</p>
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader className="pb-2">
                   <CardDescription>Active Shipments</CardDescription>
-                  <CardTitle className="text-3xl text-blue-600">0</CardTitle>
+                  <CardTitle className="text-3xl text-blue-600">{inTransitOrders.length}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-xs text-muted-foreground">In transit</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardDescription>Registered Customers</CardDescription>
-                  <CardTitle className="text-3xl">{users.length}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-xs text-muted-foreground">Total accounts</p>
                 </CardContent>
               </Card>
             </div>
@@ -166,27 +173,36 @@ const Admin = () => {
                 <CardContent className="space-y-3">
                   <Button variant="outline" className="w-full justify-start gap-2">
                     <CheckCircle2 className="h-4 w-4 text-green-600" />
-                    Approve Pending Payments
+                    Approve Pending Payments ({pendingPaymentOrders.length})
                   </Button>
                   <Button variant="outline" className="w-full justify-start gap-2">
                     <Clock className="h-4 w-4 text-amber-600" />
-                    Update Shipment Status
+                    Update Shipment Status ({inTransitOrders.length})
                   </Button>
                   <Button variant="outline" className="w-full justify-start gap-2">
-                    <XCircle className="h-4 w-4 text-red-600" />
-                    Handle Cancellations
+                    <DollarSign className="h-4 w-4 text-green-600" />
+                    View Revenue Analytics
                   </Button>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Recent Activity</CardTitle>
-                  <CardDescription>Latest system events</CardDescription>
+                  <CardTitle>System Stats</CardTitle>
+                  <CardDescription>Platform overview</CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <div className="text-center py-8 text-muted-foreground">
-                    <p>No recent activity</p>
+                <CardContent className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">Registered Customers</span>
+                    <span className="font-medium">{users.length}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">Active Orders</span>
+                    <span className="font-medium">{orders.filter(o => !["completed", "cancelled"].includes(o.status)).length}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">Completed Orders</span>
+                    <span className="font-medium">{orders.filter(o => o.status === "completed").length}</span>
                   </div>
                 </CardContent>
               </Card>
@@ -195,19 +211,7 @@ const Admin = () => {
 
           {/* Orders Tab */}
           <TabsContent value="orders">
-            <Card>
-              <CardHeader>
-                <CardTitle>Order Management</CardTitle>
-                <CardDescription>View, approve, and manage all orders</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-12 text-muted-foreground">
-                  <Package className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p>No orders yet</p>
-                  <p className="text-sm mt-2">Orders will appear here once customers start placing them.</p>
-                </div>
-              </CardContent>
-            </Card>
+            <OrdersTab />
           </TabsContent>
 
           {/* Products Tab */}
@@ -217,19 +221,7 @@ const Admin = () => {
 
           {/* Logistics Tab */}
           <TabsContent value="logistics">
-            <Card>
-              <CardHeader>
-                <CardTitle>Logistics Control</CardTitle>
-                <CardDescription>Manage shipments, tracking, and deliveries</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-12 text-muted-foreground">
-                  <Truck className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p>No active shipments</p>
-                  <p className="text-sm mt-2">Shipment tracking and management will appear here.</p>
-                </div>
-              </CardContent>
-            </Card>
+            <LogisticsTab />
           </TabsContent>
 
           {/* Customers Tab */}

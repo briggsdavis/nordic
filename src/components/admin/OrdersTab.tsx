@@ -1,0 +1,245 @@
+import { useState } from "react";
+import { useAdminOrders, OrderWithProfile } from "@/hooks/useAdminOrders";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { Package, MoreVertical, Eye, CheckCircle2, XCircle, Trash2 } from "lucide-react";
+import { OrderStatusBadge, PaymentStatusBadge } from "@/components/orders/OrderStatusBadge";
+import { OrderDetailDialog } from "./OrderDetailDialog";
+
+export const OrdersTab = () => {
+  const { orders, pendingPaymentOrders, inTransitOrders, completedOrders, isLoading, updatePaymentStatus, deleteOrder } = useAdminOrders();
+  const [selectedOrder, setSelectedOrder] = useState<OrderWithProfile | null>(null);
+  const [detailOpen, setDetailOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [orderToDelete, setOrderToDelete] = useState<string | null>(null);
+
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(price);
+  };
+
+  const formatDate = (date: string) => {
+    return new Date(date).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
+
+  const handleViewOrder = (order: OrderWithProfile) => {
+    setSelectedOrder(order);
+    setDetailOpen(true);
+  };
+
+  const handleApprovePayment = (orderId: string) => {
+    updatePaymentStatus.mutate({ orderId, paymentStatus: "verified" });
+  };
+
+  const handleRejectPayment = (orderId: string) => {
+    updatePaymentStatus.mutate({ orderId, paymentStatus: "rejected" });
+  };
+
+  const handleDeleteClick = (orderId: string) => {
+    setOrderToDelete(orderId);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (orderToDelete) {
+      deleteOrder.mutate(orderToDelete);
+      setOrderToDelete(null);
+      setDeleteDialogOpen(false);
+    }
+  };
+
+  const OrderTable = ({ orderList }: { orderList: OrderWithProfile[] }) => (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Reference</TableHead>
+          <TableHead>Customer</TableHead>
+          <TableHead>Type</TableHead>
+          <TableHead>Value</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead>Payment</TableHead>
+          <TableHead>Date</TableHead>
+          <TableHead className="w-[80px]">Actions</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {orderList.length === 0 ? (
+          <TableRow>
+            <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+              No orders found
+            </TableCell>
+          </TableRow>
+        ) : (
+          orderList.map((order) => (
+            <TableRow key={order.id}>
+              <TableCell className="font-medium">{order.reference_number}</TableCell>
+              <TableCell>
+                <div>
+                  <p className="font-medium">{order.profile?.full_name || order.contact_name}</p>
+                  <p className="text-xs text-muted-foreground">{order.profile?.email}</p>
+                </div>
+              </TableCell>
+              <TableCell className="capitalize">{order.profile?.account_type || "-"}</TableCell>
+              <TableCell>{formatPrice(Number(order.total_amount))}</TableCell>
+              <TableCell>
+                <OrderStatusBadge status={order.status} />
+              </TableCell>
+              <TableCell>
+                <PaymentStatusBadge status={order.payment_status} />
+              </TableCell>
+              <TableCell>{formatDate(order.created_at)}</TableCell>
+              <TableCell>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                      <MoreVertical className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={() => handleViewOrder(order)}>
+                      <Eye className="h-4 w-4 mr-2" />
+                      View Details
+                    </DropdownMenuItem>
+                    {order.payment_status === "uploaded" && (
+                      <>
+                        <DropdownMenuItem onClick={() => handleApprovePayment(order.id)}>
+                          <CheckCircle2 className="h-4 w-4 mr-2 text-green-600" />
+                          Approve Payment
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleRejectPayment(order.id)}>
+                          <XCircle className="h-4 w-4 mr-2 text-red-600" />
+                          Reject Payment
+                        </DropdownMenuItem>
+                      </>
+                    )}
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      className="text-destructive"
+                      onClick={() => handleDeleteClick(order.id)}
+                    >
+                      <Trash2 className="h-4 w-4 mr-2" />
+                      Delete Order
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </TableCell>
+            </TableRow>
+          ))
+        )}
+      </TableBody>
+    </Table>
+  );
+
+  if (isLoading) {
+    return (
+      <Card>
+        <CardContent className="py-12 text-center text-muted-foreground">
+          Loading orders...
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <>
+      <Tabs defaultValue="all" className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="all">All Orders ({orders.length})</TabsTrigger>
+          <TabsTrigger value="pending">
+            Pending Payments ({pendingPaymentOrders.length})
+          </TabsTrigger>
+          <TabsTrigger value="transit">In Transit ({inTransitOrders.length})</TabsTrigger>
+          <TabsTrigger value="completed">Completed ({completedOrders.length})</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="all">
+          <Card>
+            <CardHeader>
+              <CardTitle>All Orders</CardTitle>
+              <CardDescription>View and manage all customer orders</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <OrderTable orderList={orders} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="pending">
+          <Card>
+            <CardHeader>
+              <CardTitle>Pending Payments</CardTitle>
+              <CardDescription>Orders awaiting payment verification</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <OrderTable orderList={pendingPaymentOrders} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="transit">
+          <Card>
+            <CardHeader>
+              <CardTitle>In Transit</CardTitle>
+              <CardDescription>Orders currently being shipped</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <OrderTable orderList={inTransitOrders} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="completed">
+          <Card>
+            <CardHeader>
+              <CardTitle>Completed Orders</CardTitle>
+              <CardDescription>Successfully delivered orders</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <OrderTable orderList={completedOrders} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+
+      {/* Order Detail Dialog */}
+      {selectedOrder && (
+        <OrderDetailDialog
+          order={selectedOrder}
+          open={detailOpen}
+          onOpenChange={setDetailOpen}
+        />
+      )}
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Order</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete this order? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteConfirm}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
+  );
+};

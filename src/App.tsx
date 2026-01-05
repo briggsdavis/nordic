@@ -8,6 +8,8 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Portal from "./pages/Portal";
 import Admin from "./pages/Admin";
+import ProductDetail from "./pages/ProductDetail";
+import Checkout from "./pages/Checkout";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 
@@ -23,6 +25,15 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/products/:slug" element={<ProductDetail />} />
+            <Route
+              path="/checkout"
+              element={
+                <ProtectedRoute>
+                  <Checkout />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/portal"
               element={
