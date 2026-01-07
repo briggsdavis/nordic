@@ -9,6 +9,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
+import { getSignedUrl, extractFilePath } from "@/lib/storage";
 import { 
   User, 
   Package, 
@@ -20,7 +21,8 @@ import {
   Building2,
   Home,
   Shield,
-  ShoppingBag
+  ShoppingBag,
+  Loader2
 } from "lucide-react";
 import { OrderCard } from "@/components/orders/OrderCard";
 import type { Database } from "@/integrations/supabase/types";
@@ -37,12 +39,26 @@ const Portal = () => {
   
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [loadingFile, setLoadingFile] = useState<string | null>(null);
   const [editedProfile, setEditedProfile] = useState({
     full_name: profile?.full_name || "",
     phone_number: profile?.phone_number || "",
     primary_address: profile?.primary_address || "",
     account_type: (profile?.account_type || "individual") as AccountType,
   });
+
+  const handleViewFile = async (filePathOrUrl: string, fileId: string) => {
+    setLoadingFile(fileId);
+    try {
+      const filePath = extractFilePath(filePathOrUrl);
+      const signedUrl = await getSignedUrl("order-files", filePath);
+      if (signedUrl) {
+        window.open(signedUrl, "_blank");
+      }
+    } finally {
+      setLoadingFile(null);
+    }
+  };
 
   const handleSignOut = async () => {
     await signOut();
@@ -296,16 +312,19 @@ const Portal = () => {
                           <h4 className="font-medium mb-3">Order {order.reference_number}</h4>
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                             {order.order_certificates.map((cert) => (
-                              <a
+                              <button
                                 key={cert.id}
-                                href={cert.file_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-2 p-3 border rounded-lg hover:bg-muted transition-colors"
+                                onClick={() => handleViewFile(cert.file_url, cert.id)}
+                                disabled={loadingFile === cert.id}
+                                className="flex items-center gap-2 p-3 border rounded-lg hover:bg-muted transition-colors text-left"
                               >
-                                <FileText className="h-4 w-4 text-primary" />
+                                {loadingFile === cert.id ? (
+                                  <Loader2 className="h-4 w-4 text-primary animate-spin" />
+                                ) : (
+                                  <FileText className="h-4 w-4 text-primary" />
+                                )}
                                 <p className="text-sm font-medium truncate">{cert.certificate_type}</p>
-                              </a>
+                              </button>
                             ))}
                           </div>
                         </div>
