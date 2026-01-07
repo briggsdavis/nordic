@@ -7,7 +7,8 @@ import { Separator } from "@/components/ui/separator";
 import { useAdminOrders, OrderWithProfile } from "@/hooks/useAdminOrders";
 import { OrderStatusBadge } from "@/components/orders/OrderStatusBadge";
 import { LogisticsPipeline, logisticsStages } from "@/components/orders/LogisticsPipeline";
-import { ExternalLink, Upload, FileText, CheckCircle2, XCircle, MapPin, Phone, User, Calendar } from "lucide-react";
+import { getSignedUrl, extractFilePath } from "@/lib/storage";
+import { ExternalLink, Upload, FileText, CheckCircle2, XCircle, MapPin, Phone, User, Calendar, Loader2 } from "lucide-react";
 import type { Database } from "@/integrations/supabase/types";
 
 type OrderStatus = Database["public"]["Enums"]["order_status"];
@@ -30,6 +31,7 @@ export const OrderDetailDialog = ({ order, open, onOpenChange }: OrderDetailDial
   const { updateOrderStatus, approvePayment, rejectPayment, updateLogisticsStage, uploadCertificate, completeOrder } = useAdminOrders();
   const [certificateFile, setCertificateFile] = useState<File | null>(null);
   const [certificateType, setCertificateType] = useState("");
+  const [loadingFile, setLoadingFile] = useState<string | null>(null);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-US", {
@@ -44,6 +46,19 @@ export const OrderDetailDialog = ({ order, open, onOpenChange }: OrderDetailDial
       month: "long",
       day: "numeric",
     });
+  };
+
+  const handleViewFile = async (filePathOrUrl: string, fileId: string) => {
+    setLoadingFile(fileId);
+    try {
+      const filePath = extractFilePath(filePathOrUrl);
+      const signedUrl = await getSignedUrl("order-files", filePath);
+      if (signedUrl) {
+        window.open(signedUrl, "_blank");
+      }
+    } finally {
+      setLoadingFile(null);
+    }
   };
 
   const handleStatusChange = (status: OrderStatus) => {
@@ -145,11 +160,18 @@ export const OrderDetailDialog = ({ order, open, onOpenChange }: OrderDetailDial
             <h3 className="font-medium mb-3">Payment</h3>
             {order.payment_receipt_url ? (
               <div className="space-y-3">
-                <Button variant="outline" size="sm" asChild>
-                  <a href={order.payment_receipt_url} target="_blank" rel="noopener noreferrer">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleViewFile(order.payment_receipt_url!, "receipt")}
+                  disabled={loadingFile === "receipt"}
+                >
+                  {loadingFile === "receipt" ? (
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  ) : (
                     <ExternalLink className="h-4 w-4 mr-2" />
-                    View Payment Receipt
-                  </a>
+                  )}
+                  View Payment Receipt
                 </Button>
                 {order.status === "payment_review" && (
                   <div className="flex gap-2">
@@ -232,16 +254,19 @@ export const OrderDetailDialog = ({ order, open, onOpenChange }: OrderDetailDial
             {order.order_certificates.length > 0 && (
               <div className="grid grid-cols-2 gap-2 mb-4">
                 {order.order_certificates.map((cert) => (
-                  <a
+                  <button
                     key={cert.id}
-                    href={cert.file_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 p-3 border rounded-lg hover:bg-muted transition-colors"
+                    onClick={() => handleViewFile(cert.file_url, cert.id)}
+                    disabled={loadingFile === cert.id}
+                    className="flex items-center gap-2 p-3 border rounded-lg hover:bg-muted transition-colors text-left"
                   >
-                    <FileText className="h-4 w-4 text-primary" />
+                    {loadingFile === cert.id ? (
+                      <Loader2 className="h-4 w-4 text-primary animate-spin" />
+                    ) : (
+                      <FileText className="h-4 w-4 text-primary" />
+                    )}
                     <p className="text-sm font-medium truncate">{cert.certificate_type}</p>
-                  </a>
+                  </button>
                 ))}
               </div>
             )}

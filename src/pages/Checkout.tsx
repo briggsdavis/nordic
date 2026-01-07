@@ -60,7 +60,7 @@ const Checkout = () => {
     setIsUploading(true);
 
     try {
-      let paymentReceiptUrl: string | undefined;
+      let paymentReceiptPath: string | undefined;
 
       if (paymentFile && user) {
         const filePath = `${user.id}/receipts/${Date.now()}-${paymentFile.name}`;
@@ -70,11 +70,8 @@ const Checkout = () => {
 
         if (uploadError) throw uploadError;
 
-        const { data: { publicUrl } } = supabase.storage
-          .from("order-files")
-          .getPublicUrl(filePath);
-
-        paymentReceiptUrl = publicUrl;
+        // Store path instead of URL (private bucket)
+        paymentReceiptPath = filePath;
       }
 
       const items = cartItems.map((item) => ({
@@ -93,7 +90,7 @@ const Checkout = () => {
         additionalComments: formData.additionalComments || undefined,
         locationDescription: formData.locationDescription || undefined,
         preferredDeliveryTime: formData.preferredDeliveryTime || undefined,
-        paymentReceiptUrl,
+        paymentReceiptUrl: paymentReceiptPath,
       });
 
       await clearCart.mutateAsync();

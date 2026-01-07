@@ -169,16 +169,13 @@ export const useAdminOrders = () => {
 
       if (uploadError) throw uploadError;
 
-      const { data: { publicUrl } } = supabase.storage
-        .from("order-files")
-        .getPublicUrl(filePath);
-
       const { data: { user } } = await supabase.auth.getUser();
 
+      // Store file path instead of URL (private bucket)
       const { error: insertError } = await supabase.from("order_certificates").insert({
         order_id: orderId,
         certificate_type: certificateType,
-        file_url: publicUrl,
+        file_url: filePath,
         uploaded_by: user!.id,
       });
 

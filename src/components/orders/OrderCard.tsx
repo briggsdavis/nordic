@@ -1,10 +1,11 @@
+import { useState } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, FileText, MapPin, Calendar, Phone, User } from "lucide-react";
-import { useState } from "react";
+import { ChevronDown, FileText, MapPin, Calendar, Phone, User, Loader2 } from "lucide-react";
 import { OrderStatusBadge } from "./OrderStatusBadge";
 import { LogisticsPipeline } from "./LogisticsPipeline";
+import { getSignedUrl, extractFilePath } from "@/lib/storage";
 import type { OrderWithItems } from "@/hooks/useOrders";
 
 interface OrderCardProps {
@@ -13,6 +14,7 @@ interface OrderCardProps {
 
 export const OrderCard = ({ order }: OrderCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [loadingFile, setLoadingFile] = useState<string | null>(null);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-US", {
@@ -27,6 +29,19 @@ export const OrderCard = ({ order }: OrderCardProps) => {
       month: "short",
       day: "numeric",
     });
+  };
+
+  const handleViewFile = async (filePathOrUrl: string, fileId: string) => {
+    setLoadingFile(fileId);
+    try {
+      const filePath = extractFilePath(filePathOrUrl);
+      const signedUrl = await getSignedUrl("order-files", filePath);
+      if (signedUrl) {
+        window.open(signedUrl, "_blank");
+      }
+    } finally {
+      setLoadingFile(null);
+    }
   };
 
   return (
@@ -112,16 +127,19 @@ export const OrderCard = ({ order }: OrderCardProps) => {
                 <h4 className="font-medium text-sm mb-3">Certificates</h4>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                   {order.order_certificates.map((cert) => (
-                    <a
+                    <button
                       key={cert.id}
-                      href={cert.file_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 p-3 border rounded-lg hover:bg-muted transition-colors"
+                      onClick={() => handleViewFile(cert.file_url, cert.id)}
+                      disabled={loadingFile === cert.id}
+                      className="flex items-center gap-2 p-3 border rounded-lg hover:bg-muted transition-colors text-left"
                     >
-                      <FileText className="h-4 w-4 text-primary" />
+                      {loadingFile === cert.id ? (
+                        <Loader2 className="h-4 w-4 text-primary animate-spin" />
+                      ) : (
+                        <FileText className="h-4 w-4 text-primary" />
+                      )}
                       <p className="text-sm font-medium truncate">{cert.certificate_type}</p>
-                    </a>
+                    </button>
                   ))}
                 </div>
               </div>

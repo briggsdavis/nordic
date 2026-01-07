@@ -208,22 +208,18 @@ export const useOrders = () => {
 
       if (uploadError) throw uploadError;
 
-      const { data: { publicUrl } } = supabase.storage
-        .from("order-files")
-        .getPublicUrl(filePath);
-
-      // Update both URL and status to payment_review
+      // Store the file path instead of URL (private bucket)
       const { error: updateError } = await supabase
         .from("orders")
         .update({
-          payment_receipt_url: publicUrl,
+          payment_receipt_url: filePath,
           status: "payment_review" as OrderStatus,
         })
         .eq("id", orderId);
 
       if (updateError) throw updateError;
 
-      return publicUrl;
+      return filePath;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["orders"] });
