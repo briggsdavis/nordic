@@ -6,7 +6,6 @@ import { useEffect } from "react";
 import type { Database } from "@/integrations/supabase/types";
 
 type OrderStatus = Database["public"]["Enums"]["order_status"];
-type PaymentStatus = Database["public"]["Enums"]["payment_status"];
 type LogisticsStage = Database["public"]["Enums"]["logistics_stage"];
 
 export interface Order {
@@ -14,7 +13,6 @@ export interface Order {
   reference_number: string;
   user_id: string;
   status: OrderStatus;
-  payment_status: PaymentStatus;
   total_amount: number;
   delivery_address: string;
   contact_name: string;
@@ -146,6 +144,9 @@ export const useOrders = () => {
       const expectedDeliveryDate = new Date();
       expectedDeliveryDate.setDate(expectedDeliveryDate.getDate() + 3);
 
+      // Set status based on whether payment receipt is uploaded
+      const initialStatus: OrderStatus = orderData.paymentReceiptUrl ? "payment_review" : "awaiting_payment";
+
       // Create order
       const { data: order, error: orderError } = await supabase
         .from("orders")
@@ -161,7 +162,7 @@ export const useOrders = () => {
           preferred_delivery_time: orderData.preferredDeliveryTime || null,
           expected_delivery_date: expectedDeliveryDate.toISOString().split("T")[0],
           payment_receipt_url: orderData.paymentReceiptUrl || null,
-          payment_status: orderData.paymentReceiptUrl ? ("uploaded" as const) : ("pending" as const),
+          status: initialStatus,
         }])
         .select()
         .single();
@@ -195,7 +196,7 @@ export const useOrders = () => {
     },
   });
 
-  // Upload payment receipt
+  // Upload payment receipt - auto transitions to payment_review
   const uploadPaymentReceipt = useMutation({
     mutationFn: async ({ orderId, file }: { orderId: string; file: File }) => {
       if (!user) throw new Error("Must be logged in");
@@ -212,11 +213,12 @@ export const useOrders = () => {
         .from("order-files")
         .getPublicUrl(filePath);
 
+      // Update both URL and status to payment_review
       const { error: updateError } = await supabase
         .from("orders")
         .update({
           payment_receipt_url: publicUrl,
-          payment_status: "uploaded",
+          status: "payment_review" as OrderStatus,
         })
         .eq("id", orderId);
 

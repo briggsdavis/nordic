@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { useAdminOrders, OrderWithProfile } from "@/hooks/useAdminOrders";
-import { OrderStatusBadge, PaymentStatusBadge } from "@/components/orders/OrderStatusBadge";
+import { OrderStatusBadge } from "@/components/orders/OrderStatusBadge";
 import { LogisticsPipeline, logisticsStages } from "@/components/orders/LogisticsPipeline";
 import { ExternalLink, Upload, FileText, CheckCircle2, XCircle, MapPin, Phone, User, Calendar } from "lucide-react";
 import type { Database } from "@/integrations/supabase/types";
@@ -27,7 +27,7 @@ const certificateTypes = [
 ];
 
 export const OrderDetailDialog = ({ order, open, onOpenChange }: OrderDetailDialogProps) => {
-  const { updateOrderStatus, updatePaymentStatus, updateLogisticsStage, uploadCertificate, completeOrder } = useAdminOrders();
+  const { updateOrderStatus, approvePayment, rejectPayment, updateLogisticsStage, uploadCertificate, completeOrder } = useAdminOrders();
   const [certificateFile, setCertificateFile] = useState<File | null>(null);
   const [certificateType, setCertificateType] = useState("");
   const [certificateName, setCertificateName] = useState("");
@@ -71,11 +71,11 @@ export const OrderDetailDialog = ({ order, open, onOpenChange }: OrderDetailDial
   };
 
   const handleApprovePayment = () => {
-    updatePaymentStatus.mutate({ orderId: order.id, paymentStatus: "verified" });
+    approvePayment.mutate(order.id);
   };
 
   const handleRejectPayment = () => {
-    updatePaymentStatus.mutate({ orderId: order.id, paymentStatus: "rejected" });
+    rejectPayment.mutate(order.id);
   };
 
   const handleMarkComplete = () => {
@@ -89,7 +89,6 @@ export const OrderDetailDialog = ({ order, open, onOpenChange }: OrderDetailDial
           <DialogTitle className="flex items-center gap-3">
             Order {order.reference_number}
             <OrderStatusBadge status={order.status} />
-            <PaymentStatusBadge status={order.payment_status} />
           </DialogTitle>
         </DialogHeader>
 
@@ -144,7 +143,7 @@ export const OrderDetailDialog = ({ order, open, onOpenChange }: OrderDetailDial
 
           <Separator />
 
-          {/* Payment Section */}
+          {/* Payment Section - show approve/reject only for payment_review status */}
           <div>
             <h3 className="font-medium mb-3">Payment</h3>
             {order.payment_receipt_url ? (
@@ -155,7 +154,7 @@ export const OrderDetailDialog = ({ order, open, onOpenChange }: OrderDetailDial
                     View Payment Receipt
                   </a>
                 </Button>
-                {order.payment_status === "uploaded" && (
+                {order.status === "payment_review" && (
                   <div className="flex gap-2">
                     <Button size="sm" onClick={handleApprovePayment}>
                       <CheckCircle2 className="h-4 w-4 mr-2" />
@@ -184,8 +183,9 @@ export const OrderDetailDialog = ({ order, open, onOpenChange }: OrderDetailDial
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="payment_verified">Payment Verified</SelectItem>
+                  <SelectItem value="awaiting_payment">Awaiting Payment</SelectItem>
+                  <SelectItem value="payment_review">Payment Under Review</SelectItem>
+                  <SelectItem value="payment_rejected">Payment Rejected</SelectItem>
                   <SelectItem value="processing">Processing</SelectItem>
                   <SelectItem value="in_transit">In Transit</SelectItem>
                   <SelectItem value="delivered">Delivered</SelectItem>
@@ -195,7 +195,7 @@ export const OrderDetailDialog = ({ order, open, onOpenChange }: OrderDetailDial
               </Select>
             </div>
 
-            {order.status === "in_transit" && (
+            {(order.status === "in_transit" || order.status === "processing") && (
               <div>
                 <h3 className="font-medium mb-3">Logistics Stage</h3>
                 <Select

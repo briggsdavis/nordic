@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown, FileText, MapPin, Calendar, Phone, User } from "lucide-react";
 import { useState } from "react";
-import { OrderStatusBadge, PaymentStatusBadge } from "./OrderStatusBadge";
+import { OrderStatusBadge } from "./OrderStatusBadge";
 import { LogisticsPipeline } from "./LogisticsPipeline";
 import type { OrderWithItems } from "@/hooks/useOrders";
 
@@ -38,7 +38,6 @@ export const OrderCard = ({ order }: OrderCardProps) => {
               <div className="flex items-center gap-3">
                 <h3 className="font-medium">{order.reference_number}</h3>
                 <OrderStatusBadge status={order.status} />
-                <PaymentStatusBadge status={order.payment_status} />
               </div>
               <p className="text-sm text-muted-foreground">
                 Ordered {formatDate(order.created_at)}

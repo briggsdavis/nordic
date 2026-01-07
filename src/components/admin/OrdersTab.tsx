@@ -6,12 +6,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { Package, MoreVertical, Eye, CheckCircle2, XCircle, Trash2 } from "lucide-react";
-import { OrderStatusBadge, PaymentStatusBadge } from "@/components/orders/OrderStatusBadge";
+import { MoreVertical, Eye, CheckCircle2, XCircle, Trash2 } from "lucide-react";
+import { OrderStatusBadge } from "@/components/orders/OrderStatusBadge";
 import { OrderDetailDialog } from "./OrderDetailDialog";
 
 export const OrdersTab = () => {
-  const { orders, pendingPaymentOrders, inTransitOrders, completedOrders, isLoading, updatePaymentStatus, deleteOrder } = useAdminOrders();
+  const { orders, pendingReviewOrders, inTransitOrders, completedOrders, isLoading, approvePayment, rejectPayment, deleteOrder } = useAdminOrders();
   const [selectedOrder, setSelectedOrder] = useState<OrderWithProfile | null>(null);
   const [detailOpen, setDetailOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -38,11 +38,11 @@ export const OrdersTab = () => {
   };
 
   const handleApprovePayment = (orderId: string) => {
-    updatePaymentStatus.mutate({ orderId, paymentStatus: "verified" });
+    approvePayment.mutate(orderId);
   };
 
   const handleRejectPayment = (orderId: string) => {
-    updatePaymentStatus.mutate({ orderId, paymentStatus: "rejected" });
+    rejectPayment.mutate(orderId);
   };
 
   const handleDeleteClick = (orderId: string) => {
@@ -67,7 +67,6 @@ export const OrdersTab = () => {
           <TableHead>Type</TableHead>
           <TableHead>Value</TableHead>
           <TableHead>Status</TableHead>
-          <TableHead>Payment</TableHead>
           <TableHead>Date</TableHead>
           <TableHead className="w-[80px]">Actions</TableHead>
         </TableRow>
@@ -75,7 +74,7 @@ export const OrdersTab = () => {
       <TableBody>
         {orderList.length === 0 ? (
           <TableRow>
-            <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+            <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
               No orders found
             </TableCell>
           </TableRow>
@@ -94,9 +93,6 @@ export const OrdersTab = () => {
               <TableCell>
                 <OrderStatusBadge status={order.status} />
               </TableCell>
-              <TableCell>
-                <PaymentStatusBadge status={order.payment_status} />
-              </TableCell>
               <TableCell>{formatDate(order.created_at)}</TableCell>
               <TableCell>
                 <DropdownMenu>
@@ -110,7 +106,7 @@ export const OrdersTab = () => {
                       <Eye className="h-4 w-4 mr-2" />
                       View Details
                     </DropdownMenuItem>
-                    {order.payment_status === "uploaded" && (
+                    {order.status === "payment_review" && (
                       <>
                         <DropdownMenuItem onClick={() => handleApprovePayment(order.id)}>
                           <CheckCircle2 className="h-4 w-4 mr-2 text-green-600" />
@@ -156,7 +152,7 @@ export const OrdersTab = () => {
         <TabsList>
           <TabsTrigger value="all">All Orders ({orders.length})</TabsTrigger>
           <TabsTrigger value="pending">
-            Pending Payments ({pendingPaymentOrders.length})
+            Needs Review ({pendingReviewOrders.length})
           </TabsTrigger>
           <TabsTrigger value="transit">In Transit ({inTransitOrders.length})</TabsTrigger>
           <TabsTrigger value="completed">Completed ({completedOrders.length})</TabsTrigger>
@@ -177,11 +173,11 @@ export const OrdersTab = () => {
         <TabsContent value="pending">
           <Card>
             <CardHeader>
-              <CardTitle>Pending Payments</CardTitle>
+              <CardTitle>Needs Review</CardTitle>
               <CardDescription>Orders awaiting payment verification</CardDescription>
             </CardHeader>
             <CardContent>
-              <OrderTable orderList={pendingPaymentOrders} />
+              <OrderTable orderList={pendingReviewOrders} />
             </CardContent>
           </Card>
         </TabsContent>
