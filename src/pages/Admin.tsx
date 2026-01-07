@@ -29,7 +29,7 @@ type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 const Admin = () => {
   const { profile, signOut } = useAuth();
   const navigate = useNavigate();
-  const { orders, pendingPaymentOrders, inTransitOrders, totalRevenue } = useAdminOrders();
+  const { orders, pendingReviewOrders, inTransitOrders, totalRevenue } = useAdminOrders();
   const [users, setUsers] = useState<Profile[]>([]);
   const [loadingUsers, setLoadingUsers] = useState(true);
 
@@ -147,7 +147,7 @@ const Admin = () => {
               <Card>
                 <CardHeader className="pb-2">
                   <CardDescription>Pending Approval</CardDescription>
-                  <CardTitle className="text-3xl text-amber-600">{pendingPaymentOrders.length}</CardTitle>
+                  <CardTitle className="text-3xl text-amber-600">{pendingReviewOrders.length}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-xs text-muted-foreground">Awaiting payment verification</p>
@@ -173,7 +173,7 @@ const Admin = () => {
                 <CardContent className="space-y-3">
                   <Button variant="outline" className="w-full justify-start gap-2">
                     <CheckCircle2 className="h-4 w-4 text-green-600" />
-                    Approve Pending Payments ({pendingPaymentOrders.length})
+                    Approve Pending Payments ({pendingReviewOrders.length})
                   </Button>
                   <Button variant="outline" className="w-full justify-start gap-2">
                     <Clock className="h-4 w-4 text-amber-600" />

@@ -153,7 +153,6 @@ export type Database = {
           location_description: string | null
           logistics_stage: Database["public"]["Enums"]["logistics_stage"] | null
           payment_receipt_url: string | null
-          payment_status: Database["public"]["Enums"]["payment_status"]
           preferred_delivery_time: string | null
           reference_number: string
           status: Database["public"]["Enums"]["order_status"]
@@ -174,7 +173,6 @@ export type Database = {
             | Database["public"]["Enums"]["logistics_stage"]
             | null
           payment_receipt_url?: string | null
-          payment_status?: Database["public"]["Enums"]["payment_status"]
           preferred_delivery_time?: string | null
           reference_number: string
           status?: Database["public"]["Enums"]["order_status"]
@@ -195,7 +193,6 @@ export type Database = {
             | Database["public"]["Enums"]["logistics_stage"]
             | null
           payment_receipt_url?: string | null
-          payment_status?: Database["public"]["Enums"]["payment_status"]
           preferred_delivery_time?: string | null
           reference_number?: string
           status?: Database["public"]["Enums"]["order_status"]
@@ -337,7 +334,6 @@ export type Database = {
         | "awaiting_payment"
         | "payment_review"
         | "payment_rejected"
-      payment_status: "pending" | "uploaded" | "verified" | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -488,7 +484,6 @@ export const Constants = {
         "payment_review",
         "payment_rejected",
       ],
-      payment_status: ["pending", "uploaded", "verified", "rejected"],
     },
   },
 } as const
