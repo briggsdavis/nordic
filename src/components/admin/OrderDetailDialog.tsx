@@ -30,7 +30,6 @@ export const OrderDetailDialog = ({ order, open, onOpenChange }: OrderDetailDial
   const { updateOrderStatus, approvePayment, rejectPayment, updateLogisticsStage, uploadCertificate, completeOrder } = useAdminOrders();
   const [certificateFile, setCertificateFile] = useState<File | null>(null);
   const [certificateType, setCertificateType] = useState("");
-  const [certificateName, setCertificateName] = useState("");
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-US", {
@@ -56,18 +55,16 @@ export const OrderDetailDialog = ({ order, open, onOpenChange }: OrderDetailDial
   };
 
   const handleCertificateUpload = async () => {
-    if (!certificateFile || !certificateType || !certificateName) return;
+    if (!certificateFile || !certificateType) return;
 
     await uploadCertificate.mutateAsync({
       orderId: order.id,
       file: certificateFile,
       certificateType,
-      certificateName,
     });
 
     setCertificateFile(null);
     setCertificateType("");
-    setCertificateName("");
   };
 
   const handleApprovePayment = () => {
@@ -243,10 +240,7 @@ export const OrderDetailDialog = ({ order, open, onOpenChange }: OrderDetailDial
                     className="flex items-center gap-2 p-3 border rounded-lg hover:bg-muted transition-colors"
                   >
                     <FileText className="h-4 w-4 text-primary" />
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium truncate">{cert.certificate_type}</p>
-                      <p className="text-xs text-muted-foreground truncate">{cert.certificate_name}</p>
-                    </div>
+                    <p className="text-sm font-medium truncate">{cert.certificate_type}</p>
                   </a>
                 ))}
               </div>
@@ -254,25 +248,18 @@ export const OrderDetailDialog = ({ order, open, onOpenChange }: OrderDetailDial
 
             {/* Upload New Certificate */}
             <div className="space-y-3 p-4 border rounded-lg">
-              <div className="grid md:grid-cols-2 gap-3">
-                <Select value={certificateType} onValueChange={setCertificateType}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Certificate Type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {certificateTypes.map((type) => (
-                      <SelectItem key={type} value={type}>
-                        {type}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Input
-                  placeholder="Certificate Name"
-                  value={certificateName}
-                  onChange={(e) => setCertificateName(e.target.value)}
-                />
-              </div>
+              <Select value={certificateType} onValueChange={setCertificateType}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Certificate Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  {certificateTypes.map((type) => (
+                    <SelectItem key={type} value={type}>
+                      {type}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <div className="flex gap-3">
                 <Input
                   type="file"
@@ -281,7 +268,7 @@ export const OrderDetailDialog = ({ order, open, onOpenChange }: OrderDetailDial
                 />
                 <Button
                   onClick={handleCertificateUpload}
-                  disabled={!certificateFile || !certificateType || !certificateName || uploadCertificate.isPending}
+                  disabled={!certificateFile || !certificateType || uploadCertificate.isPending}
                 >
                   <Upload className="h-4 w-4 mr-2" />
                   Upload

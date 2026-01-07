@@ -43,7 +43,6 @@ export interface OrderCertificate {
   id: string;
   order_id: string;
   certificate_type: string;
-  certificate_name: string;
   file_url: string;
   uploaded_by: string;
   created_at: string;

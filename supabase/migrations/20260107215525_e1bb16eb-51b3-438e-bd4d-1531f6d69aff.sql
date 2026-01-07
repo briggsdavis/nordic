@@ -1,0 +1,1 @@
+ALTER TABLE order_certificates DROP COLUMN certificate_name;

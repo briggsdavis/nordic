@@ -24,25 +24,22 @@ export const LogisticsTab = () => {
   const [selectedOrderId, setSelectedOrderId] = useState<string>("");
   const [certificateFile, setCertificateFile] = useState<File | null>(null);
   const [certificateType, setCertificateType] = useState("");
-  const [certificateName, setCertificateName] = useState("");
 
   const handleStageChange = (orderId: string, stage: LogisticsStage) => {
     updateLogisticsStage.mutate({ orderId, stage });
   };
 
   const handleCertificateUpload = async () => {
-    if (!selectedOrderId || !certificateFile || !certificateType || !certificateName) return;
+    if (!selectedOrderId || !certificateFile || !certificateType) return;
 
     await uploadCertificate.mutateAsync({
       orderId: selectedOrderId,
       file: certificateFile,
       certificateType,
-      certificateName,
     });
 
     setCertificateFile(null);
     setCertificateType("");
-    setCertificateName("");
   };
 
   if (isLoading) {
@@ -125,7 +122,7 @@ export const LogisticsTab = () => {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <div className="grid md:grid-cols-4 gap-4">
+            <div className="grid md:grid-cols-3 gap-4">
               <Select value={selectedOrderId} onValueChange={setSelectedOrderId}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select Order" />
@@ -153,24 +150,15 @@ export const LogisticsTab = () => {
               </Select>
 
               <Input
-                placeholder="Certificate Name"
-                value={certificateName}
-                onChange={(e) => setCertificateName(e.target.value)}
+                type="file"
+                accept=".pdf,image/*"
+                onChange={(e) => setCertificateFile(e.target.files?.[0] || null)}
               />
-
-              <div className="flex gap-2">
-                <Input
-                  type="file"
-                  accept=".pdf,image/*"
-                  onChange={(e) => setCertificateFile(e.target.files?.[0] || null)}
-                  className="flex-1"
-                />
-              </div>
             </div>
 
             <Button
               onClick={handleCertificateUpload}
-              disabled={!selectedOrderId || !certificateFile || !certificateType || !certificateName || uploadCertificate.isPending}
+              disabled={!selectedOrderId || !certificateFile || !certificateType || uploadCertificate.isPending}
             >
               <Upload className="h-4 w-4 mr-2" />
               Upload Certificate
@@ -203,12 +191,7 @@ export const LogisticsTab = () => {
                           className="flex items-center gap-2 p-3 border rounded-lg hover:bg-muted transition-colors"
                         >
                           <FileText className="h-4 w-4 text-primary" />
-                          <div className="min-w-0">
-                            <p className="text-sm font-medium truncate">{cert.certificate_type}</p>
-                            <p className="text-xs text-muted-foreground truncate">
-                              {cert.certificate_name}
-                            </p>
-                          </div>
+                          <p className="text-sm font-medium truncate">{cert.certificate_type}</p>
                         </a>
                       ))}
                     </div>

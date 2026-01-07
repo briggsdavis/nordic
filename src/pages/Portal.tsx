@@ -304,12 +304,7 @@ const Portal = () => {
                                 className="flex items-center gap-2 p-3 border rounded-lg hover:bg-muted transition-colors"
                               >
                                 <FileText className="h-4 w-4 text-primary" />
-                                <div className="min-w-0">
-                                  <p className="text-sm font-medium truncate">{cert.certificate_type}</p>
-                                  <p className="text-xs text-muted-foreground truncate">
-                                    {cert.certificate_name}
-                                  </p>
-                                </div>
+                                <p className="text-sm font-medium truncate">{cert.certificate_type}</p>
                               </a>
                             ))}
                           </div>
