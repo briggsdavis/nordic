@@ -54,7 +54,6 @@ export type Database = {
       }
       order_certificates: {
         Row: {
-          certificate_name: string
           certificate_type: string
           created_at: string
           file_url: string
@@ -63,7 +62,6 @@ export type Database = {
           uploaded_by: string
         }
         Insert: {
-          certificate_name: string
           certificate_type: string
           created_at?: string
           file_url: string
@@ -72,7 +70,6 @@ export type Database = {
           uploaded_by: string
         }
         Update: {
-          certificate_name?: string
           certificate_type?: string
           created_at?: string
           file_url?: string

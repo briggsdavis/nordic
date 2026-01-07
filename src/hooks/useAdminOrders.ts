@@ -156,12 +156,10 @@ export const useAdminOrders = () => {
       orderId,
       file,
       certificateType,
-      certificateName,
     }: {
       orderId: string;
       file: File;
       certificateType: string;
-      certificateName: string;
     }) => {
       const filePath = `certificates/${orderId}/${Date.now()}-${file.name}`;
 
@@ -180,7 +178,6 @@ export const useAdminOrders = () => {
       const { error: insertError } = await supabase.from("order_certificates").insert({
         order_id: orderId,
         certificate_type: certificateType,
-        certificate_name: certificateName,
         file_url: publicUrl,
         uploaded_by: user!.id,
       });
