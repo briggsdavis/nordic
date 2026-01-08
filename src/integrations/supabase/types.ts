@@ -248,6 +248,7 @@ export type Database = {
           phone_number: string | null
           primary_address: string | null
           updated_at: string | null
+          whatsapp_number: string | null
         }
         Insert: {
           account_type?: Database["public"]["Enums"]["account_type"]
@@ -258,6 +259,7 @@ export type Database = {
           phone_number?: string | null
           primary_address?: string | null
           updated_at?: string | null
+          whatsapp_number?: string | null
         }
         Update: {
           account_type?: Database["public"]["Enums"]["account_type"]
@@ -268,6 +270,7 @@ export type Database = {
           phone_number?: string | null
           primary_address?: string | null
           updated_at?: string | null
+          whatsapp_number?: string | null
         }
         Relationships: []
       }

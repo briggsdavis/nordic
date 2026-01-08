@@ -17,12 +17,14 @@ import {
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Building2, User } from "lucide-react";
+import { formatPhoneNumber, unformatPhoneNumber } from "@/lib/phone-utils";
 
 const signUpSchema = z.object({
   full_name: z.string().trim().min(2, { message: "Name must be at least 2 characters" }).max(100),
   email: z.string().trim().email({ message: "Invalid email address" }).max(255),
-  phone_number: z.string().trim().min(10, { message: "Please enter a valid phone number" }).max(20),
-  primary_address: z.string().trim().min(10, { message: "Please enter a complete address" }).max(500),
+  phone_number: z.string().trim().min(1, { message: "Please enter a phone number" }).max(20),
+  whatsapp_number: z.string().trim().max(20).optional().or(z.literal('')),
+  primary_address: z.string().trim().min(1, { message: "Please enter an address" }).max(500),
   account_type: z.enum(["business", "individual"], { required_error: "Please select an account type" }),
   password: z.string().min(6, { message: "Password must be at least 6 characters" }).max(100),
   confirm_password: z.string(),
@@ -48,6 +50,7 @@ const SignUpForm = ({ onSwitchToLogin }: SignUpFormProps) => {
       full_name: "",
       email: "",
       phone_number: "",
+      whatsapp_number: "",
       primary_address: "",
       account_type: "individual",
       password: "",
@@ -65,7 +68,8 @@ const SignUpForm = ({ onSwitchToLogin }: SignUpFormProps) => {
         emailRedirectTo: `${window.location.origin}/`,
         data: {
           full_name: values.full_name,
-          phone_number: values.phone_number,
+          phone_number: unformatPhoneNumber(values.phone_number),
+          whatsapp_number: values.whatsapp_number ? unformatPhoneNumber(values.whatsapp_number) : null,
           primary_address: values.primary_address,
           account_type: values.account_type,
         },
@@ -141,7 +145,37 @@ const SignUpForm = ({ onSwitchToLogin }: SignUpFormProps) => {
               <FormItem>
                 <FormLabel>Phone Number</FormLabel>
                 <FormControl>
-                  <Input type="tel" placeholder="+251 9XX XXX XXX" {...field} />
+                  <Input 
+                    type="tel" 
+                    placeholder="9XX XXX XXX" 
+                    value={field.value}
+                    onChange={(e) => {
+                      const formatted = formatPhoneNumber(e.target.value);
+                      field.onChange(formatted);
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="whatsapp_number"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>WhatsApp Number <span className="text-muted-foreground font-normal">(optional)</span></FormLabel>
+                <FormControl>
+                  <Input 
+                    type="tel" 
+                    placeholder="9XX XXX XXX" 
+                    value={field.value}
+                    onChange={(e) => {
+                      const formatted = formatPhoneNumber(e.target.value);
+                      field.onChange(formatted);
+                    }}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -155,7 +189,7 @@ const SignUpForm = ({ onSwitchToLogin }: SignUpFormProps) => {
               <FormItem>
                 <FormLabel>Primary Address</FormLabel>
                 <FormControl>
-                  <Input placeholder="Street, City, Region" {...field} />
+                  <Input placeholder="Your delivery address" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
