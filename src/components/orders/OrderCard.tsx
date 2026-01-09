@@ -47,16 +47,16 @@ export const OrderCard = ({ order }: OrderCardProps) => {
   return (
     <Card>
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <CardHeader className="pb-3">
+        <CardHeader className="p-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="space-y-1">
-              <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3">
+              <div className="space-y-1">
                 <h3 className="font-medium">{order.reference_number}</h3>
-                <OrderStatusBadge status={order.status} />
+                <p className="text-sm text-muted-foreground">
+                  Ordered {formatDate(order.created_at)}
+                </p>
               </div>
-              <p className="text-sm text-muted-foreground">
-                Ordered {formatDate(order.created_at)}
-              </p>
+              <OrderStatusBadge status={order.status} />
             </div>
             <div className="flex items-center gap-4">
               <span className="font-medium">{formatPrice(Number(order.total_amount))}</span>
