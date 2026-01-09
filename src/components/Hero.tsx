@@ -58,7 +58,7 @@ const Hero = () => {
             <Button 
               variant="outline" 
               size="lg"
-              className="border-white/40 text-white hover:bg-white/10 hover:text-white px-8 py-6 text-sm tracking-wide uppercase font-medium"
+              className="border-white/40 bg-transparent text-white hover:bg-white/10 hover:text-white px-8 py-6 text-sm tracking-wide uppercase font-medium"
             >
               B2B Inquiries
             </Button>
