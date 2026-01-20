@@ -10,6 +10,9 @@ import { LogisticsPipeline, logisticsStages } from "@/components/orders/Logistic
 import { getSignedUrl, extractFilePath } from "@/lib/storage";
 import { ExternalLink, Upload, FileText, CheckCircle2, XCircle, MapPin, Phone, User, Calendar, Loader2 } from "lucide-react";
 import type { Database } from "@/integrations/supabase/types";
+import { useToast } from "@/hooks/use-toast";
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 type OrderStatus = Database["public"]["Enums"]["order_status"];
 type LogisticsStage = Database["public"]["Enums"]["logistics_stage"];
@@ -29,6 +32,7 @@ const certificateTypes = [
 
 export const OrderDetailDialog = ({ order, open, onOpenChange }: OrderDetailDialogProps) => {
   const { updateOrderStatus, approvePayment, rejectPayment, updateLogisticsStage, uploadCertificate, completeOrder } = useAdminOrders();
+  const { toast } = useToast();
   const [certificateFile, setCertificateFile] = useState<File | null>(null);
   const [certificateType, setCertificateType] = useState("");
   const [loadingFile, setLoadingFile] = useState<string | null>(null);
@@ -289,7 +293,23 @@ export const OrderDetailDialog = ({ order, open, onOpenChange }: OrderDetailDial
                 <Input
                   type="file"
                   accept=".pdf,image/*"
-                  onChange={(e) => setCertificateFile(e.target.files?.[0] || null)}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      if (file.size > MAX_FILE_SIZE) {
+                        toast({
+                          variant: "destructive",
+                          title: "File too large",
+                          description: `File size must be less than ${MAX_FILE_SIZE / 1024 / 1024}MB. Your file is ${(file.size / 1024 / 1024).toFixed(2)}MB.`,
+                        });
+                        e.target.value = "";
+                        return;
+                      }
+                      setCertificateFile(file);
+                    } else {
+                      setCertificateFile(null);
+                    }
+                  }}
                 />
                 <Button
                   onClick={handleCertificateUpload}

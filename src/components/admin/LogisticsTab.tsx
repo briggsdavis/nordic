@@ -9,6 +9,9 @@ import { LogisticsPipeline, logisticsStages } from "@/components/orders/Logistic
 import { OrderStatusBadge } from "@/components/orders/OrderStatusBadge";
 import { useState } from "react";
 import type { Database } from "@/integrations/supabase/types";
+import { useToast } from "@/hooks/use-toast";
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 type LogisticsStage = Database["public"]["Enums"]["logistics_stage"];
 
@@ -21,6 +24,7 @@ const certificateTypes = [
 
 export const LogisticsTab = () => {
   const { inTransitOrders, isLoading, updateLogisticsStage, uploadCertificate } = useAdminOrders();
+  const { toast } = useToast();
   const [selectedOrderId, setSelectedOrderId] = useState<string>("");
   const [certificateFile, setCertificateFile] = useState<File | null>(null);
   const [certificateType, setCertificateType] = useState("");
@@ -152,7 +156,23 @@ export const LogisticsTab = () => {
               <Input
                 type="file"
                 accept=".pdf,image/*"
-                onChange={(e) => setCertificateFile(e.target.files?.[0] || null)}
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    if (file.size > MAX_FILE_SIZE) {
+                      toast({
+                        variant: "destructive",
+                        title: "File too large",
+                        description: `File size must be less than ${MAX_FILE_SIZE / 1024 / 1024}MB. Your file is ${(file.size / 1024 / 1024).toFixed(2)}MB.`,
+                      });
+                      e.target.value = "";
+                      return;
+                    }
+                    setCertificateFile(file);
+                  } else {
+                    setCertificateFile(null);
+                  }
+                }}
               />
             </div>
 

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/hooks/useCart";
 import { useOrders } from "@/hooks/useOrders";
+import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,11 +14,14 @@ import { ArrowLeft, Upload, Loader2, AlertTriangle } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
 const Checkout = () => {
   const navigate = useNavigate();
   const { user, profile } = useAuth();
   const { cartItems, cartTotal, clearCart, getVariantPrice } = useCart();
   const { createOrder } = useOrders();
+  const { toast } = useToast();
 
   const [formData, setFormData] = useState({
     contactName: profile?.full_name || "",
@@ -44,6 +48,15 @@ const Checkout = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (file.size > MAX_FILE_SIZE) {
+        toast({
+          variant: "destructive",
+          title: "File too large",
+          description: `File size must be less than ${MAX_FILE_SIZE / 1024 / 1024}MB. Your file is ${(file.size / 1024 / 1024).toFixed(2)}MB.`,
+        });
+        e.target.value = ""; // Reset input
+        return;
+      }
       setPaymentFile(file);
     }
   };

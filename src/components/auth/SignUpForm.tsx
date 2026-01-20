@@ -26,7 +26,7 @@ const signUpSchema = z.object({
   whatsapp_number: z.string().trim().max(20).optional().or(z.literal('')),
   primary_address: z.string().trim().min(1, { message: "Please enter an address" }).max(500),
   account_type: z.enum(["business", "individual"], { required_error: "Please select an account type" }),
-  password: z.string().min(6, { message: "Password must be at least 6 characters" }).max(100),
+  password: z.string().min(8, { message: "Password must be at least 8 characters" }).max(100),
   confirm_password: z.string(),
 }).refine((data) => data.password === data.confirm_password, {
   message: "Passwords don't match",

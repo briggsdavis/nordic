@@ -16,6 +16,8 @@ export interface OrderWithProfile extends OrderWithItems {
   };
 }
 
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
 export const useAdminOrders = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -161,6 +163,10 @@ export const useAdminOrders = () => {
       file: File;
       certificateType: string;
     }) => {
+      if (file.size > MAX_FILE_SIZE) {
+        throw new Error(`File size must be less than ${MAX_FILE_SIZE / 1024 / 1024}MB`);
+      }
+
       const filePath = `certificates/${orderId}/${Date.now()}-${file.name}`;
 
       const { error: uploadError } = await supabase.storage

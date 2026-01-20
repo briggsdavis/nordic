@@ -9,6 +9,7 @@ import Auth from "./pages/Auth";
 import Portal from "./pages/Portal";
 import Admin from "./pages/Admin";
 import ProductDetail from "./pages/ProductDetail";
+import Collection from "./pages/Collection";
 import Checkout from "./pages/Checkout";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
@@ -25,6 +26,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/collection" element={<Collection />} />
             <Route path="/products/:slug" element={<ProductDetail />} />
             <Route
               path="/checkout"

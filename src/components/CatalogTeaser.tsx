@@ -32,7 +32,11 @@ const CatalogTeaser = () => {
               Premium Selection
             </h2>
           </div>
-          <Button variant="ghost" className="mt-6 md:mt-0 gap-2 group">
+          <Button
+            variant="ghost"
+            className="mt-6 md:mt-0 gap-2 group"
+            onClick={() => navigate("/collection")}
+          >
             <span className="text-sm tracking-wide uppercase">View Full Catalog</span>
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </Button>

@@ -53,6 +53,8 @@ export interface OrderWithItems extends Order {
   order_certificates: OrderCertificate[];
 }
 
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
 export const useOrders = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
@@ -200,8 +202,12 @@ export const useOrders = () => {
     mutationFn: async ({ orderId, file }: { orderId: string; file: File }) => {
       if (!user) throw new Error("Must be logged in");
 
+      if (file.size > MAX_FILE_SIZE) {
+        throw new Error(`File size must be less than ${MAX_FILE_SIZE / 1024 / 1024}MB`);
+      }
+
       const filePath = `${user.id}/receipts/${orderId}-${Date.now()}-${file.name}`;
-      
+
       const { error: uploadError } = await supabase.storage
         .from("order-files")
         .upload(filePath, file);
