@@ -13,7 +13,7 @@ const Collection = () => {
     <div className="min-h-screen bg-background">
       <Header />
 
-      <main className="container mx-auto px-6 py-12">
+      <main className="container mx-auto px-6 pt-32 pb-12">
         {/* Page Header */}
         <div className="text-center mb-12">
           <p className="text-primary text-xs tracking-[0.3em] uppercase mb-4">
