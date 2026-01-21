@@ -29,7 +29,7 @@ const Collection = () => {
 
         {/* Products Grid */}
         {isLoading ? (
-          <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div key={i} className="space-y-4">
                 <Skeleton className="aspect-[4/3] rounded-lg" />
@@ -40,7 +40,7 @@ const Collection = () => {
             ))}
           </div>
         ) : products && products.length > 0 ? (
-          <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {products.map((product) => (
               <div
                 key={product.id}
