@@ -107,12 +107,12 @@ const ProductDetail = () => {
     <div className="min-h-screen bg-background">
       <Header />
       
-      <main className="container mx-auto px-6 py-12">
+      <main className="container mx-auto px-6 pt-28 pb-12">
         {/* Back Button */}
         <Button
           variant="ghost"
           className="mb-8 gap-2"
-          onClick={() => navigate("/#collection")}
+          onClick={() => navigate("/collection")}
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Collection

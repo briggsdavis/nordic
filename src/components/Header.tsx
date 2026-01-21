@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/contexts/AuthContext";
 import { CartSheet } from "@/components/cart/CartSheet";
+import logo from "@/assets/logo.png";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -27,8 +28,8 @@ const Header = () => {
   }, []);
 
   const navLinks = [
-    { href: "#origin", label: "Origin" },
-    { href: "#collection", label: "Collection" },
+    { href: "/origin", label: "Origin", isRoute: true },
+    { href: "/collection", label: "Collection", isRoute: true },
     { href: "/contact", label: "Contact", isRoute: true },
   ];
 
@@ -56,18 +57,14 @@ const Header = () => {
       <div className="container mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-serif font-bold text-lg">NS</span>
-            </div>
-            <div className="flex flex-col">
-              <span className={`font-serif text-lg font-semibold tracking-wide transition-colors ${
-                isScrolled ? "text-foreground" : "text-card"
-              }`}>
-                Nordic Seafood
-              </span>
-            </div>
-          </a>
+          <Link to="/" className="flex items-center gap-3 group">
+            <img src={logo} alt="Nordic Seafood" className="w-10 h-10 object-contain" />
+            <span className={`font-serif text-lg font-semibold tracking-wide transition-colors ${
+              isScrolled ? "text-foreground" : "text-card"
+            }`}>
+              Nordic Seafood
+            </span>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
