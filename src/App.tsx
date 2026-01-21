@@ -12,6 +12,7 @@ import ProductDetail from "./pages/ProductDetail";
 import Collection from "./pages/Collection";
 import Checkout from "./pages/Checkout";
 import Contact from "./pages/Contact";
+import Origin from "./pages/Origin";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/collection" element={<Collection />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/origin" element={<Origin />} />
             <Route path="/products/:slug" element={<ProductDetail />} />
             <Route
               path="/checkout"
