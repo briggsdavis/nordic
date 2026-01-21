@@ -1,4 +1,5 @@
 import { ChevronDown } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const Hero = () => {
@@ -50,17 +51,19 @@ const Hero = () => {
             style={{ animationDelay: "0.8s" }}
           >
             <Button 
+              asChild
               size="lg" 
               className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-sm tracking-wide uppercase font-medium"
             >
-              Explore Selection
+              <Link to="/collection">Explore Selection</Link>
             </Button>
             <Button 
+              asChild
               variant="outline" 
               size="lg"
               className="border-white/40 bg-transparent text-white hover:bg-white/10 hover:text-white px-8 py-6 text-sm tracking-wide uppercase font-medium"
             >
-              B2B Inquiries
+              <Link to="/contact">B2B Inquiries</Link>
             </Button>
           </div>
         </div>
