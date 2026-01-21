@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Menu, X, User, LogOut, Shield, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,6 +29,7 @@ const Header = () => {
   const navLinks = [
     { href: "#origin", label: "Origin" },
     { href: "#collection", label: "Collection" },
+    { href: "/contact", label: "Contact", isRoute: true },
   ];
 
   const handleSignOut = async () => {
@@ -71,15 +72,27 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className={`text-sm font-medium tracking-wide uppercase transition-colors hover:text-primary ${
-                  isScrolled ? "text-foreground" : "text-card"
-                }`}
-              >
-                {link.label}
-              </a>
+              link.isRoute ? (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  className={`text-sm font-medium tracking-wide uppercase transition-colors hover:text-primary ${
+                    isScrolled ? "text-foreground" : "text-card"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ) : (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className={`text-sm font-medium tracking-wide uppercase transition-colors hover:text-primary ${
+                    isScrolled ? "text-foreground" : "text-card"
+                  }`}
+                >
+                  {link.label}
+                </a>
+              )
             ))}
           </nav>
 
@@ -147,14 +160,25 @@ const Header = () => {
           <div className="md:hidden absolute top-full left-0 right-0 bg-card border-b border-border shadow-lg animate-fade-in">
             <nav className="flex flex-col p-6 gap-4">
               {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="text-foreground text-base font-medium py-2 border-b border-border"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {link.label}
-                </a>
+                link.isRoute ? (
+                  <Link
+                    key={link.href}
+                    to={link.href}
+                    className="text-foreground text-base font-medium py-2 border-b border-border"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                ) : (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    className="text-foreground text-base font-medium py-2 border-b border-border"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {link.label}
+                  </a>
+                )
               ))}
               <div className="flex flex-col gap-3 pt-4">
                 {user ? (
