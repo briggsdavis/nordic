@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ShoppingCart, Minus, Plus, Trash2 } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 
 export const CartSheet = () => {
@@ -28,7 +28,6 @@ export const CartSheet = () => {
     return (
       <Button
         variant="outline"
-        size="sm"
         onClick={() => navigate("/auth")}
         className="gap-2"
       >
@@ -41,7 +40,7 @@ export const CartSheet = () => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="outline" size="sm" className="gap-2 relative">
+        <Button variant="outline" className="gap-2 relative">
           <ShoppingCart className="h-4 w-4" />
           Cart
           {cartCount > 0 && (
@@ -67,12 +66,11 @@ export const CartSheet = () => {
             <Button
               variant="outline"
               className="mt-4"
-              onClick={() => {
-                setOpen(false);
-                navigate("/#collection");
-              }}
+              asChild
             >
-              Browse Products
+              <Link to="/collection" onClick={() => setOpen(false)}>
+                Browse Products
+              </Link>
             </Button>
           </div>
         ) : (

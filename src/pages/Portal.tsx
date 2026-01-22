@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { getSignedUrl, extractFilePath } from "@/lib/storage";
+import { formatPhoneNumber } from "@/lib/phone-utils";
 import { 
   User, 
   Package, 
@@ -43,6 +44,7 @@ const Portal = () => {
   const [editedProfile, setEditedProfile] = useState({
     full_name: profile?.full_name || "",
     phone_number: profile?.phone_number || "",
+    whatsapp_number: profile?.whatsapp_number || "",
     primary_address: profile?.primary_address || "",
     account_type: (profile?.account_type || "individual") as AccountType,
   });
@@ -70,6 +72,7 @@ const Portal = () => {
       setEditedProfile({
         full_name: profile?.full_name || "",
         phone_number: profile?.phone_number || "",
+        whatsapp_number: profile?.whatsapp_number || "",
         primary_address: profile?.primary_address || "",
         account_type: (profile?.account_type || "individual") as AccountType,
       });
@@ -87,6 +90,7 @@ const Portal = () => {
       .update({
         full_name: editedProfile.full_name,
         phone_number: editedProfile.phone_number,
+        whatsapp_number: editedProfile.whatsapp_number,
         primary_address: editedProfile.primary_address,
         account_type: editedProfile.account_type,
       })
@@ -386,14 +390,36 @@ const Portal = () => {
                     <label className="text-sm font-medium text-muted-foreground">Phone Number</label>
                     {isEditing ? (
                       <Input
+                        type="tel"
                         value={editedProfile.phone_number}
-                        onChange={(e) => setEditedProfile({ ...editedProfile, phone_number: e.target.value })}
+                        onChange={(e) => {
+                          const formatted = formatPhoneNumber(e.target.value);
+                          setEditedProfile({ ...editedProfile, phone_number: formatted });
+                        }}
+                        placeholder="9XX XXX XXX"
                       />
                     ) : (
                       <p className="text-foreground">{profile?.phone_number || "-"}</p>
                     )}
                   </div>
-                  
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-muted-foreground">WhatsApp Number</label>
+                    {isEditing ? (
+                      <Input
+                        type="tel"
+                        value={editedProfile.whatsapp_number}
+                        onChange={(e) => {
+                          const formatted = formatPhoneNumber(e.target.value);
+                          setEditedProfile({ ...editedProfile, whatsapp_number: formatted });
+                        }}
+                        placeholder="9XX XXX XXX (optional)"
+                      />
+                    ) : (
+                      <p className="text-foreground">{profile?.whatsapp_number || "-"}</p>
+                    )}
+                  </div>
+
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-muted-foreground">Primary Address</label>
                     {isEditing ? (

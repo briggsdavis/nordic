@@ -15,6 +15,7 @@ import Contact from "./pages/Contact";
 import Origin from "./pages/Origin";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop />
         <AuthProvider>
           <Routes>
             <Route path="/" element={<Index />} />

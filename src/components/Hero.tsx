@@ -5,7 +5,7 @@ import heroBanner from "@/assets/hero-banner.jpg";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-end justify-center overflow-hidden pb-32">
+    <section className="relative min-h-screen flex items-end justify-center overflow-hidden pb-32 -mt-20">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img

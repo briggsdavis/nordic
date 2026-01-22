@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { Menu, X, User, LogOut, Shield, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,6 +18,8 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user, profile, role, signOut, loading } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,33 +50,33 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-card/95 backdrop-blur-md shadow-sm border-b border-border"
+      className={`sticky top-0 left-0 right-0 z-50 transition-[background-color,box-shadow] duration-300 ${
+        isScrolled || !isHomePage
+          ? "bg-card/95 backdrop-blur-md shadow-sm"
           : "bg-gradient-to-b from-foreground/60 via-foreground/30 to-transparent"
       }`}
     >
       <div className="container mx-auto px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="grid grid-cols-[auto_1fr_auto] md:grid-cols-3 items-center h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
             <img src={logo} alt="Nordic Seafood" className="w-10 h-10 object-contain" />
             <span className={`font-serif text-lg font-semibold tracking-wide transition-colors ${
-              isScrolled ? "text-foreground" : "text-card"
+              isScrolled || !isHomePage ? "text-foreground" : "text-card"
             }`}>
               Nordic Seafood
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center justify-center gap-8">
             {navLinks.map((link) => (
               link.isRoute ? (
                 <Link
                   key={link.href}
                   to={link.href}
                   className={`text-sm font-medium tracking-wide uppercase transition-colors hover:text-primary ${
-                    isScrolled ? "text-foreground" : "text-card"
+                    isScrolled || !isHomePage ? "text-foreground" : "text-card"
                   }`}
                 >
                   {link.label}
@@ -84,7 +86,7 @@ const Header = () => {
                   key={link.href}
                   href={link.href}
                   className={`text-sm font-medium tracking-wide uppercase transition-colors hover:text-primary ${
-                    isScrolled ? "text-foreground" : "text-card"
+                    isScrolled || !isHomePage ? "text-foreground" : "text-card"
                   }`}
                 >
                   {link.label}
@@ -94,7 +96,7 @@ const Header = () => {
           </nav>
 
           {/* Desktop Actions */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center justify-end gap-4">
             <CartSheet />
             
             {loading ? (
@@ -103,8 +105,8 @@ const Header = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
-                    variant={isScrolled ? "outline" : "secondary"}
-                    className={`gap-2 ${!isScrolled && "bg-card/10 border-card/30 text-card hover:bg-card/20"}`}
+                    variant="outline"
+                    className={`gap-2 ${!isScrolled && isHomePage && "bg-card/10 border-card/30 text-card hover:bg-card/20"}`}
                   >
                     <User className="w-4 h-4" />
                     <span className="text-sm font-medium max-w-[100px] truncate">
@@ -133,8 +135,8 @@ const Header = () => {
               </DropdownMenu>
             ) : (
               <Button
-                variant={isScrolled ? "outline" : "secondary"}
-                className={`gap-2 ${!isScrolled && "bg-card/10 border-card/30 text-card hover:bg-card/20"}`}
+                variant="outline"
+                className={`gap-2 ${!isScrolled && isHomePage && "bg-card/10 border-card/30 text-card hover:bg-card/20"}`}
                 onClick={handlePortalClick}
               >
                 <User className="w-4 h-4" />
@@ -145,7 +147,7 @@ const Header = () => {
 
           {/* Mobile Menu Toggle */}
           <button
-            className={`md:hidden p-2 ${isScrolled ? "text-foreground" : "text-card"}`}
+            className={`md:hidden p-2 ${isScrolled || !isHomePage ? "text-foreground" : "text-card"}`}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

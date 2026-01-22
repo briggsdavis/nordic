@@ -38,12 +38,24 @@ const Admin = () => {
   }, []);
 
   const fetchUsers = async () => {
-    const { data } = await supabase
+    // Get all profiles
+    const { data: profiles } = await supabase
       .from("profiles")
       .select("*")
       .order("created_at", { ascending: false });
-    
-    setUsers(data || []);
+
+    // Get all user IDs with admin role
+    const { data: adminRoles } = await supabase
+      .from("user_roles")
+      .select("user_id")
+      .eq("role", "admin");
+
+    const adminUserIds = new Set((adminRoles as { user_id: string }[] | null)?.map(r => r.user_id) || []);
+
+    // Filter out admin users
+    const customers = profiles?.filter(profile => !adminUserIds.has(profile.id)) || [];
+
+    setUsers(customers);
     setLoadingUsers(false);
   };
 
