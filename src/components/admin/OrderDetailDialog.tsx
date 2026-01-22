@@ -6,16 +6,13 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { useAdminOrders, OrderWithProfile } from "@/hooks/useAdminOrders";
 import { OrderStatusBadge } from "@/components/orders/OrderStatusBadge";
-import { LogisticsPipeline, logisticsStages } from "@/components/orders/LogisticsPipeline";
-import { getSignedUrl, extractFilePath } from "@/lib/storage";
+import { openStorageFile } from "@/lib/storage";
+import { formatPrice, formatDateLong, formatFileSizeError, MAX_FILE_SIZE } from "@/lib/format";
 import { ExternalLink, Upload, FileText, CheckCircle2, XCircle, MapPin, Phone, User, Calendar, Loader2 } from "lucide-react";
 import type { Database } from "@/integrations/supabase/types";
 import { useToast } from "@/hooks/use-toast";
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
-
 type OrderStatus = Database["public"]["Enums"]["order_status"];
-type LogisticsStage = Database["public"]["Enums"]["logistics_stage"];
 
 interface OrderDetailDialogProps {
   order: OrderWithProfile;
@@ -31,35 +28,16 @@ const certificateTypes = [
 ];
 
 export const OrderDetailDialog = ({ order, open, onOpenChange }: OrderDetailDialogProps) => {
-  const { updateOrderStatus, approvePayment, rejectPayment, updateLogisticsStage, uploadCertificate, completeOrder } = useAdminOrders();
+  const { updateOrderStatus, approvePayment, rejectPayment, uploadCertificate, completeOrder } = useAdminOrders();
   const { toast } = useToast();
   const [certificateFile, setCertificateFile] = useState<File | null>(null);
   const [certificateType, setCertificateType] = useState("");
   const [loadingFile, setLoadingFile] = useState<string | null>(null);
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(price);
-  };
-
-  const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
   const handleViewFile = async (filePathOrUrl: string, fileId: string) => {
     setLoadingFile(fileId);
     try {
-      const filePath = extractFilePath(filePathOrUrl);
-      const signedUrl = await getSignedUrl("order-files", filePath);
-      if (signedUrl) {
-        window.open(signedUrl, "_blank");
-      }
+      await openStorageFile("order-files", filePathOrUrl);
     } finally {
       setLoadingFile(null);
     }
@@ -67,10 +45,6 @@ export const OrderDetailDialog = ({ order, open, onOpenChange }: OrderDetailDial
 
   const handleStatusChange = (status: OrderStatus) => {
     updateOrderStatus.mutate({ orderId: order.id, status });
-  };
-
-  const handleLogisticsChange = (stage: LogisticsStage) => {
-    updateLogisticsStage.mutate({ orderId: order.id, stage });
   };
 
   const handleCertificateUpload = async () => {
@@ -130,7 +104,7 @@ export const OrderDetailDialog = ({ order, open, onOpenChange }: OrderDetailDial
                 </div>
                 <div className="flex items-center gap-2">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
-                  <span>Expected: {formatDate(order.expected_delivery_date)}</span>
+                  <span>Expected: {formatDateLong(order.expected_delivery_date)}</span>
                 </div>
               </div>
             </div>
@@ -177,11 +151,11 @@ export const OrderDetailDialog = ({ order, open, onOpenChange }: OrderDetailDial
                   )}
                   View Payment Receipt
                 </Button>
-                {order.status === "payment_review" && (
+                {order.status === "verifying" && (
                   <div className="flex gap-2">
                     <Button size="sm" onClick={handleApprovePayment}>
                       <CheckCircle2 className="h-4 w-4 mr-2" />
-                      Approve Payment
+                      Approve
                     </Button>
                     <Button size="sm" variant="destructive" onClick={handleRejectPayment}>
                       <XCircle className="h-4 w-4 mr-2" />
@@ -198,55 +172,23 @@ export const OrderDetailDialog = ({ order, open, onOpenChange }: OrderDetailDial
           <Separator />
 
           {/* Status Management */}
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <h3 className="font-medium mb-3">Order Status</h3>
-              <Select value={order.status} onValueChange={handleStatusChange}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="awaiting_payment">Awaiting Payment</SelectItem>
-                  <SelectItem value="payment_review">Payment Under Review</SelectItem>
-                  <SelectItem value="payment_rejected">Payment Rejected</SelectItem>
-                  <SelectItem value="processing">Processing</SelectItem>
-                  <SelectItem value="in_transit">In Transit</SelectItem>
-                  <SelectItem value="delivered">Delivered</SelectItem>
-                  <SelectItem value="completed">Completed</SelectItem>
-                  <SelectItem value="cancelled">Cancelled</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {(order.status === "in_transit" || order.status === "processing") && (
-              <div>
-                <h3 className="font-medium mb-3">Logistics Stage</h3>
-                <Select
-                  value={order.logistics_stage || ""}
-                  onValueChange={(v) => handleLogisticsChange(v as LogisticsStage)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select stage" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {logisticsStages.map((stage) => (
-                      <SelectItem key={stage.value} value={stage.value}>
-                        {stage.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
+          <div>
+            <h3 className="font-medium mb-3">Order Status</h3>
+            <Select value={order.status} onValueChange={handleStatusChange}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="verifying">Verifying</SelectItem>
+                <SelectItem value="rejected">Rejected</SelectItem>
+                <SelectItem value="confirmed">Confirmed</SelectItem>
+                <SelectItem value="shipped">Shipped</SelectItem>
+                <SelectItem value="delivered">Delivered</SelectItem>
+                <SelectItem value="completed">Completed</SelectItem>
+                <SelectItem value="cancelled">Cancelled</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
-
-          {/* Logistics Pipeline */}
-          {order.logistics_stage && (
-            <>
-              <Separator />
-              <LogisticsPipeline currentStage={order.logistics_stage} />
-            </>
-          )}
 
           <Separator />
 
@@ -300,7 +242,7 @@ export const OrderDetailDialog = ({ order, open, onOpenChange }: OrderDetailDial
                         toast({
                           variant: "destructive",
                           title: "File too large",
-                          description: `File size must be less than ${MAX_FILE_SIZE / 1024 / 1024}MB. Your file is ${(file.size / 1024 / 1024).toFixed(2)}MB.`,
+                          description: formatFileSizeError(file.size),
                         });
                         e.target.value = "";
                         return;

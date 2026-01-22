@@ -236,10 +236,10 @@ const Checkout = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle>Payment Certificate</CardTitle>
+                <CardTitle>Payment Receipt *</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="border-2 border-dashed rounded-lg p-6 text-center">
+                <div className={`border-2 border-dashed rounded-lg p-6 text-center ${!paymentFile ? 'border-muted-foreground/50' : 'border-primary'}`}>
                   <input
                     type="file"
                     id="payment-file"
@@ -251,14 +251,14 @@ const Checkout = () => {
                     htmlFor="payment-file"
                     className="cursor-pointer flex flex-col items-center gap-2"
                   >
-                    <Upload className="h-8 w-8 text-muted-foreground" />
+                    <Upload className={`h-8 w-8 ${paymentFile ? 'text-primary' : 'text-muted-foreground'}`} />
                     {paymentFile ? (
-                      <span className="text-sm font-medium">{paymentFile.name}</span>
+                      <span className="text-sm font-medium text-primary">{paymentFile.name}</span>
                     ) : (
                       <>
                         <span className="text-sm font-medium">Upload Payment Receipt</span>
                         <span className="text-xs text-muted-foreground">
-                          Click to upload image or PDF
+                          Required - Click to upload image or PDF
                         </span>
                       </>
                     )}
@@ -312,7 +312,8 @@ const Checkout = () => {
                     isUploading ||
                     !formData.contactName ||
                     !formData.contactPhone ||
-                    !formData.deliveryAddress
+                    !formData.deliveryAddress ||
+                    !paymentFile
                   }
                 >
                   {isUploading ? (

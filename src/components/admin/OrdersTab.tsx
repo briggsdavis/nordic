@@ -9,6 +9,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { MoreVertical, Eye, CheckCircle2, XCircle, Trash2 } from "lucide-react";
 import { OrderStatusBadge } from "@/components/orders/OrderStatusBadge";
 import { OrderDetailDialog } from "./OrderDetailDialog";
+import { formatPrice, formatDate } from "@/lib/format";
 
 export const OrdersTab = () => {
   const { orders, pendingReviewOrders, inTransitOrders, completedOrders, isLoading, approvePayment, rejectPayment, deleteOrder } = useAdminOrders();
@@ -16,21 +17,6 @@ export const OrdersTab = () => {
   const [detailOpen, setDetailOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [orderToDelete, setOrderToDelete] = useState<string | null>(null);
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(price);
-  };
-
-  const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-  };
 
   const handleViewOrder = (order: OrderWithProfile) => {
     setSelectedOrder(order);
@@ -106,15 +92,15 @@ export const OrdersTab = () => {
                       <Eye className="h-4 w-4 mr-2" />
                       View Details
                     </DropdownMenuItem>
-                    {order.status === "payment_review" && (
+                    {order.status === "verifying" && (
                       <>
                         <DropdownMenuItem onClick={() => handleApprovePayment(order.id)}>
                           <CheckCircle2 className="h-4 w-4 mr-2 text-green-600" />
-                          Approve Payment
+                          Approve
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => handleRejectPayment(order.id)}>
                           <XCircle className="h-4 w-4 mr-2 text-red-600" />
-                          Reject Payment
+                          Reject
                         </DropdownMenuItem>
                       </>
                     )}
@@ -154,7 +140,7 @@ export const OrdersTab = () => {
           <TabsTrigger value="pending">
             Needs Review ({pendingReviewOrders.length})
           </TabsTrigger>
-          <TabsTrigger value="transit">In Transit ({inTransitOrders.length})</TabsTrigger>
+          <TabsTrigger value="transit">Shipped ({inTransitOrders.length})</TabsTrigger>
           <TabsTrigger value="completed">Completed ({completedOrders.length})</TabsTrigger>
         </TabsList>
 
@@ -174,7 +160,7 @@ export const OrdersTab = () => {
           <Card>
             <CardHeader>
               <CardTitle>Needs Review</CardTitle>
-              <CardDescription>Orders awaiting payment verification</CardDescription>
+              <CardDescription>Orders awaiting receipt verification</CardDescription>
             </CardHeader>
             <CardContent>
               <OrderTable orderList={pendingReviewOrders} />
@@ -185,7 +171,7 @@ export const OrdersTab = () => {
         <TabsContent value="transit">
           <Card>
             <CardHeader>
-              <CardTitle>In Transit</CardTitle>
+              <CardTitle>Shipped</CardTitle>
               <CardDescription>Orders currently being shipped</CardDescription>
             </CardHeader>
             <CardContent>

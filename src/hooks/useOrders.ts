@@ -6,7 +6,6 @@ import { useEffect } from "react";
 import type { Database } from "@/integrations/supabase/types";
 
 type OrderStatus = Database["public"]["Enums"]["order_status"];
-type LogisticsStage = Database["public"]["Enums"]["logistics_stage"];
 
 export interface Order {
   id: string;
@@ -22,7 +21,6 @@ export interface Order {
   preferred_delivery_time: string | null;
   expected_delivery_date: string;
   payment_receipt_url: string | null;
-  logistics_stage: LogisticsStage | null;
   created_at: string;
   updated_at: string;
 }
@@ -145,8 +143,8 @@ export const useOrders = () => {
       const expectedDeliveryDate = new Date();
       expectedDeliveryDate.setDate(expectedDeliveryDate.getDate() + 3);
 
-      // Set status based on whether payment receipt is uploaded
-      const initialStatus: OrderStatus = orderData.paymentReceiptUrl ? "payment_review" : "awaiting_payment";
+      // Receipt is required - always start at verifying
+      const initialStatus: OrderStatus = "verifying";
 
       // Create order
       const { data: order, error: orderError } = await supabase
@@ -197,7 +195,7 @@ export const useOrders = () => {
     },
   });
 
-  // Upload payment receipt - auto transitions to payment_review
+  // Upload payment receipt - auto transitions to verifying
   const uploadPaymentReceipt = useMutation({
     mutationFn: async ({ orderId, file }: { orderId: string; file: File }) => {
       if (!user) throw new Error("Must be logged in");
@@ -219,7 +217,7 @@ export const useOrders = () => {
         .from("orders")
         .update({
           payment_receipt_url: filePath,
-          status: "payment_review" as OrderStatus,
+          status: "verifying" as OrderStatus,
         })
         .eq("id", orderId);
 

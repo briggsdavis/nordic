@@ -44,3 +44,16 @@ export const extractFilePath = (urlOrPath: string): string => {
   // Fallback: return the original if we can't parse it
   return urlOrPath;
 };
+
+/**
+ * Open a file from storage in a new tab using a signed URL
+ * @param bucket - The storage bucket name
+ * @param filePathOrUrl - The file path or legacy full URL
+ */
+export async function openStorageFile(bucket: string, filePathOrUrl: string): Promise<void> {
+  const filePath = extractFilePath(filePathOrUrl);
+  const signedUrl = await getSignedUrl(bucket, filePath);
+  if (signedUrl) {
+    window.open(signedUrl, "_blank");
+  }
+}

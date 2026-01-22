@@ -6,22 +6,19 @@ import { useAdminOrders } from "@/hooks/useAdminOrders";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  LayoutDashboard, 
-  Package, 
-  Truck, 
-  Users, 
+import {
+  LayoutDashboard,
+  Package,
+  Users,
   LogOut,
   Home,
   CheckCircle2,
   Clock,
-  XCircle,
   ShoppingBag,
   DollarSign
 } from "lucide-react";
 import { ProductsTab } from "@/components/admin/ProductsTab";
 import { OrdersTab } from "@/components/admin/OrdersTab";
-import { LogisticsTab } from "@/components/admin/LogisticsTab";
 import type { Database } from "@/integrations/supabase/types";
 
 type Profile = Database["public"]["Tables"]["profiles"]["Row"];
@@ -105,7 +102,7 @@ const Admin = () => {
             Admin Dashboard
           </h1>
           <p className="text-muted-foreground mt-1">
-            Manage orders, customers, and logistics operations.
+            Manage orders, customers, and products.
           </p>
         </div>
 
@@ -122,10 +119,6 @@ const Admin = () => {
             <TabsTrigger value="products" className="gap-2">
               <ShoppingBag className="h-4 w-4" />
               Products
-            </TabsTrigger>
-            <TabsTrigger value="logistics" className="gap-2">
-              <Truck className="h-4 w-4" />
-              Logistics
             </TabsTrigger>
             <TabsTrigger value="customers" className="gap-2">
               <Users className="h-4 w-4" />
@@ -189,7 +182,7 @@ const Admin = () => {
                   </Button>
                   <Button variant="outline" className="w-full justify-start gap-2">
                     <Clock className="h-4 w-4 text-amber-600" />
-                    Update Shipment Status ({inTransitOrders.length})
+                    View Shipped Orders ({inTransitOrders.length})
                   </Button>
                   <Button variant="outline" className="w-full justify-start gap-2">
                     <DollarSign className="h-4 w-4 text-green-600" />
@@ -229,11 +222,6 @@ const Admin = () => {
           {/* Products Tab */}
           <TabsContent value="products">
             <ProductsTab />
-          </TabsContent>
-
-          {/* Logistics Tab */}
-          <TabsContent value="logistics">
-            <LogisticsTab />
           </TabsContent>
 
           {/* Customers Tab */}

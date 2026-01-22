@@ -6,7 +6,6 @@ import type { Database } from "@/integrations/supabase/types";
 import type { OrderWithItems } from "./useOrders";
 
 type OrderStatus = Database["public"]["Enums"]["order_status"];
-type LogisticsStage = Database["public"]["Enums"]["logistics_stage"];
 
 export interface OrderWithProfile extends OrderWithItems {
   profile?: {
@@ -89,63 +88,36 @@ export const useAdminOrders = () => {
     },
   });
 
-  // Approve payment - transitions to processing
+  // Approve receipt - transitions to confirmed
   const approvePayment = useMutation({
     mutationFn: async (orderId: string) => {
       const { error } = await supabase
         .from("orders")
-        .update({ status: "processing" as OrderStatus })
+        .update({ status: "confirmed" as OrderStatus })
         .eq("id", orderId);
       if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-orders"] });
-      toast({ title: "Payment approved", description: "Order is now processing." });
+      toast({ title: "Receipt approved", description: "Order is now confirmed." });
     },
     onError: (error) => {
       toast({ variant: "destructive", title: "Error", description: error.message });
     },
   });
 
-  // Reject payment - transitions to payment_rejected
+  // Reject receipt - transitions to rejected
   const rejectPayment = useMutation({
     mutationFn: async (orderId: string) => {
       const { error } = await supabase
         .from("orders")
-        .update({ status: "payment_rejected" as OrderStatus })
+        .update({ status: "rejected" as OrderStatus })
         .eq("id", orderId);
       if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-orders"] });
-      toast({ title: "Payment rejected", description: "Customer will need to re-upload." });
-    },
-    onError: (error) => {
-      toast({ variant: "destructive", title: "Error", description: error.message });
-    },
-  });
-
-  // Update logistics stage - auto transitions status
-  const updateLogisticsStage = useMutation({
-    mutationFn: async ({ orderId, stage }: { orderId: string; stage: LogisticsStage }) => {
-      const updates: Record<string, unknown> = { logistics_stage: stage };
-      
-      // Auto-update status based on logistics stage
-      if (stage === "delivered") {
-        updates.status = "delivered";
-      } else {
-        updates.status = "in_transit";
-      }
-
-      const { error } = await supabase
-        .from("orders")
-        .update(updates)
-        .eq("id", orderId);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["admin-orders"] });
-      toast({ title: "Logistics stage updated" });
+      toast({ title: "Receipt rejected", description: "Customer will need to re-upload." });
     },
     onError: (error) => {
       toast({ variant: "destructive", title: "Error", description: error.message });
@@ -230,12 +202,12 @@ export const useAdminOrders = () => {
   });
 
   // Filtered lists using unified status
-  const pendingReviewOrders = orders.filter((o) => o.status === "payment_review");
-  const inTransitOrders = orders.filter((o) => o.status === "in_transit");
+  const pendingReviewOrders = orders.filter((o) => o.status === "verifying");
+  const inTransitOrders = orders.filter((o) => o.status === "shipped");
   const completedOrders = orders.filter((o) => o.status === "completed");
 
-  // Analytics - count orders that have been paid (processing or later)
-  const paidStatuses: OrderStatus[] = ["processing", "in_transit", "delivered", "completed"];
+  // Analytics - count orders that have been paid (confirmed or later)
+  const paidStatuses: OrderStatus[] = ["confirmed", "shipped", "delivered", "completed"];
   const totalRevenue = orders
     .filter((o) => paidStatuses.includes(o.status))
     .reduce((sum, o) => sum + Number(o.total_amount), 0);
@@ -249,7 +221,6 @@ export const useAdminOrders = () => {
     updateOrderStatus,
     approvePayment,
     rejectPayment,
-    updateLogisticsStage,
     uploadCertificate,
     deleteOrder,
     completeOrder,

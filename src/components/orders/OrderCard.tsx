@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown, FileText, MapPin, Calendar, Phone, User, Loader2 } from "lucide-react";
 import { OrderStatusBadge } from "./OrderStatusBadge";
-import { LogisticsPipeline } from "./LogisticsPipeline";
-import { getSignedUrl, extractFilePath } from "@/lib/storage";
+import { openStorageFile } from "@/lib/storage";
+import { formatPrice, formatDate } from "@/lib/format";
 import type { OrderWithItems } from "@/hooks/useOrders";
 
 interface OrderCardProps {
@@ -16,29 +16,10 @@ export const OrderCard = ({ order }: OrderCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [loadingFile, setLoadingFile] = useState<string | null>(null);
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(price);
-  };
-
-  const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
-
   const handleViewFile = async (filePathOrUrl: string, fileId: string) => {
     setLoadingFile(fileId);
     try {
-      const filePath = extractFilePath(filePathOrUrl);
-      const signedUrl = await getSignedUrl("order-files", filePath);
-      if (signedUrl) {
-        window.open(signedUrl, "_blank");
-      }
+      await openStorageFile("order-files", filePathOrUrl);
     } finally {
       setLoadingFile(null);
     }
@@ -92,33 +73,26 @@ export const OrderCard = ({ order }: OrderCardProps) => {
             </div>
 
             {/* Delivery Info */}
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <h4 className="font-medium text-sm">Delivery Details</h4>
-                <div className="space-y-1 text-sm">
-                  <div className="flex items-start gap-2">
-                    <User className="h-4 w-4 mt-0.5 text-muted-foreground" />
-                    <span>{order.contact_name}</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <Phone className="h-4 w-4 mt-0.5 text-muted-foreground" />
-                    <span>{order.contact_phone}</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <MapPin className="h-4 w-4 mt-0.5 text-muted-foreground" />
-                    <span>{order.delivery_address}</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <Calendar className="h-4 w-4 mt-0.5 text-muted-foreground" />
-                    <span>Expected: {formatDate(order.expected_delivery_date)}</span>
-                  </div>
+            <div>
+              <h4 className="font-medium text-sm">Delivery Details</h4>
+              <div className="space-y-1 text-sm mt-2">
+                <div className="flex items-start gap-2">
+                  <User className="h-4 w-4 mt-0.5 text-muted-foreground" />
+                  <span>{order.contact_name}</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <Phone className="h-4 w-4 mt-0.5 text-muted-foreground" />
+                  <span>{order.contact_phone}</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <MapPin className="h-4 w-4 mt-0.5 text-muted-foreground" />
+                  <span>{order.delivery_address}</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <Calendar className="h-4 w-4 mt-0.5 text-muted-foreground" />
+                  <span>Expected: {formatDate(order.expected_delivery_date)}</span>
                 </div>
               </div>
-
-              {/* Logistics Pipeline */}
-              {order.status === "in_transit" && order.logistics_stage && (
-                <LogisticsPipeline currentStage={order.logistics_stage} />
-              )}
             </div>
 
             {/* Certificates */}
