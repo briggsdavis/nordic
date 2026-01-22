@@ -309,7 +309,6 @@ export type Database = {
       account_type: "business" | "individual"
       app_role: "admin" | "client"
       order_status:
-        | "placed"
         | "verifying"
         | "rejected"
         | "confirmed"
@@ -447,7 +446,6 @@ export const Constants = {
       account_type: ["business", "individual"],
       app_role: ["admin", "client"],
       order_status: [
-        "placed",
         "verifying",
         "rejected",
         "confirmed",
