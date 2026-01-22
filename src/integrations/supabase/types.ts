@@ -148,7 +148,6 @@ export type Database = {
           expected_delivery_date: string
           id: string
           location_description: string | null
-          logistics_stage: Database["public"]["Enums"]["logistics_stage"] | null
           payment_receipt_url: string | null
           preferred_delivery_time: string | null
           reference_number: string
@@ -166,9 +165,6 @@ export type Database = {
           expected_delivery_date: string
           id?: string
           location_description?: string | null
-          logistics_stage?:
-            | Database["public"]["Enums"]["logistics_stage"]
-            | null
           payment_receipt_url?: string | null
           preferred_delivery_time?: string | null
           reference_number: string
@@ -186,9 +182,6 @@ export type Database = {
           expected_delivery_date?: string
           id?: string
           location_description?: string | null
-          logistics_stage?:
-            | Database["public"]["Enums"]["logistics_stage"]
-            | null
           payment_receipt_url?: string | null
           preferred_delivery_time?: string | null
           reference_number?: string
@@ -315,25 +308,15 @@ export type Database = {
     Enums: {
       account_type: "business" | "individual"
       app_role: "admin" | "client"
-      logistics_stage:
-        | "origin_warehouse"
-        | "customs_origin"
-        | "in_transit_air"
-        | "in_transit_sea"
-        | "customs_destination"
-        | "local_delivery"
-        | "delivered"
       order_status:
-        | "pending"
-        | "payment_verified"
-        | "processing"
-        | "in_transit"
+        | "placed"
+        | "verifying"
+        | "rejected"
+        | "confirmed"
+        | "shipped"
         | "delivered"
         | "completed"
         | "cancelled"
-        | "awaiting_payment"
-        | "payment_review"
-        | "payment_rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -463,26 +446,15 @@ export const Constants = {
     Enums: {
       account_type: ["business", "individual"],
       app_role: ["admin", "client"],
-      logistics_stage: [
-        "origin_warehouse",
-        "customs_origin",
-        "in_transit_air",
-        "in_transit_sea",
-        "customs_destination",
-        "local_delivery",
-        "delivered",
-      ],
       order_status: [
-        "pending",
-        "payment_verified",
-        "processing",
-        "in_transit",
+        "placed",
+        "verifying",
+        "rejected",
+        "confirmed",
+        "shipped",
         "delivered",
         "completed",
         "cancelled",
-        "awaiting_payment",
-        "payment_review",
-        "payment_rejected",
       ],
     },
   },
