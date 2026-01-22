@@ -1,11 +1,4 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -13,25 +6,34 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { useToast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { useToast } from "@/hooks/use-toast"
+import { supabase } from "@/integrations/supabase/client"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Loader2 } from "lucide-react"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
+import { z } from "zod"
 
 const loginSchema = z.object({
   email: z.string().trim().email({ message: "Invalid email address" }),
-  password: z.string().min(8, { message: "Password must be at least 8 characters" }),
-});
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters" }),
+})
 
-type LoginFormValues = z.infer<typeof loginSchema>;
+type LoginFormValues = z.infer<typeof loginSchema>
 
 interface LoginFormProps {
-  onSwitchToSignUp: () => void;
+  onSwitchToSignUp: () => void
 }
 
 const LoginForm = ({ onSwitchToSignUp }: LoginFormProps) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
-  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
+  const { toast } = useToast()
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -39,40 +41,43 @@ const LoginForm = ({ onSwitchToSignUp }: LoginFormProps) => {
       email: "",
       password: "",
     },
-  });
+  })
 
   const onSubmit = async (values: LoginFormValues) => {
-    setIsLoading(true);
-    
+    setIsLoading(true)
+
     const { error } = await supabase.auth.signInWithPassword({
       email: values.email,
       password: values.password,
-    });
+    })
 
     if (error) {
       toast({
         variant: "destructive",
         title: "Login failed",
-        description: error.message === "Invalid login credentials" 
-          ? "Invalid email or password. Please try again."
-          : error.message,
-      });
-      setIsLoading(false);
-      return;
+        description:
+          error.message === "Invalid login credentials"
+            ? "Invalid email or password. Please try again."
+            : error.message,
+      })
+      setIsLoading(false)
+      return
     }
 
     toast({
       title: "Welcome back!",
       description: "You have successfully logged in.",
-    });
+    })
 
-    navigate("/portal");
-  };
+    navigate("/portal")
+  }
 
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="font-serif text-2xl font-semibold text-foreground">Welcome Back</h2>
+        <h2 className="font-serif text-2xl font-semibold text-foreground">
+          Welcome Back
+        </h2>
         <p className="mt-2 text-sm text-muted-foreground">
           Sign in to access your portal
         </p>
@@ -87,11 +92,7 @@ const LoginForm = ({ onSwitchToSignUp }: LoginFormProps) => {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input 
-                    type="email" 
-                    placeholder="your@email.com" 
-                    {...field} 
-                  />
+                  <Input type="email" placeholder="your@email.com" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -105,22 +106,14 @@ const LoginForm = ({ onSwitchToSignUp }: LoginFormProps) => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input 
-                    type="password" 
-                    placeholder="••••••••" 
-                    {...field} 
-                  />
+                  <Input type="password" placeholder="••••••••" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <Button 
-            type="submit" 
-            className="w-full" 
-            disabled={isLoading}
-          >
+          <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -146,7 +139,7 @@ const LoginForm = ({ onSwitchToSignUp }: LoginFormProps) => {
         </p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default LoginForm;
+export default LoginForm

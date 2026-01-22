@@ -1,27 +1,36 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
-import { useCart } from "@/hooks/useCart";
-import { useOrders } from "@/hooks/useOrders";
-import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { ArrowLeft, Upload, Loader2, AlertTriangle } from "lucide-react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import Footer from "@/components/Footer"
+import Header from "@/components/Header"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { useAuth } from "@/contexts/AuthContext"
+import { useToast } from "@/hooks/use-toast"
+import { useCart } from "@/hooks/useCart"
+import { useOrders } from "@/hooks/useOrders"
+import { supabase } from "@/integrations/supabase/client"
+import { AlertTriangle, ArrowLeft, Loader2, Upload } from "lucide-react"
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 
 const Checkout = () => {
-  const navigate = useNavigate();
-  const { user, profile } = useAuth();
-  const { cartItems, cartTotal, clearCart, getVariantPrice } = useCart();
-  const { createOrder } = useOrders();
-  const { toast } = useToast();
+  const navigate = useNavigate()
+  const { user, profile } = useAuth()
+  const { cartItems, cartTotal, clearCart, getVariantPrice } = useCart()
+  const { createOrder } = useOrders()
+  const { toast } = useToast()
 
   const [formData, setFormData] = useState({
     contactName: profile?.full_name || "",
@@ -30,61 +39,65 @@ const Checkout = () => {
     additionalComments: "",
     locationDescription: "",
     preferredDeliveryTime: "",
-  });
-  const [paymentFile, setPaymentFile] = useState<File | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
-  const [showWarning, setShowWarning] = useState(false);
+  })
+  const [paymentFile, setPaymentFile] = useState<File | null>(null)
+  const [isUploading, setIsUploading] = useState(false)
+  const [showWarning, setShowWarning] = useState(false)
 
-  const expectedDeliveryDate = new Date();
-  expectedDeliveryDate.setDate(expectedDeliveryDate.getDate() + 3);
+  const expectedDeliveryDate = new Date()
+  expectedDeliveryDate.setDate(expectedDeliveryDate.getDate() + 3)
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
-    }).format(price);
-  };
+    }).format(price)
+  }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const file = e.target.files?.[0]
     if (file) {
       if (file.size > MAX_FILE_SIZE) {
         toast({
           variant: "destructive",
           title: "File too large",
           description: `File size must be less than ${MAX_FILE_SIZE / 1024 / 1024}MB. Your file is ${(file.size / 1024 / 1024).toFixed(2)}MB.`,
-        });
-        e.target.value = ""; // Reset input
-        return;
+        })
+        e.target.value = "" // Reset input
+        return
       }
-      setPaymentFile(file);
+      setPaymentFile(file)
     }
-  };
+  }
 
   const handleSubmitClick = () => {
-    if (!formData.contactName || !formData.contactPhone || !formData.deliveryAddress) {
-      return;
+    if (
+      !formData.contactName ||
+      !formData.contactPhone ||
+      !formData.deliveryAddress
+    ) {
+      return
     }
-    setShowWarning(true);
-  };
+    setShowWarning(true)
+  }
 
   const handleConfirmSubmit = async () => {
-    setShowWarning(false);
-    setIsUploading(true);
+    setShowWarning(false)
+    setIsUploading(true)
 
     try {
-      let paymentReceiptPath: string | undefined;
+      let paymentReceiptPath: string | undefined
 
       if (paymentFile && user) {
-        const filePath = `${user.id}/receipts/${Date.now()}-${paymentFile.name}`;
+        const filePath = `${user.id}/receipts/${Date.now()}-${paymentFile.name}`
         const { error: uploadError } = await supabase.storage
           .from("order-files")
-          .upload(filePath, paymentFile);
+          .upload(filePath, paymentFile)
 
-        if (uploadError) throw uploadError;
+        if (uploadError) throw uploadError
 
         // Store path instead of URL (private bucket)
-        paymentReceiptPath = filePath;
+        paymentReceiptPath = filePath
       }
 
       const items = cartItems.map((item) => ({
@@ -92,8 +105,10 @@ const Checkout = () => {
         productName: item.product?.name || "Unknown Product",
         variant: item.variant,
         quantity: item.quantity,
-        unitPrice: item.product ? getVariantPrice(item.variant, item.product.price_per_kg) : 0,
-      }));
+        unitPrice: item.product
+          ? getVariantPrice(item.variant, item.product.price_per_kg)
+          : 0,
+      }))
 
       await createOrder.mutateAsync({
         items,
@@ -104,20 +119,20 @@ const Checkout = () => {
         locationDescription: formData.locationDescription || undefined,
         preferredDeliveryTime: formData.preferredDeliveryTime || undefined,
         paymentReceiptUrl: paymentReceiptPath,
-      });
+      })
 
-      await clearCart.mutateAsync();
-      navigate("/portal?tab=orders");
+      await clearCart.mutateAsync()
+      navigate("/portal?tab=orders")
     } catch (error) {
-      console.error("Order submission failed:", error);
+      console.error("Order submission failed:", error)
     } finally {
-      setIsUploading(false);
+      setIsUploading(false)
     }
-  };
+  }
 
   if (!user) {
-    navigate("/auth?returnTo=/checkout");
-    return null;
+    navigate("/auth?returnTo=/checkout")
+    return null
   }
 
   if (cartItems.length === 0) {
@@ -125,8 +140,8 @@ const Checkout = () => {
       <div className="min-h-screen bg-background">
         <Header />
         <main className="container mx-auto px-6 py-12">
-          <div className="text-center py-12">
-            <h1 className="text-2xl font-serif mb-4">Your cart is empty</h1>
+          <div className="py-12 text-center">
+            <h1 className="mb-4 font-serif text-2xl">Your cart is empty</h1>
             <Button onClick={() => navigate("/#collection")}>
               <ArrowLeft className="mr-2 h-4 w-4" />
               Browse Products
@@ -135,7 +150,7 @@ const Checkout = () => {
         </main>
         <Footer />
       </div>
-    );
+    )
   }
 
   return (
@@ -152,33 +167,43 @@ const Checkout = () => {
           Back
         </Button>
 
-        <h1 className="font-serif text-3xl mb-8">Order Confirmation</h1>
+        <h1 className="mb-8 font-serif text-3xl">Order Confirmation</h1>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid gap-8 lg:grid-cols-3">
           {/* Delivery Information */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="space-y-6 lg:col-span-2">
             <Card>
               <CardHeader>
                 <CardTitle>Delivery Information</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid gap-4 md:grid-cols-2">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">Contact Name *</label>
+                    <label className="text-sm font-medium">
+                      Contact Name *
+                    </label>
                     <Input
                       value={formData.contactName}
                       onChange={(e) =>
-                        setFormData({ ...formData, contactName: e.target.value })
+                        setFormData({
+                          ...formData,
+                          contactName: e.target.value,
+                        })
                       }
                       placeholder="Full name"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">Phone Number *</label>
+                    <label className="text-sm font-medium">
+                      Phone Number *
+                    </label>
                     <Input
                       value={formData.contactPhone}
                       onChange={(e) =>
-                        setFormData({ ...formData, contactPhone: e.target.value })
+                        setFormData({
+                          ...formData,
+                          contactPhone: e.target.value,
+                        })
                       }
                       placeholder="+1 234 567 8900"
                     />
@@ -186,11 +211,16 @@ const Checkout = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Delivery Address *</label>
+                  <label className="text-sm font-medium">
+                    Delivery Address *
+                  </label>
                   <Textarea
                     value={formData.deliveryAddress}
                     onChange={(e) =>
-                      setFormData({ ...formData, deliveryAddress: e.target.value })
+                      setFormData({
+                        ...formData,
+                        deliveryAddress: e.target.value,
+                      })
                     }
                     placeholder="Full delivery address"
                     rows={2}
@@ -198,11 +228,16 @@ const Checkout = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Location Description</label>
+                  <label className="text-sm font-medium">
+                    Location Description
+                  </label>
                   <Textarea
                     value={formData.locationDescription}
                     onChange={(e) =>
-                      setFormData({ ...formData, locationDescription: e.target.value })
+                      setFormData({
+                        ...formData,
+                        locationDescription: e.target.value,
+                      })
                     }
                     placeholder="Any additional directions or landmarks..."
                     rows={2}
@@ -210,22 +245,32 @@ const Checkout = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Preferred Delivery Time</label>
+                  <label className="text-sm font-medium">
+                    Preferred Delivery Time
+                  </label>
                   <Input
                     value={formData.preferredDeliveryTime}
                     onChange={(e) =>
-                      setFormData({ ...formData, preferredDeliveryTime: e.target.value })
+                      setFormData({
+                        ...formData,
+                        preferredDeliveryTime: e.target.value,
+                      })
                     }
                     placeholder="e.g., Morning 9-12, Afternoon 2-5"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Additional Comments</label>
+                  <label className="text-sm font-medium">
+                    Additional Comments
+                  </label>
                   <Textarea
                     value={formData.additionalComments}
                     onChange={(e) =>
-                      setFormData({ ...formData, additionalComments: e.target.value })
+                      setFormData({
+                        ...formData,
+                        additionalComments: e.target.value,
+                      })
                     }
                     placeholder="Any special instructions..."
                     rows={3}
@@ -239,7 +284,9 @@ const Checkout = () => {
                 <CardTitle>Payment Receipt *</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className={`border-2 border-dashed rounded-lg p-6 text-center ${!paymentFile ? 'border-muted-foreground/50' : 'border-primary'}`}>
+                <div
+                  className={`rounded-lg border-2 border-dashed p-6 text-center ${!paymentFile ? "border-muted-foreground/50" : "border-primary"}`}
+                >
                   <input
                     type="file"
                     id="payment-file"
@@ -249,14 +296,20 @@ const Checkout = () => {
                   />
                   <label
                     htmlFor="payment-file"
-                    className="cursor-pointer flex flex-col items-center gap-2"
+                    className="flex cursor-pointer flex-col items-center gap-2"
                   >
-                    <Upload className={`h-8 w-8 ${paymentFile ? 'text-primary' : 'text-muted-foreground'}`} />
+                    <Upload
+                      className={`h-8 w-8 ${paymentFile ? "text-primary" : "text-muted-foreground"}`}
+                    />
                     {paymentFile ? (
-                      <span className="text-sm font-medium text-primary">{paymentFile.name}</span>
+                      <span className="text-sm font-medium text-primary">
+                        {paymentFile.name}
+                      </span>
                     ) : (
                       <>
-                        <span className="text-sm font-medium">Upload Payment Receipt</span>
+                        <span className="text-sm font-medium">
+                          Upload Payment Receipt
+                        </span>
                         <span className="text-xs text-muted-foreground">
                           Required - Click to upload image or PDF
                         </span>
@@ -278,7 +331,7 @@ const Checkout = () => {
                 {cartItems.map((item) => {
                   const price = item.product
                     ? getVariantPrice(item.variant, item.product.price_per_kg)
-                    : 0;
+                    : 0
 
                   return (
                     <div key={item.id} className="flex justify-between text-sm">
@@ -287,11 +340,11 @@ const Checkout = () => {
                       </span>
                       <span>{formatPrice(price * item.quantity)}</span>
                     </div>
-                  );
+                  )
                 })}
 
                 <div className="border-t pt-4">
-                  <div className="flex justify-between font-medium text-lg">
+                  <div className="flex justify-between text-lg font-medium">
                     <span>Total</span>
                     <span>{formatPrice(cartTotal)}</span>
                   </div>
@@ -356,7 +409,7 @@ const Checkout = () => {
         </AlertDialogContent>
       </AlertDialog>
     </div>
-  );
-};
+  )
+}
 
-export default Checkout;
+export default Checkout

@@ -7,17 +7,17 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import type { Tables } from "@/integrations/supabase/types";
+} from "@/components/ui/alert-dialog"
+import type { Tables } from "@/integrations/supabase/types"
 
-type Product = Tables<"products">;
+type Product = Tables<"products">
 
 interface DeleteProductDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  product: Product | null;
-  onConfirm: () => void;
-  isDeleting: boolean;
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  product: Product | null
+  onConfirm: () => void
+  isDeleting: boolean
 }
 
 export function DeleteProductDialog({
@@ -33,8 +33,8 @@ export function DeleteProductDialog({
         <AlertDialogHeader>
           <AlertDialogTitle>Delete Product</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete "{product?.name}"? This action cannot
-            be undone.
+            Are you sure you want to delete "{product?.name}"? This action
+            cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -49,5 +49,5 @@ export function DeleteProductDialog({
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  );
+  )
 }

@@ -1,30 +1,36 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { useCart } from "@/hooks/useCart";
-import { useAuth } from "@/contexts/AuthContext";
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Skeleton } from "@/components/ui/skeleton";
-import { ArrowLeft, ShoppingCart, Minus, Plus } from "lucide-react";
-import { useState } from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import Footer from "@/components/Footer"
+import Header from "@/components/Header"
+import { Button } from "@/components/ui/button"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useAuth } from "@/contexts/AuthContext"
+import { useCart } from "@/hooks/useCart"
+import { supabase } from "@/integrations/supabase/client"
+import { useQuery } from "@tanstack/react-query"
+import { ArrowLeft, Minus, Plus, ShoppingCart } from "lucide-react"
+import { useState } from "react"
+import { useNavigate, useParams } from "react-router-dom"
 
 const variants = [
   { value: "100g", label: "100g", weight: 0.1 },
   { value: "200g", label: "200g", weight: 0.2 },
   { value: "300g", label: "300g", weight: 0.3 },
-];
+]
 
 const ProductDetail = () => {
-  const { slug } = useParams<{ slug: string }>();
-  const navigate = useNavigate();
-  const { user } = useAuth();
-  const { addToCart } = useCart();
-  
-  const [selectedVariant, setSelectedVariant] = useState("100g");
-  const [quantity, setQuantity] = useState(1);
+  const { slug } = useParams<{ slug: string }>()
+  const navigate = useNavigate()
+  const { user } = useAuth()
+  const { addToCart } = useCart()
+
+  const [selectedVariant, setSelectedVariant] = useState("100g")
+  const [quantity, setQuantity] = useState(1)
 
   const { data: product, isLoading } = useQuery({
     queryKey: ["product", slug],
@@ -34,44 +40,46 @@ const ProductDetail = () => {
         .select("*")
         .eq("slug", slug)
         .eq("is_available", true)
-        .single();
-      
-      if (error) throw error;
-      return data;
+        .single()
+
+      if (error) throw error
+      return data
     },
     enabled: !!slug,
-  });
+  })
 
-  const selectedVariantData = variants.find((v) => v.value === selectedVariant);
-  const unitPrice = product ? product.price_per_kg * (selectedVariantData?.weight || 0.1) : 0;
-  const totalPrice = unitPrice * quantity;
+  const selectedVariantData = variants.find((v) => v.value === selectedVariant)
+  const unitPrice = product
+    ? product.price_per_kg * (selectedVariantData?.weight || 0.1)
+    : 0
+  const totalPrice = unitPrice * quantity
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
-    }).format(price);
-  };
+    }).format(price)
+  }
 
   const handleAddToCart = () => {
     if (!user) {
-      navigate(`/auth?returnTo=/products/${slug}`);
-      return;
+      navigate(`/auth?returnTo=/products/${slug}`)
+      return
     }
 
     addToCart.mutate({
       productId: product!.id,
       variant: selectedVariant,
       quantity,
-    });
-  };
+    })
+  }
 
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background">
         <Header />
         <main className="container mx-auto px-6 py-12">
-          <div className="grid md:grid-cols-2 gap-12">
+          <div className="grid gap-12 md:grid-cols-2">
             <Skeleton className="aspect-square rounded-lg" />
             <div className="space-y-4">
               <Skeleton className="h-10 w-3/4" />
@@ -82,7 +90,7 @@ const ProductDetail = () => {
         </main>
         <Footer />
       </div>
-    );
+    )
   }
 
   if (!product) {
@@ -90,8 +98,8 @@ const ProductDetail = () => {
       <div className="min-h-screen bg-background">
         <Header />
         <main className="container mx-auto px-6 py-12">
-          <div className="text-center py-12">
-            <h1 className="text-2xl font-serif mb-4">Product Not Found</h1>
+          <div className="py-12 text-center">
+            <h1 className="mb-4 font-serif text-2xl">Product Not Found</h1>
             <Button onClick={() => navigate("/#collection")}>
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Collection
@@ -100,14 +108,14 @@ const ProductDetail = () => {
         </main>
         <Footer />
       </div>
-    );
+    )
   }
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
-      <main className="container mx-auto px-6 pt-28 pb-12">
+
+      <main className="container mx-auto px-6 pb-12 pt-28">
         {/* Back Button */}
         <Button
           variant="ghost"
@@ -118,17 +126,17 @@ const ProductDetail = () => {
           Back to Collection
         </Button>
 
-        <div className="grid md:grid-cols-2 gap-12">
+        <div className="grid gap-12 md:grid-cols-2">
           {/* Product Image */}
-          <div className="aspect-square rounded-lg overflow-hidden bg-muted">
+          <div className="aspect-square overflow-hidden rounded-lg bg-muted">
             {product.image_url ? (
               <img
                 src={product.image_url}
                 alt={product.name}
-                className="w-full h-full object-cover"
+                className="h-full w-full object-cover"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+              <div className="flex h-full w-full items-center justify-center text-muted-foreground">
                 No image available
               </div>
             )}
@@ -137,21 +145,21 @@ const ProductDetail = () => {
           {/* Product Info */}
           <div className="space-y-6">
             <div>
-              <h1 className="font-serif text-4xl text-foreground mb-2">
+              <h1 className="mb-2 font-serif text-4xl text-foreground">
                 {product.name}
               </h1>
-              <p className="text-lg text-primary font-medium">
+              <p className="text-lg font-medium text-primary">
                 {formatPrice(product.price_per_kg)}/kg
               </p>
               {product.weight_range && (
-                <p className="text-sm text-muted-foreground mt-1">
+                <p className="mt-1 text-sm text-muted-foreground">
                   {product.weight_range}
                 </p>
               )}
             </div>
 
             {product.description && (
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="leading-relaxed text-muted-foreground">
                 {product.description}
               </p>
             )}
@@ -159,14 +167,18 @@ const ProductDetail = () => {
             {/* Variant Selection */}
             <div className="space-y-2">
               <label className="text-sm font-medium">Select Size</label>
-              <Select value={selectedVariant} onValueChange={setSelectedVariant}>
+              <Select
+                value={selectedVariant}
+                onValueChange={setSelectedVariant}
+              >
                 <SelectTrigger className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   {variants.map((variant) => (
                     <SelectItem key={variant.value} value={variant.value}>
-                      {variant.label} - {formatPrice(product.price_per_kg * variant.weight)}
+                      {variant.label} -{" "}
+                      {formatPrice(product.price_per_kg * variant.weight)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -185,7 +197,9 @@ const ProductDetail = () => {
                 >
                   <Minus className="h-4 w-4" />
                 </Button>
-                <span className="text-lg font-medium w-12 text-center">{quantity}</span>
+                <span className="w-12 text-center text-lg font-medium">
+                  {quantity}
+                </span>
                 <Button
                   variant="outline"
                   size="icon"
@@ -197,7 +211,7 @@ const ProductDetail = () => {
             </div>
 
             {/* Price Summary */}
-            <div className="border-t pt-6 space-y-2">
+            <div className="space-y-2 border-t pt-6">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">
                   {selectedVariant} × {quantity}
@@ -226,7 +240,7 @@ const ProductDetail = () => {
 
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default ProductDetail;
+export default ProductDetail

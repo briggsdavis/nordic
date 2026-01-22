@@ -1,6 +1,6 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import { Award, Snowflake, Ship, CheckCircle } from "lucide-react";
+import Footer from "@/components/Footer"
+import Header from "@/components/Header"
+import { Award, CheckCircle, Ship, Snowflake } from "lucide-react"
 
 const Origin = () => {
   const values = [
@@ -28,7 +28,7 @@ const Origin = () => {
       description:
         "All our products arrive with complete traceability and internationally recognized quality certificates, giving you confidence in every order.",
     },
-  ];
+  ]
 
   return (
     <div className="min-h-screen bg-background">
@@ -36,16 +36,17 @@ const Origin = () => {
 
       <main>
         {/* Hero Section */}
-        <section className="relative pt-32 pb-20 bg-primary/5">
+        <section className="relative bg-primary/5 pb-20 pt-32">
           <div className="container mx-auto px-6">
-            <div className="max-w-3xl mx-auto text-center">
-              <h1 className="font-serif text-4xl md:text-5xl text-foreground mb-6">
+            <div className="mx-auto max-w-3xl text-center">
+              <h1 className="mb-6 font-serif text-4xl text-foreground md:text-5xl">
                 From Norwegian Fjords to Ethiopian Tables
               </h1>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                Nordic Seafood bridges two worlds—bringing the exceptional quality of 
-                Norwegian salmon to discerning buyers across Ethiopia. Our commitment 
-                to excellence defines every step of our journey.
+              <p className="text-lg leading-relaxed text-muted-foreground">
+                Nordic Seafood bridges two worlds—bringing the exceptional
+                quality of Norwegian salmon to discerning buyers across
+                Ethiopia. Our commitment to excellence defines every step of our
+                journey.
               </p>
             </div>
           </div>
@@ -54,20 +55,20 @@ const Origin = () => {
         {/* Values Section */}
         <section className="py-20">
           <div className="container mx-auto px-6">
-            <h2 className="font-serif text-3xl text-foreground text-center mb-12">
+            <h2 className="mb-12 text-center font-serif text-3xl text-foreground">
               Our Core Values
             </h2>
-            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-2">
               {values.map((value) => (
                 <div
                   key={value.title}
-                  className="p-8 rounded-lg border border-border bg-card"
+                  className="rounded-lg border border-border bg-card p-8"
                 >
-                  <value.icon className="w-10 h-10 text-primary mb-4" />
-                  <h3 className="font-serif text-xl text-foreground mb-3">
+                  <value.icon className="mb-4 h-10 w-10 text-primary" />
+                  <h3 className="mb-3 font-serif text-xl text-foreground">
                     {value.title}
                   </h3>
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="leading-relaxed text-muted-foreground">
                     {value.description}
                   </p>
                 </div>
@@ -77,31 +78,33 @@ const Origin = () => {
         </section>
 
         {/* Story Section */}
-        <section className="py-20 bg-muted/30">
+        <section className="bg-muted/30 py-20">
           <div className="container mx-auto px-6">
-            <div className="max-w-3xl mx-auto">
-              <h2 className="font-serif text-3xl text-foreground text-center mb-8">
+            <div className="mx-auto max-w-3xl">
+              <h2 className="mb-8 text-center font-serif text-3xl text-foreground">
                 Our Story
               </h2>
-              <div className="space-y-6 text-muted-foreground leading-relaxed">
+              <div className="space-y-6 leading-relaxed text-muted-foreground">
                 <p>
-                  Nordic Seafood was founded with a singular vision: to bring the world's 
-                  finest salmon to East Africa. We recognized the growing demand for 
-                  premium seafood among Ethiopian hotels, restaurants, and health-conscious 
-                  consumers—and the gap in reliable, quality-focused supply.
+                  Nordic Seafood was founded with a singular vision: to bring
+                  the world's finest salmon to East Africa. We recognized the
+                  growing demand for premium seafood among Ethiopian hotels,
+                  restaurants, and health-conscious consumers—and the gap in
+                  reliable, quality-focused supply.
                 </p>
                 <p>
-                  Through direct partnerships with Norwegian fishing communities and 
-                  state-of-the-art cold chain logistics, we've built an import operation 
-                  that prioritizes freshness above all else. Our salmon travels from 
-                  Norwegian waters to Addis Ababa in carefully controlled conditions, 
-                  arriving as fresh as the day it was caught.
+                  Through direct partnerships with Norwegian fishing communities
+                  and state-of-the-art cold chain logistics, we've built an
+                  import operation that prioritizes freshness above all else.
+                  Our salmon travels from Norwegian waters to Addis Ababa in
+                  carefully controlled conditions, arriving as fresh as the day
+                  it was caught.
                 </p>
                 <p>
-                  Today, Nordic Seafood is the trusted choice for businesses and 
-                  individuals who refuse to compromise on quality. Every delivery carries 
-                  our promise: authentic Norwegian salmon, handled with care, delivered 
-                  with integrity.
+                  Today, Nordic Seafood is the trusted choice for businesses and
+                  individuals who refuse to compromise on quality. Every
+                  delivery carries our promise: authentic Norwegian salmon,
+                  handled with care, delivered with integrity.
                 </p>
               </div>
             </div>
@@ -111,26 +114,26 @@ const Origin = () => {
         {/* Promise Section */}
         <section className="py-20">
           <div className="container mx-auto px-6">
-            <div className="max-w-3xl mx-auto text-center">
-              <h2 className="font-serif text-3xl text-foreground mb-6">
+            <div className="mx-auto max-w-3xl text-center">
+              <h2 className="mb-6 font-serif text-3xl text-foreground">
                 The Nordic Promise
               </h2>
-              <p className="text-lg text-muted-foreground mb-8">
-                When you choose Nordic Seafood, you're choosing more than product—you're 
-                choosing a partner committed to your success. We stand behind every 
-                shipment with our quality guarantee.
+              <p className="mb-8 text-lg text-muted-foreground">
+                When you choose Nordic Seafood, you're choosing more than
+                product—you're choosing a partner committed to your success. We
+                stand behind every shipment with our quality guarantee.
               </p>
               <div className="flex flex-wrap justify-center gap-6 text-sm text-foreground">
-                <span className="px-4 py-2 bg-primary/10 rounded-full">
+                <span className="rounded-full bg-primary/10 px-4 py-2">
                   100% Norwegian Origin
                 </span>
-                <span className="px-4 py-2 bg-primary/10 rounded-full">
+                <span className="rounded-full bg-primary/10 px-4 py-2">
                   Unbroken Cold Chain
                 </span>
-                <span className="px-4 py-2 bg-primary/10 rounded-full">
+                <span className="rounded-full bg-primary/10 px-4 py-2">
                   Full Traceability
                 </span>
-                <span className="px-4 py-2 bg-primary/10 rounded-full">
+                <span className="rounded-full bg-primary/10 px-4 py-2">
                   Quality Certified
                 </span>
               </div>
@@ -141,7 +144,7 @@ const Origin = () => {
 
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default Origin;
+export default Origin

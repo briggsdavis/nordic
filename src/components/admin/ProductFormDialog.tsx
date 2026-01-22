@@ -1,13 +1,11 @@
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@/components/ui/dialog"
 import {
   Form,
   FormControl,
@@ -15,14 +13,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import type { Tables } from "@/integrations/supabase/types";
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import type { Tables } from "@/integrations/supabase/types"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useEffect } from "react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
-type Product = Tables<"products">;
+type Product = Tables<"products">
 
 const productSchema = z.object({
   name: z.string().min(1, "Name is required").max(100),
@@ -32,23 +32,23 @@ const productSchema = z.object({
   price_per_kg: z.coerce.number().min(0, "Price must be positive"),
   image_url: z.string().url().optional().or(z.literal("")),
   is_available: z.boolean(),
-});
+})
 
-type ProductFormValues = z.infer<typeof productSchema>;
+type ProductFormValues = z.infer<typeof productSchema>
 
 interface ProductFormDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  product?: Product | null;
-  onSubmit: (values: ProductFormValues) => void;
-  isSubmitting: boolean;
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  product?: Product | null
+  onSubmit: (values: ProductFormValues) => void
+  isSubmitting: boolean
 }
 
 function generateSlug(name: string): string {
   return name
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+    .replace(/^-+|-+$/g, "")
 }
 
 export function ProductFormDialog({
@@ -58,7 +58,7 @@ export function ProductFormDialog({
   onSubmit,
   isSubmitting,
 }: ProductFormDialogProps) {
-  const isEditing = !!product;
+  const isEditing = !!product
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
@@ -71,7 +71,7 @@ export function ProductFormDialog({
       image_url: "",
       is_available: true,
     },
-  });
+  })
 
   useEffect(() => {
     if (product) {
@@ -83,7 +83,7 @@ export function ProductFormDialog({
         price_per_kg: product.price_per_kg,
         image_url: product.image_url || "",
         is_available: product.is_available,
-      });
+      })
     } else {
       form.reset({
         name: "",
@@ -93,17 +93,17 @@ export function ProductFormDialog({
         price_per_kg: 0,
         image_url: "",
         is_available: true,
-      });
+      })
     }
-  }, [product, form]);
+  }, [product, form])
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.value;
-    form.setValue("name", name);
+    const name = e.target.value
+    form.setValue("name", name)
     if (!isEditing) {
-      form.setValue("slug", generateSlug(name));
+      form.setValue("slug", generateSlug(name))
     }
-  };
+  }
 
   const handleSubmit = (values: ProductFormValues) => {
     onSubmit({
@@ -111,8 +111,8 @@ export function ProductFormDialog({
       description: values.description || undefined,
       weight_range: values.weight_range || undefined,
       image_url: values.image_url || undefined,
-    });
-  };
+    })
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -123,7 +123,10 @@ export function ProductFormDialog({
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-4"
+          >
             <FormField
               control={form.control}
               name="name"
@@ -256,13 +259,13 @@ export function ProductFormDialog({
                     ? "Saving..."
                     : "Creating..."
                   : isEditing
-                  ? "Save Changes"
-                  : "Create Product"}
+                    ? "Save Changes"
+                    : "Create Product"}
               </Button>
             </div>
           </form>
         </Form>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

@@ -1,68 +1,68 @@
-import { ChevronDown } from "lucide-react";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import heroBanner from "@/assets/hero-banner.jpg";
+import heroBanner from "@/assets/hero-banner.jpg"
+import { Button } from "@/components/ui/button"
+import { ChevronDown } from "lucide-react"
+import { Link } from "react-router-dom"
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-end justify-center overflow-hidden pb-32 -mt-20">
+    <section className="relative -mt-20 flex min-h-screen items-end justify-center overflow-hidden pb-32">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
           src={heroBanner}
           alt="Norwegian fjord with pristine waters"
-          className="w-full h-full object-cover"
+          className="h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-transparent" />
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-6 lg:px-8 text-center">
-        <div className="max-w-4xl mx-auto">
+      <div className="container relative z-10 mx-auto px-6 text-center lg:px-8">
+        <div className="mx-auto max-w-4xl">
           {/* Tagline */}
-          <p 
-            className="text-card/80 text-xs md:text-sm tracking-[0.3em] uppercase mb-6 opacity-0 animate-fade-in-up"
+          <p
+            className="mb-6 animate-fade-in-up text-xs uppercase tracking-[0.3em] text-card/80 opacity-0 md:text-sm"
             style={{ animationDelay: "0.2s" }}
           >
             Exclusively from the fjords
           </p>
 
           {/* Main Headline */}
-          <h1 
-            className="font-serif text-5xl md:text-7xl lg:text-8xl text-card mb-6 opacity-0 animate-fade-in-up"
+          <h1
+            className="mb-6 animate-fade-in-up font-serif text-5xl text-card opacity-0 md:text-7xl lg:text-8xl"
             style={{ animationDelay: "0.4s" }}
           >
             Arctic Purity,
             <br />
-            <span className="italic font-normal">Addis Elegance.</span>
+            <span className="font-normal italic">Addis Elegance.</span>
           </h1>
 
           {/* Subheadline */}
-          <p 
-            className="text-card/90 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light leading-relaxed opacity-0 animate-fade-in-up"
+          <p
+            className="mx-auto mb-10 max-w-2xl animate-fade-in-up text-lg font-light leading-relaxed text-card/90 opacity-0 md:text-xl"
             style={{ animationDelay: "0.6s" }}
           >
-            Premium Norwegian Atlantic Salmon delivered directly to Ethiopia. 
+            Premium Norwegian Atlantic Salmon delivered directly to Ethiopia.
             Unbroken cold chain from fjord to your doorstep.
           </p>
 
           {/* CTA Buttons */}
-          <div 
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 opacity-0 animate-fade-in-up"
+          <div
+            className="flex animate-fade-in-up flex-col items-center justify-center gap-4 opacity-0 sm:flex-row"
             style={{ animationDelay: "0.8s" }}
           >
-            <Button 
+            <Button
               asChild
-              size="lg" 
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-sm tracking-wide uppercase font-medium"
+              size="lg"
+              className="bg-primary px-8 py-6 text-sm font-medium uppercase tracking-wide text-primary-foreground hover:bg-primary/90"
             >
               <Link to="/collection">Explore Selection</Link>
             </Button>
-            <Button 
+            <Button
               asChild
-              variant="outline" 
+              variant="outline"
               size="lg"
-              className="border-white/40 bg-transparent text-white hover:bg-white/10 hover:text-white px-8 py-6 text-sm tracking-wide uppercase font-medium"
+              className="border-white/40 bg-transparent px-8 py-6 text-sm font-medium uppercase tracking-wide text-white hover:bg-white/10 hover:text-white"
             >
               <Link to="/contact">B2B Inquiries</Link>
             </Button>
@@ -71,15 +71,17 @@ const Hero = () => {
       </div>
 
       {/* Scroll Indicator */}
-      <div 
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 opacity-0 animate-fade-in"
+      <div
+        className="absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 animate-fade-in flex-col items-center gap-2 opacity-0"
         style={{ animationDelay: "1.2s" }}
       >
-        <span className="text-card/60 text-xs tracking-[0.2em] uppercase">Scroll to discover</span>
-        <ChevronDown className="w-5 h-5 text-card/60 animate-bounce-subtle" />
+        <span className="text-xs uppercase tracking-[0.2em] text-card/60">
+          Scroll to discover
+        </span>
+        <ChevronDown className="h-5 w-5 animate-bounce-subtle text-card/60" />
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Hero;
+export default Hero

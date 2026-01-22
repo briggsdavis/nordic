@@ -1,10 +1,10 @@
-import Header from "@/components/Header";
-import Hero from "@/components/Hero";
-import QualityPromise from "@/components/QualityPromise";
-import TechnicalDetails from "@/components/TechnicalDetails";
-import CatalogTeaser from "@/components/CatalogTeaser";
-import TrimmingGuide from "@/components/TrimmingGuide";
-import Footer from "@/components/Footer";
+import CatalogTeaser from "@/components/CatalogTeaser"
+import Footer from "@/components/Footer"
+import Header from "@/components/Header"
+import Hero from "@/components/Hero"
+import QualityPromise from "@/components/QualityPromise"
+import TechnicalDetails from "@/components/TechnicalDetails"
+import TrimmingGuide from "@/components/TrimmingGuide"
 
 const Index = () => {
   return (
@@ -19,7 +19,7 @@ const Index = () => {
       </main>
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default Index;
+export default Index

@@ -1,23 +1,23 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "@/contexts/AuthContext";
-import Index from "./pages/Index";
-import Auth from "./pages/Auth";
-import Portal from "./pages/Portal";
-import Admin from "./pages/Admin";
-import ProductDetail from "./pages/ProductDetail";
-import Collection from "./pages/Collection";
-import Checkout from "./pages/Checkout";
-import Contact from "./pages/Contact";
-import Origin from "./pages/Origin";
-import NotFound from "./pages/NotFound";
-import ProtectedRoute from "@/components/auth/ProtectedRoute";
-import ScrollToTop from "@/components/ScrollToTop";
+import ProtectedRoute from "@/components/auth/ProtectedRoute"
+import ScrollToTop from "@/components/ScrollToTop"
+import { Toaster as Sonner } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/toaster"
+import { TooltipProvider } from "@/components/ui/tooltip"
+import { AuthProvider } from "@/contexts/AuthContext"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+import Admin from "./pages/Admin"
+import Auth from "./pages/Auth"
+import Checkout from "./pages/Checkout"
+import Collection from "./pages/Collection"
+import Contact from "./pages/Contact"
+import Index from "./pages/Index"
+import NotFound from "./pages/NotFound"
+import Origin from "./pages/Origin"
+import Portal from "./pages/Portal"
+import ProductDetail from "./pages/ProductDetail"
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient()
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -65,6 +65,6 @@ const App = () => (
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
-);
+)
 
-export default App;
+export default App

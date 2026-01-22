@@ -1,7 +1,6 @@
-import { useState } from "react";
-import { Plus, Pencil, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Switch } from "@/components/ui/switch"
 import {
   Table,
   TableBody,
@@ -9,15 +8,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useAdminProducts } from "@/hooks/useAdminProducts";
-import { ProductFormDialog } from "./ProductFormDialog";
-import { DeleteProductDialog } from "./DeleteProductDialog";
-import { toast } from "@/hooks/use-toast";
-import type { Tables } from "@/integrations/supabase/types";
+} from "@/components/ui/table"
+import { toast } from "@/hooks/use-toast"
+import { useAdminProducts } from "@/hooks/useAdminProducts"
+import type { Tables } from "@/integrations/supabase/types"
+import { Pencil, Plus, Trash2 } from "lucide-react"
+import { useState } from "react"
+import { DeleteProductDialog } from "./DeleteProductDialog"
+import { ProductFormDialog } from "./ProductFormDialog"
 
-type Product = Tables<"products">;
+type Product = Tables<"products">
 
 export function ProductsTab() {
   const {
@@ -27,94 +27,101 @@ export function ProductsTab() {
     updateProduct,
     deleteProduct,
     toggleAvailability,
-  } = useAdminProducts();
+  } = useAdminProducts()
 
-  const [formOpen, setFormOpen] = useState(false);
-  const [deleteOpen, setDeleteOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [formOpen, setFormOpen] = useState(false)
+  const [deleteOpen, setDeleteOpen] = useState(false)
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
 
   const handleAdd = () => {
-    setSelectedProduct(null);
-    setFormOpen(true);
-  };
+    setSelectedProduct(null)
+    setFormOpen(true)
+  }
 
   const handleEdit = (product: Product) => {
-    setSelectedProduct(product);
-    setFormOpen(true);
-  };
+    setSelectedProduct(product)
+    setFormOpen(true)
+  }
 
   const handleDelete = (product: Product) => {
-    setSelectedProduct(product);
-    setDeleteOpen(true);
-  };
+    setSelectedProduct(product)
+    setDeleteOpen(true)
+  }
 
-  const handleFormSubmit = async (values: Omit<Product, "id" | "created_at" | "updated_at">) => {
+  const handleFormSubmit = async (
+    values: Omit<Product, "id" | "created_at" | "updated_at">,
+  ) => {
     try {
       if (selectedProduct) {
-        await updateProduct.mutateAsync({ id: selectedProduct.id, ...values });
-        toast({ title: "Product updated successfully" });
+        await updateProduct.mutateAsync({ id: selectedProduct.id, ...values })
+        toast({ title: "Product updated successfully" })
       } else {
-        await createProduct.mutateAsync(values);
-        toast({ title: "Product created successfully" });
+        await createProduct.mutateAsync(values)
+        toast({ title: "Product created successfully" })
       }
-      setFormOpen(false);
+      setFormOpen(false)
     } catch (error) {
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Something went wrong",
+        description:
+          error instanceof Error ? error.message : "Something went wrong",
         variant: "destructive",
-      });
+      })
     }
-  };
+  }
 
   const handleDeleteConfirm = async () => {
-    if (!selectedProduct) return;
+    if (!selectedProduct) return
     try {
-      await deleteProduct.mutateAsync(selectedProduct.id);
-      toast({ title: "Product deleted successfully" });
-      setDeleteOpen(false);
+      await deleteProduct.mutateAsync(selectedProduct.id)
+      toast({ title: "Product deleted successfully" })
+      setDeleteOpen(false)
     } catch (error) {
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Something went wrong",
+        description:
+          error instanceof Error ? error.message : "Something went wrong",
         variant: "destructive",
-      });
+      })
     }
-  };
+  }
 
   const handleToggleAvailability = async (product: Product) => {
     try {
       await toggleAvailability.mutateAsync({
         id: product.id,
         is_available: !product.is_available,
-      });
+      })
       toast({
         title: product.is_available ? "Product hidden" : "Product available",
-      });
+      })
     } catch (error) {
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Something went wrong",
+        description:
+          error instanceof Error ? error.message : "Something went wrong",
         variant: "destructive",
-      });
+      })
     }
-  };
+  }
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("nb-NO", {
       style: "currency",
       currency: "NOK",
-    }).format(price);
-  };
+    }).format(price)
+  }
 
   if (isLoading) {
     return (
       <Card>
         <CardContent className="py-8">
-          <p className="text-center text-muted-foreground">Loading products...</p>
+          <p className="text-center text-muted-foreground">
+            Loading products...
+          </p>
         </CardContent>
       </Card>
-    );
+    )
   }
 
   return (
@@ -143,7 +150,9 @@ export function ProductsTab() {
               <TableBody>
                 {products.map((product) => (
                   <TableRow key={product.id}>
-                    <TableCell className="font-medium">{product.name}</TableCell>
+                    <TableCell className="font-medium">
+                      {product.name}
+                    </TableCell>
                     <TableCell className="text-muted-foreground">
                       {product.slug}
                     </TableCell>
@@ -152,7 +161,9 @@ export function ProductsTab() {
                     <TableCell>
                       <Switch
                         checked={product.is_available}
-                        onCheckedChange={() => handleToggleAvailability(product)}
+                        onCheckedChange={() =>
+                          handleToggleAvailability(product)
+                        }
                       />
                     </TableCell>
                     <TableCell className="text-right">
@@ -201,5 +212,5 @@ export function ProductsTab() {
         isDeleting={deleteProduct.isPending}
       />
     </>
-  );
+  )
 }
