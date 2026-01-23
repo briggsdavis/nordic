@@ -132,7 +132,7 @@ export const OrderCard = ({ order }: OrderCardProps) => {
                       key={cert.id}
                       onClick={() => handleViewFile(cert.file_url, cert.id)}
                       disabled={loadingFile === cert.id}
-                      className="flex items-center gap-2 rounded-lg border p-3 text-left transition-colors hover:bg-muted"
+                      className="flex items-center gap-2 rounded-2xl border p-3 text-left transition-colors hover:bg-muted"
                     >
                       {loadingFile === cert.id ? (
                         <Loader2 className="h-4 w-4 animate-spin text-primary" />

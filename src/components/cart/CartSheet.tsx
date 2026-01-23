@@ -94,7 +94,7 @@ export const CartSheet = () => {
                 return (
                   <div
                     key={item.id}
-                    className="flex gap-4 rounded-lg border p-4"
+                    className="flex gap-4 rounded-2xl border p-4"
                   >
                     {item.product?.image_url && (
                       <img

@@ -1,3 +1,5 @@
+import * as React from "react"
+
 import {
   Toast,
   ToastClose,
@@ -8,11 +10,13 @@ import {
 } from "@/components/ui/toast"
 import { useToast } from "@/hooks/use-toast"
 
-export function Toaster() {
+export type ToasterProps = React.ComponentPropsWithoutRef<typeof ToastProvider>
+
+export function Toaster({ ...props }: ToasterProps) {
   const { toasts } = useToast()
 
   return (
-    <ToastProvider>
+    <ToastProvider {...props}>
       {toasts.map(function ({ id, title, description, action, ...props }) {
         return (
           <Toast key={id} {...props}>

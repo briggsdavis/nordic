@@ -173,7 +173,7 @@ const Portal = () => {
                 onClick={() =>
                   window.open(managementSystemCertificate, "_blank")
                 }
-                className="group flex items-start gap-4 rounded-lg border p-4 text-left transition-all hover:border-primary hover:bg-muted/50"
+                className="group flex items-start gap-4 rounded-2xl border p-4 text-left transition-all hover:border-primary hover:bg-muted/50"
               >
                 <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 transition-colors group-hover:bg-primary/20">
                   <Award className="h-5 w-5 text-primary" />
@@ -191,7 +191,7 @@ const Portal = () => {
               {/* Free Sale Certificate */}
               <button
                 onClick={() => window.open(freeSaleCertificate, "_blank")}
-                className="group flex items-start gap-4 rounded-lg border p-4 text-left transition-all hover:border-primary hover:bg-muted/50"
+                className="group flex items-start gap-4 rounded-2xl border p-4 text-left transition-all hover:border-primary hover:bg-muted/50"
               >
                 <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 transition-colors group-hover:bg-primary/20">
                   <FileCheck className="h-5 w-5 text-primary" />
@@ -209,7 +209,7 @@ const Portal = () => {
               {/* Certificate of Competence */}
               <button
                 onClick={() => window.open(certificateOfCompetence, "_blank")}
-                className="group flex items-start gap-4 rounded-lg border p-4 text-left transition-all hover:border-primary hover:bg-muted/50"
+                className="group flex items-start gap-4 rounded-2xl border p-4 text-left transition-all hover:border-primary hover:bg-muted/50"
               >
                 <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 transition-colors group-hover:bg-primary/20">
                   <FileText className="h-5 w-5 text-primary" />
@@ -397,7 +397,7 @@ const Portal = () => {
                 }
                 className="flex gap-4"
               >
-                <div className="flex cursor-pointer items-center space-x-2 rounded-lg border px-4 py-3 transition-colors hover:bg-muted/50">
+                <div className="flex cursor-pointer items-center space-x-2 rounded-2xl border px-4 py-3 transition-colors hover:bg-muted/50">
                   <RadioGroupItem value="business" id="business" />
                   <label
                     htmlFor="business"
@@ -407,7 +407,7 @@ const Portal = () => {
                     <span className="text-sm font-medium">Business</span>
                   </label>
                 </div>
-                <div className="flex cursor-pointer items-center space-x-2 rounded-lg border px-4 py-3 transition-colors hover:bg-muted/50">
+                <div className="flex cursor-pointer items-center space-x-2 rounded-2xl border px-4 py-3 transition-colors hover:bg-muted/50">
                   <RadioGroupItem value="individual" id="individual" />
                   <label
                     htmlFor="individual"

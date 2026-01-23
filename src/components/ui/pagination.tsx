@@ -4,7 +4,9 @@ import * as React from "react"
 import { ButtonProps, buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
-const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
+export type PaginationProps = React.ComponentPropsWithoutRef<"nav">
+
+const Pagination = ({ className, ...props }: PaginationProps) => (
   <nav
     role="navigation"
     aria-label="pagination"
@@ -14,9 +16,11 @@ const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
 )
 Pagination.displayName = "Pagination"
 
+export type PaginationContentProps = React.ComponentPropsWithoutRef<"ul">
+
 const PaginationContent = React.forwardRef<
   HTMLUListElement,
-  React.ComponentProps<"ul">
+  PaginationContentProps
 >(({ className, ...props }, ref) => (
   <ul
     ref={ref}
@@ -26,18 +30,19 @@ const PaginationContent = React.forwardRef<
 ))
 PaginationContent.displayName = "PaginationContent"
 
-const PaginationItem = React.forwardRef<
-  HTMLLIElement,
-  React.ComponentProps<"li">
->(({ className, ...props }, ref) => (
-  <li ref={ref} className={cn("", className)} {...props} />
-))
+export type PaginationItemProps = React.ComponentPropsWithoutRef<"li">
+
+const PaginationItem = React.forwardRef<HTMLLIElement, PaginationItemProps>(
+  ({ className, ...props }, ref) => (
+    <li ref={ref} className={className} {...props} />
+  ),
+)
 PaginationItem.displayName = "PaginationItem"
 
-type PaginationLinkProps = {
+export type PaginationLinkProps = {
   isActive?: boolean
 } & Pick<ButtonProps, "size"> &
-  React.ComponentProps<"a">
+  React.ComponentPropsWithoutRef<"a">
 
 const PaginationLink = ({
   className,
@@ -59,10 +64,14 @@ const PaginationLink = ({
 )
 PaginationLink.displayName = "PaginationLink"
 
+export type PaginationPreviousProps = React.ComponentPropsWithoutRef<
+  typeof PaginationLink
+>
+
 const PaginationPrevious = ({
   className,
   ...props
-}: React.ComponentProps<typeof PaginationLink>) => (
+}: PaginationPreviousProps) => (
   <PaginationLink
     aria-label="Go to previous page"
     size="default"
@@ -75,10 +84,11 @@ const PaginationPrevious = ({
 )
 PaginationPrevious.displayName = "PaginationPrevious"
 
-const PaginationNext = ({
-  className,
-  ...props
-}: React.ComponentProps<typeof PaginationLink>) => (
+export type PaginationNextProps = React.ComponentPropsWithoutRef<
+  typeof PaginationLink
+>
+
+const PaginationNext = ({ className, ...props }: PaginationNextProps) => (
   <PaginationLink
     aria-label="Go to next page"
     size="default"
@@ -91,10 +101,12 @@ const PaginationNext = ({
 )
 PaginationNext.displayName = "PaginationNext"
 
+export type PaginationEllipsisProps = React.ComponentPropsWithoutRef<"span">
+
 const PaginationEllipsis = ({
   className,
   ...props
-}: React.ComponentProps<"span">) => (
+}: PaginationEllipsisProps) => (
   <span
     aria-hidden
     className={cn("flex h-9 w-9 items-center justify-center", className)}

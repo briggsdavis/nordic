@@ -40,7 +40,7 @@ const CatalogTeaser = () => {
             <>
               {[1, 2, 3].map((i) => (
                 <div key={i} className="space-y-4">
-                  <Skeleton className="aspect-[4/3] rounded-lg" />
+                  <Skeleton className="aspect-[4/3] rounded-2xl" />
                   <Skeleton className="h-6 w-3/4" />
                   <Skeleton className="h-4 w-1/2" />
                 </div>
@@ -53,7 +53,7 @@ const CatalogTeaser = () => {
                 className="group cursor-pointer"
                 onClick={() => navigate(`/products/${product.slug}`)}
               >
-                <div className="mb-4 aspect-[4/3] overflow-hidden rounded-lg bg-muted">
+                <div className="mb-4 aspect-[4/3] overflow-hidden rounded-2xl bg-muted">
                   <img
                     src={product.image_url || ""}
                     alt={product.name}

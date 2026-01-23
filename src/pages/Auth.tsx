@@ -1,13 +1,15 @@
 import LoginForm from "@/components/auth/LoginForm"
 import SignUpForm from "@/components/auth/SignUpForm"
 import { Button } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
 import { useAuth } from "@/contexts/AuthContext"
-import { ArrowLeft, Loader2 } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true)
+  const [showSkeleton, setShowSkeleton] = useState(false)
   const { user, loading } = useAuth()
   const navigate = useNavigate()
 
@@ -17,10 +19,30 @@ const Auth = () => {
     }
   }, [user, loading, navigate])
 
+  useEffect(() => {
+    if (!loading) {
+      setShowSkeleton(false)
+      return
+    }
+
+    const timer = setTimeout(() => setShowSkeleton(true), 150)
+    return () => clearTimeout(timer)
+  }, [loading])
+
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className="flex min-h-screen items-center justify-center bg-background p-4">
+        {showSkeleton ? (
+          <div className="w-full max-w-md space-y-6">
+            <Skeleton className="h-10 w-40" />
+            <div className="space-y-4 rounded-3xl border border-border bg-card p-8 shadow-xl">
+              <Skeleton className="h-6 w-32" />
+              <Skeleton className="h-9 w-full" />
+              <Skeleton className="h-9 w-full" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+          </div>
+        ) : null}
       </div>
     )
   }
@@ -55,7 +77,7 @@ const Auth = () => {
         </div>
 
         {/* Auth Card */}
-        <div className="rounded-2xl border border-border bg-card p-8 shadow-xl">
+        <div className="rounded-3xl border border-border bg-card p-8 shadow-xl">
           {isLogin ? (
             <LoginForm onSwitchToSignUp={() => setIsLogin(false)} />
           ) : (

@@ -4,20 +4,37 @@ import Header from "@/components/Header"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Clock, Mail, MapPin, MessageSquare, Phone } from "lucide-react"
+import { useEffect } from "react"
 
 const Contact = () => {
+  useEffect(() => {
+    document.title = "Nordic Seafood | Contact & B2B Orders"
+    const description =
+      "Contact Nordic Seafood for premium Norwegian salmon in Ethiopia. Reach our team for B2B supply, orders, or delivery inquiries."
+    let meta = document.querySelector('meta[name="description"]')
+    if (!meta) {
+      meta = document.createElement("meta")
+      meta.setAttribute("name", "description")
+      document.head.appendChild(meta)
+    }
+    meta.setAttribute("content", description)
+  }, [])
+
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
 
-      <main className="flex-1">
+      <main className="flex-1" aria-label="Contact Nordic Seafood">
         {/* Hero Section */}
-        <section className="relative -mt-20 flex min-h-[70vh] items-end justify-center overflow-hidden pb-20">
+        <section
+          className="relative -mt-20 flex min-h-[70vh] items-end justify-center overflow-hidden pb-20"
+          aria-labelledby="contact-hero-title"
+        >
           {/* Background Image */}
           <div className="absolute inset-0 z-0">
             <img
               src={contactHero}
-              alt="Contact Nordic Seafood"
+              alt="Nordic Seafood team preparing salmon for delivery"
               className="h-full w-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-transparent" />
@@ -33,29 +50,33 @@ const Contact = () => {
                 Contact Us
               </p>
               <h1
+                id="contact-hero-title"
                 className="mb-6 animate-fade-in-up font-serif text-4xl text-card opacity-0 md:text-5xl lg:text-6xl"
                 style={{ animationDelay: "0.4s" }}
               >
-                Get in Touch
+                Get in Touch Today
               </h1>
               <p
                 className="mx-auto max-w-2xl animate-fade-in-up text-lg font-light leading-relaxed text-card/90 opacity-0"
                 style={{ animationDelay: "0.6s" }}
               >
-                Whether you're a restaurant, hotel, or retailer looking for
-                premium Norwegian salmon, we're here to help. Reach out to
-                discuss your needs.
+                Whether you run a restaurant, hotel, or retail counter, we
+                deliver chef-ready Norwegian salmon backed by reliable cold
+                chain. Let us know what you need.
               </p>
             </div>
           </div>
         </section>
 
         {/* Contact Cards */}
-        <section className="py-16 lg:py-24">
+        <section className="py-16 lg:py-24" aria-labelledby="contact-details">
           <div className="container mx-auto px-6 lg:px-8">
             <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-2 lg:grid-cols-3">
+              <h2 id="contact-details" className="sr-only">
+                Contact details
+              </h2>
               {/* Location */}
-              <Card className="border-border">
+              <Card className="border-border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                 <CardHeader className="pb-4">
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
                     <MapPin className="h-6 w-6 text-primary" />
@@ -63,16 +84,16 @@ const Contact = () => {
                   <CardTitle className="font-serif text-xl">Visit Us</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">
+                  <address className="not-italic text-muted-foreground">
                     Bole Road, Atlas District
                     <br />
                     Addis Ababa, Ethiopia
-                  </p>
+                  </address>
                 </CardContent>
               </Card>
 
               {/* Email */}
-              <Card className="border-border">
+              <Card className="border-border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                 <CardHeader className="pb-4">
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
                     <Mail className="h-6 w-6 text-primary" />
@@ -87,13 +108,13 @@ const Contact = () => {
                     orders@nordicseafood.et
                   </a>
                   <p className="mt-2 text-sm text-muted-foreground">
-                    For orders and general inquiries
+                    Orders, invoices, and product availability
                   </p>
                 </CardContent>
               </Card>
 
               {/* Phone */}
-              <Card className="border-border">
+              <Card className="border-border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                 <CardHeader className="pb-4">
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
                     <Phone className="h-6 w-6 text-primary" />
@@ -108,7 +129,7 @@ const Contact = () => {
                     +251 911 000 000
                   </a>
                   <p className="mt-2 text-sm text-muted-foreground">
-                    Monday - Saturday, 8am - 6pm
+                    Saturday available for urgent delivery planning
                   </p>
                 </CardContent>
               </Card>
@@ -117,16 +138,22 @@ const Contact = () => {
         </section>
 
         {/* B2B Section */}
-        <section className="bg-secondary py-16 lg:py-24">
+        <section
+          className="bg-secondary py-16 lg:py-24"
+          aria-labelledby="contact-b2b"
+        >
           <div className="container mx-auto px-6 lg:px-8">
             <div className="mx-auto max-w-3xl">
               <div className="mb-12 text-center">
-                <h2 className="mb-4 font-serif text-3xl text-foreground lg:text-4xl">
+                <h2
+                  id="contact-b2b"
+                  className="mb-4 font-serif text-3xl text-foreground lg:text-4xl"
+                >
                   Business Inquiries
                 </h2>
                 <p className="text-lg text-muted-foreground">
-                  Looking to establish a regular supply of premium Norwegian
-                  salmon for your business?
+                  Looking to establish a reliable supply of premium Norwegian
+                  salmon for your business? We tailor weekly and monthly plans.
                 </p>
               </div>
 
@@ -151,7 +178,7 @@ const Contact = () => {
                             +251 911 000 000
                           </a>
                           <p className="mt-1 text-sm text-muted-foreground">
-                            Quick responses for urgent inquiries
+                            Fast responses for urgent supply requests
                           </p>
                         </div>
                       </div>
@@ -204,7 +231,7 @@ const Contact = () => {
 
                   <div className="mt-8 border-t border-border pt-8 text-center">
                     <p className="mb-4 text-muted-foreground">
-                      Ready to discuss your requirements?
+                      Ready to discuss your order volumes and delivery cadence?
                     </p>
                     <Button asChild size="lg">
                       <a href="mailto:orders@nordicseafood.et?subject=B2B Inquiry">

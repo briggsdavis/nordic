@@ -195,7 +195,7 @@ const Header = () => {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="absolute left-4 right-4 top-full mt-2 animate-fade-in rounded-xl bg-card shadow-2xl ring-1 ring-border md:hidden">
+          <div className="absolute left-4 right-4 top-full mt-2 animate-fade-in rounded-2xl bg-card shadow-2xl ring-1 ring-border md:hidden">
             <nav className="flex flex-col p-2">
               {/* Nav Links */}
               {navLinks.map((link) => (

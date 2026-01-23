@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input"
 import { useToast } from "@/hooks/use-toast"
 import { supabase } from "@/integrations/supabase/client"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { AuthError } from "@supabase/supabase-js"
 import { Loader2 } from "lucide-react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -30,6 +31,62 @@ interface LoginFormProps {
   onSwitchToSignUp: () => void
 }
 
+const shouldRetry = (error: AuthError) => {
+  const message = error.message.toLowerCase()
+  return (
+    error.status === 500 ||
+    error.status === 502 ||
+    error.status === 503 ||
+    message.includes("network") ||
+    message.includes("fetch") ||
+    message.includes("timeout")
+  )
+}
+
+const getLoginErrorMessage = (error: AuthError) => {
+  const message = error.message.toLowerCase()
+
+  if (error.status === 429 || message.includes("rate limit")) {
+    return "Too many attempts. Please wait a moment and try again."
+  }
+  if (message.includes("invalid login credentials")) {
+    return "Invalid email or password. Please try again."
+  }
+  if (message.includes("email not confirmed")) {
+    return "Please verify your email before signing in."
+  }
+  if (shouldRetry(error)) {
+    return "Network issue. Please try again."
+  }
+
+  return error.message
+}
+
+const runAuthRequest = async (
+  request: () => Promise<{ error: AuthError | null }>,
+  retries = 1,
+) => {
+  let lastError: AuthError | null = null
+
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    const { error } = await request()
+
+    if (!error) {
+      return { error: null }
+    }
+
+    lastError = error
+
+    if (attempt < retries && shouldRetry(error)) {
+      await new Promise((resolve) => setTimeout(resolve, 400 * (attempt + 1)))
+      continue
+    }
+    break
+  }
+
+  return { error: lastError }
+}
+
 const LoginForm = ({ onSwitchToSignUp }: LoginFormProps) => {
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
@@ -46,30 +103,32 @@ const LoginForm = ({ onSwitchToSignUp }: LoginFormProps) => {
   const onSubmit = async (values: LoginFormValues) => {
     setIsLoading(true)
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email: values.email,
-      password: values.password,
-    })
+    try {
+      const { error } = await runAuthRequest(() =>
+        supabase.auth.signInWithPassword({
+          email: values.email,
+          password: values.password,
+        }),
+      )
 
-    if (error) {
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Login failed",
+          description: getLoginErrorMessage(error),
+        })
+        return
+      }
+
       toast({
-        variant: "destructive",
-        title: "Login failed",
-        description:
-          error.message === "Invalid login credentials"
-            ? "Invalid email or password. Please try again."
-            : error.message,
+        title: "Welcome back!",
+        description: "You have successfully logged in.",
       })
+
+      navigate("/portal")
+    } finally {
       setIsLoading(false)
-      return
     }
-
-    toast({
-      title: "Welcome back!",
-      description: "You have successfully logged in.",
-    })
-
-    navigate("/portal")
   }
 
   return (

@@ -61,7 +61,7 @@ const Collection = () => {
           <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-2 lg:grid-cols-3">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div key={i} className="space-y-4">
-                <Skeleton className="aspect-[4/3] rounded-lg" />
+                <Skeleton className="aspect-[4/3] rounded-2xl" />
                 <Skeleton className="h-6 w-3/4" />
                 <Skeleton className="h-4 w-1/2" />
                 <Skeleton className="h-4 w-2/3" />
@@ -73,7 +73,7 @@ const Collection = () => {
             {products.map((product) => (
               <div
                 key={product.id}
-                className="group cursor-pointer overflow-hidden rounded-lg border border-border bg-card transition-all duration-300 hover:shadow-lg"
+                className="group cursor-pointer overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:shadow-lg"
                 onClick={() => navigate(`/products/${product.slug}`)}
               >
                 <div className="aspect-[4/3] overflow-hidden bg-muted">

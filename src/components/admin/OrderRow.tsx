@@ -1,23 +1,18 @@
 import { ShipmentStageManager } from "@/components/admin/ShipmentStageManager"
 import { OrderStatusBadge } from "@/components/orders/OrderStatusBadge"
 import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
 import { TableCell, TableRow } from "@/components/ui/table"
 import type { OrderWithProfile } from "@/hooks/useAdminOrders"
 import { formatDate, formatPrice } from "@/lib/format"
 import { openStorageFile } from "@/lib/storage"
 import { cn } from "@/lib/utils"
 import {
-  Calendar,
   CheckCircle2,
   ChevronDown,
   ExternalLink,
   FileText,
   Loader2,
-  MapPin,
-  Phone,
   Trash2,
-  User,
   XCircle,
 } from "lucide-react"
 import { useState } from "react"
@@ -52,7 +47,6 @@ export const OrderRow = ({
 
   return (
     <>
-      {/* Summary Row */}
       <TableRow
         className="cursor-pointer transition-colors hover:bg-muted/50"
         onClick={onToggle}
@@ -65,9 +59,7 @@ export const OrderRow = ({
             )}
           />
         </TableCell>
-        <TableCell className="font-medium">
-          {order.reference_number}
-        </TableCell>
+        <TableCell className="font-medium">{order.reference_number}</TableCell>
         <TableCell>
           <div>
             <p className="font-medium">
@@ -88,15 +80,11 @@ export const OrderRow = ({
         <TableCell>{formatDate(order.created_at)}</TableCell>
       </TableRow>
 
-      {/* Expanded Details Row */}
       {isExpanded && (
         <TableRow>
           <TableCell colSpan={7} className="bg-muted/20 p-6">
             <div className="space-y-4">
-
-              {/* Contact + Delivery Row */}
               <div className="grid gap-6 md:grid-cols-2">
-                {/* Contact - Compact */}
                 <div>
                   <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                     Customer
@@ -113,8 +101,6 @@ export const OrderRow = ({
                     </p>
                   </div>
                 </div>
-
-                {/* Delivery */}
                 <div>
                   <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                     Delivery
@@ -130,7 +116,6 @@ export const OrderRow = ({
                 </div>
               </div>
 
-              {/* Order Items - Always Expanded */}
               <div>
                 <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                   Items
@@ -156,7 +141,6 @@ export const OrderRow = ({
                 </div>
               </div>
 
-              {/* Payment & Certificates - Secondary */}
               <div className="flex flex-wrap items-center gap-3">
                 <h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                   Docs:
@@ -165,8 +149,8 @@ export const OrderRow = ({
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation()
+                    onClick={(event) => {
+                      event.stopPropagation()
                       handleViewFile(order.payment_receipt_url!, "receipt")
                     }}
                     disabled={loadingFile === "receipt"}
@@ -179,7 +163,9 @@ export const OrderRow = ({
                     Receipt
                   </Button>
                 ) : (
-                  <span className="text-sm text-muted-foreground">No receipt</span>
+                  <span className="text-sm text-muted-foreground">
+                    No receipt
+                  </span>
                 )}
                 {order.order_certificates.length > 0 ? (
                   order.order_certificates.map((cert) => (
@@ -187,8 +173,8 @@ export const OrderRow = ({
                       key={cert.id}
                       variant="outline"
                       size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation()
+                      onClick={(event) => {
+                        event.stopPropagation()
                         handleViewFile(cert.file_url, cert.id)
                       }}
                       disabled={loadingFile === cert.id}
@@ -202,11 +188,12 @@ export const OrderRow = ({
                     </Button>
                   ))
                 ) : (
-                  <span className="text-sm text-muted-foreground">No certificates</span>
+                  <span className="text-sm text-muted-foreground">
+                    No certificates
+                  </span>
                 )}
               </div>
 
-              {/* Shipment Tracking */}
               {(order.status === "confirmed" ||
                 order.status === "shipped" ||
                 order.status === "delivered") && (
@@ -218,14 +205,13 @@ export const OrderRow = ({
                 </div>
               )}
 
-              {/* Actions */}
               <div className="flex flex-wrap gap-2 border-t pt-4">
                 {order.status === "verifying" && (
                   <>
                     <Button
                       size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation()
+                      onClick={(event) => {
+                        event.stopPropagation()
                         onApprove()
                       }}
                     >
@@ -235,8 +221,8 @@ export const OrderRow = ({
                     <Button
                       size="sm"
                       variant="destructive"
-                      onClick={(e) => {
-                        e.stopPropagation()
+                      onClick={(event) => {
+                        event.stopPropagation()
                         onReject()
                       }}
                     >
@@ -249,8 +235,8 @@ export const OrderRow = ({
                   size="sm"
                   variant="outline"
                   className="text-destructive hover:text-destructive"
-                  onClick={(e) => {
-                    e.stopPropagation()
+                  onClick={(event) => {
+                    event.stopPropagation()
                     onDelete()
                   }}
                 >

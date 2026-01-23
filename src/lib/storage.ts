@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client"
+import { getErrorMessage } from "@/lib/utils"
 
 /**
  * Generate a signed URL for accessing files in private buckets
@@ -7,17 +8,28 @@ import { supabase } from "@/integrations/supabase/client"
  * @param expiresIn - URL expiration time in seconds (default: 1 hour)
  * @returns The signed URL or null if error
  */
+const STORAGE_ERROR_PREFIX = "[storage]"
+
+const logStorageError = (message: string, error: unknown) => {
+  console.error(`${STORAGE_ERROR_PREFIX} ${message}:`, getErrorMessage(error))
+}
+
 export const getSignedUrl = async (
   bucket: string,
   path: string,
   expiresIn = 3600,
 ): Promise<string | null> => {
+  if (!bucket || !path) {
+    logStorageError("Missing bucket or path", { bucket, path })
+    return null
+  }
+
   const { data, error } = await supabase.storage
     .from(bucket)
     .createSignedUrl(path, expiresIn)
 
   if (error) {
-    console.error("Error creating signed URL:", error)
+    logStorageError("Error creating signed URL", error)
     return null
   }
 
@@ -29,6 +41,10 @@ export const getSignedUrl = async (
  * This handles both legacy full URLs and new path-only storage
  */
 export const extractFilePath = (urlOrPath: string): string => {
+  if (!urlOrPath) {
+    return ""
+  }
+
   // If it's already just a path (doesn't start with http), return as-is
   if (!urlOrPath.startsWith("http")) {
     return urlOrPath
@@ -57,8 +73,13 @@ export async function openStorageFile(
   filePathOrUrl: string,
 ): Promise<void> {
   const filePath = extractFilePath(filePathOrUrl)
+  if (!filePath) {
+    logStorageError("Missing file path", filePathOrUrl)
+    return
+  }
+
   const signedUrl = await getSignedUrl(bucket, filePath)
   if (signedUrl) {
-    window.open(signedUrl, "_blank")
+    window.open(signedUrl, "_blank", "noopener,noreferrer")
   }
 }

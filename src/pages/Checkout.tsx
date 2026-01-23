@@ -285,7 +285,7 @@ const Checkout = () => {
               </CardHeader>
               <CardContent>
                 <div
-                  className={`rounded-lg border-2 border-dashed p-6 text-center ${!paymentFile ? "border-muted-foreground/50" : "border-primary"}`}
+                  className={`rounded-2xl border-2 border-dashed p-6 text-center ${!paymentFile ? "border-muted-foreground/50" : "border-primary"}`}
                 >
                   <input
                     type="file"

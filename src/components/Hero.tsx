@@ -5,12 +5,15 @@ import { Link } from "react-router-dom"
 
 const Hero = () => {
   return (
-    <section className="relative -mt-20 flex min-h-screen items-end justify-center overflow-hidden pb-32">
+    <section
+      className="relative -mt-20 flex min-h-screen items-end justify-center overflow-hidden pb-32"
+      aria-labelledby="hero-title"
+    >
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
           src={heroBanner}
-          alt="Norwegian fjord with pristine waters"
+          alt="Norwegian fjord with salmon farms at sunrise"
           className="h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-transparent" />
@@ -29,6 +32,7 @@ const Hero = () => {
 
           {/* Main Headline */}
           <h1
+            id="hero-title"
             className="mb-6 animate-fade-in-up font-serif text-5xl text-card opacity-0 md:text-7xl lg:text-8xl"
             style={{ animationDelay: "0.4s" }}
           >
@@ -42,8 +46,8 @@ const Hero = () => {
             className="mx-auto mb-10 max-w-2xl animate-fade-in-up text-lg font-light leading-relaxed text-card/90 opacity-0 md:text-xl"
             style={{ animationDelay: "0.6s" }}
           >
-            Premium Norwegian Atlantic Salmon delivered directly to Ethiopia.
-            Unbroken cold chain from fjord to your doorstep.
+            Premium Norwegian Atlantic salmon delivered directly to Ethiopia.
+            Temperature-controlled, fully traceable, and chef-ready.
           </p>
 
           {/* CTA Buttons */}
@@ -54,7 +58,7 @@ const Hero = () => {
             <Button
               asChild
               size="lg"
-              className="bg-primary px-8 py-6 text-sm font-medium uppercase tracking-wide text-primary-foreground hover:bg-primary/90"
+              className="w-full bg-primary px-8 py-6 text-sm font-medium uppercase tracking-wide text-primary-foreground hover:bg-primary/90 sm:w-auto"
             >
               <Link to="/collection">Explore Selection</Link>
             </Button>
@@ -62,7 +66,7 @@ const Hero = () => {
               asChild
               variant="outline"
               size="lg"
-              className="border-white/40 bg-transparent px-8 py-6 text-sm font-medium uppercase tracking-wide text-white hover:bg-white/10 hover:text-white"
+              className="w-full border-white/40 bg-transparent px-8 py-6 text-sm font-medium uppercase tracking-wide text-white hover:bg-white/10 hover:text-white sm:w-auto"
             >
               <Link to="/contact">B2B Inquiries</Link>
             </Button>

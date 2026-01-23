@@ -80,7 +80,7 @@ const ProductDetail = () => {
         <Header />
         <main className="container mx-auto px-6 py-12">
           <div className="grid gap-12 md:grid-cols-2">
-            <Skeleton className="aspect-square rounded-lg" />
+            <Skeleton className="aspect-square rounded-2xl" />
             <div className="space-y-4">
               <Skeleton className="h-10 w-3/4" />
               <Skeleton className="h-6 w-1/4" />
@@ -128,7 +128,7 @@ const ProductDetail = () => {
 
         <div className="grid gap-12 md:grid-cols-2">
           {/* Product Image */}
-          <div className="aspect-square overflow-hidden rounded-lg bg-muted">
+          <div className="aspect-square overflow-hidden rounded-2xl bg-muted">
             {product.image_url ? (
               <img
                 src={product.image_url}

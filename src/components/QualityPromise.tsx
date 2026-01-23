@@ -14,34 +14,32 @@ const steps = [
     icon: Waves,
     title: "Fjord Harvest",
     description:
-      "Sustainably sourced from pristine Norwegian waters at optimal maturity.",
+      "Sustainably harvested from Norwegian fjords at optimal maturity.",
     location: "Norway",
   },
   {
     icon: Search,
     title: "Quality Inspection",
-    description:
-      "Rigorous testing for color, texture, and freshness standards.",
+    description: "Rigorous grading for color, texture, and fat balance.",
     location: "Processing Facility",
   },
   {
     icon: Award,
     title: "Certified Processing",
     description:
-      "EU-certified facilities ensuring international food safety compliance.",
+      "EU-certified processing for international food safety compliance.",
     location: "Bergen, Norway",
   },
   {
     icon: Snowflake,
     title: "Cold Chain Packaging",
-    description: "Advanced insulated packaging maintaining -18°C to 4°C range.",
+    description: "Insulated packaging holding -18°C to 4°C in transit.",
     location: "Export Hub",
   },
   {
     icon: Plane,
     title: "Air Transport",
-    description:
-      "Direct cargo flights minimizing transit time and temperature exposure.",
+    description: "Direct cargo flights to minimize transit time and exposure.",
     location: "In Transit",
   },
   {
@@ -53,8 +51,7 @@ const steps = [
   {
     icon: Truck,
     title: "Doorstep Delivery",
-    description:
-      "Refrigerated last-mile delivery to your location in Addis Ababa.",
+    description: "Refrigerated last-mile delivery across Addis Ababa.",
     location: "Ethiopia",
   },
 ]
@@ -100,7 +97,7 @@ const QualityPromise = () => {
             Our Quality Promise
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-            Seven documented steps from Norwegian fjords to Ethiopian tables.
+            Seven documented steps from Norwegian fjords to Ethiopian kitchens.
             Each shipment is tracked, verified, and certified.
           </p>
         </div>
@@ -111,14 +108,17 @@ const QualityPromise = () => {
           <div className="absolute bottom-0 left-6 top-0 w-px bg-border md:left-1/2 md:-translate-x-px" />
 
           {/* Steps */}
-          <div className="space-y-12 md:space-y-16">
+          <ol
+            className="space-y-12 md:space-y-16"
+            aria-label="Cold chain steps"
+          >
             {steps.map((step, index) => {
               const isVisible = visibleSteps.includes(index)
               const isEven = index % 2 === 0
               const Icon = step.icon
 
               return (
-                <div
+                <li
                   key={index}
                   data-step={index}
                   className={`relative flex items-start gap-6 md:gap-0 ${
@@ -176,10 +176,10 @@ const QualityPromise = () => {
                       {step.description}
                     </p>
                   </div>
-                </div>
+                </li>
               )
             })}
-          </div>
+          </ol>
         </div>
       </div>
     </section>

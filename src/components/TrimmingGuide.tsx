@@ -4,7 +4,10 @@ import { ChefHat, FileText } from "lucide-react"
 
 const TrimmingGuide = () => {
   return (
-    <section className="bg-secondary py-24 lg:py-32">
+    <section
+      className="bg-secondary py-24 lg:py-32"
+      aria-labelledby="trimming-guide-title"
+    >
       <div className="container mx-auto px-6 lg:px-8">
         {/* Section Header */}
         <div className="mb-16 flex flex-col lg:flex-row lg:items-center lg:justify-between">
@@ -15,12 +18,15 @@ const TrimmingGuide = () => {
                 For Professionals
               </span>
             </div>
-            <h2 className="mb-6 font-serif text-4xl text-foreground md:text-5xl">
+            <h2
+              id="trimming-guide-title"
+              className="mb-6 font-serif text-4xl text-foreground md:text-5xl"
+            >
               Trimming Guide
             </h2>
             <p className="text-lg leading-relaxed text-muted-foreground">
               Maximize yield and minimize waste with our professional breakdown
-              guide. Each salmon is an opportunity for multiple revenue streams.
+              guide. Each salmon delivers multiple menu-ready cuts.
             </p>
           </div>
 
@@ -30,12 +36,13 @@ const TrimmingGuide = () => {
               asChild
               variant="outline"
               size="lg"
-              className="gap-2"
+              className="w-full gap-2 sm:w-auto"
             >
               <a
                 href={chefBrochure}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Open chef trimming brochure"
               >
                 <FileText className="h-4 w-4" />
                 View Chef Brochure
@@ -45,15 +52,15 @@ const TrimmingGuide = () => {
         </div>
 
         {/* Salmon Diagram Placeholder */}
-        <div className="relative mb-16 overflow-hidden rounded-lg border border-card/10 bg-card/5">
+        <div className="relative mb-16 overflow-hidden rounded-2xl border border-card/10 bg-card/5">
           <div className="flex aspect-[21/9] items-center justify-center">
             <img
               src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=1600&q=80"
-              alt="Salmon preparation"
+              alt="Chef trimming a salmon fillet for portioning"
               className="h-full w-full object-cover opacity-60"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-foreground via-foreground/50 to-transparent" />
-            <div className="absolute left-8 top-1/2 max-w-md -translate-y-1/2">
+            <div className="absolute left-6 right-6 top-1/2 max-w-md -translate-y-1/2 md:left-8 md:right-auto">
               <p className="mb-2 text-xs uppercase tracking-[0.2em] text-card/80">
                 Professional Breakdown
               </p>

@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast"
 import { supabase } from "@/integrations/supabase/client"
 import { formatPhoneNumber, unformatPhoneNumber } from "@/lib/phone-utils"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { AuthError } from "@supabase/supabase-js"
 import { Building2, Loader2, User } from "lucide-react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -62,6 +63,62 @@ interface SignUpFormProps {
   onSwitchToLogin: () => void
 }
 
+const shouldRetry = (error: AuthError) => {
+  const message = error.message.toLowerCase()
+  return (
+    error.status === 500 ||
+    error.status === 502 ||
+    error.status === 503 ||
+    message.includes("network") ||
+    message.includes("fetch") ||
+    message.includes("timeout")
+  )
+}
+
+const getSignUpErrorMessage = (error: AuthError) => {
+  const message = error.message.toLowerCase()
+
+  if (message.includes("already registered")) {
+    return "This email is already registered. Please sign in instead."
+  }
+  if (error.status === 429 || message.includes("rate limit")) {
+    return "Too many attempts. Please wait a moment and try again."
+  }
+  if (message.includes("password")) {
+    return "Password does not meet requirements. Please choose a stronger one."
+  }
+  if (shouldRetry(error)) {
+    return "Network issue. Please try again."
+  }
+
+  return error.message
+}
+
+const runAuthRequest = async <T,>(
+  request: () => Promise<{ data: T | null; error: AuthError | null }>,
+  retries = 1,
+) => {
+  let lastError: AuthError | null = null
+
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    const { data, error } = await request()
+
+    if (!error) {
+      return { data, error: null }
+    }
+
+    lastError = error
+
+    if (attempt < retries && shouldRetry(error)) {
+      await new Promise((resolve) => setTimeout(resolve, 400 * (attempt + 1)))
+      continue
+    }
+    break
+  }
+
+  return { data: null, error: lastError }
+}
+
 const SignUpForm = ({ onSwitchToLogin }: SignUpFormProps) => {
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
@@ -84,45 +141,53 @@ const SignUpForm = ({ onSwitchToLogin }: SignUpFormProps) => {
   const onSubmit = async (values: SignUpFormValues) => {
     setIsLoading(true)
 
-    const { error } = await supabase.auth.signUp({
-      email: values.email,
-      password: values.password,
-      options: {
-        emailRedirectTo: `${window.location.origin}/`,
-        data: {
-          full_name: values.full_name,
-          phone_number: unformatPhoneNumber(values.phone_number),
-          whatsapp_number: values.whatsapp_number
-            ? unformatPhoneNumber(values.whatsapp_number)
-            : null,
-          primary_address: values.primary_address,
-          account_type: values.account_type,
-        },
-      },
-    })
+    try {
+      const { data, error } = await runAuthRequest(() =>
+        supabase.auth.signUp({
+          email: values.email,
+          password: values.password,
+          options: {
+            emailRedirectTo: `${window.location.origin}/`,
+            data: {
+              full_name: values.full_name,
+              phone_number: unformatPhoneNumber(values.phone_number),
+              whatsapp_number: values.whatsapp_number
+                ? unformatPhoneNumber(values.whatsapp_number)
+                : null,
+              primary_address: values.primary_address,
+              account_type: values.account_type,
+            },
+          },
+        }),
+      )
 
-    if (error) {
-      let errorMessage = error.message
-      if (error.message.includes("already registered")) {
-        errorMessage =
-          "This email is already registered. Please sign in instead."
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Registration failed",
+          description: getSignUpErrorMessage(error),
+        })
+        return
+      }
+
+      if (data?.session) {
+        toast({
+          title: "Account created!",
+          description: "Welcome to Nordic Seafood. You are now logged in.",
+        })
+        navigate("/portal")
+        return
       }
 
       toast({
-        variant: "destructive",
-        title: "Registration failed",
-        description: errorMessage,
+        title: "Check your email",
+        description:
+          "We sent a confirmation link. Verify your email, then sign in.",
       })
+      onSwitchToLogin()
+    } finally {
       setIsLoading(false)
-      return
     }
-
-    toast({
-      title: "Account created!",
-      description: "Welcome to Nordic Seafood. You are now logged in.",
-    })
-
-    navigate("/portal")
   }
 
   return (
@@ -241,7 +306,7 @@ const SignUpForm = ({ onSwitchToLogin }: SignUpFormProps) => {
                     defaultValue={field.value}
                     className="flex gap-4"
                   >
-                    <div className="flex flex-1 cursor-pointer items-center space-x-2 rounded-lg border px-4 py-3 transition-colors hover:bg-muted/50">
+                    <div className="flex flex-1 cursor-pointer items-center space-x-2 rounded-2xl border px-4 py-3 transition-colors hover:bg-muted/50">
                       <RadioGroupItem value="business" id="business" />
                       <label
                         htmlFor="business"
@@ -251,7 +316,7 @@ const SignUpForm = ({ onSwitchToLogin }: SignUpFormProps) => {
                         <span className="text-sm font-medium">Business</span>
                       </label>
                     </div>
-                    <div className="flex flex-1 cursor-pointer items-center space-x-2 rounded-lg border px-4 py-3 transition-colors hover:bg-muted/50">
+                    <div className="flex flex-1 cursor-pointer items-center space-x-2 rounded-2xl border px-4 py-3 transition-colors hover:bg-muted/50">
                       <RadioGroupItem value="individual" id="individual" />
                       <label
                         htmlFor="individual"

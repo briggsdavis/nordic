@@ -5,12 +5,26 @@ import Hero from "@/components/Hero"
 import QualityPromise from "@/components/QualityPromise"
 import TechnicalDetails from "@/components/TechnicalDetails"
 import TrimmingGuide from "@/components/TrimmingGuide"
+import { useEffect } from "react"
 
 const Index = () => {
+  useEffect(() => {
+    document.title = "Nordic Seafood | Norwegian Salmon in Ethiopia"
+    const description =
+      "Nordic Seafood delivers premium Norwegian salmon to Ethiopia with verified cold-chain logistics, traceability, and chef-ready cuts."
+    let meta = document.querySelector('meta[name="description"]')
+    if (!meta) {
+      meta = document.createElement("meta")
+      meta.setAttribute("name", "description")
+      document.head.appendChild(meta)
+    }
+    meta.setAttribute("content", description)
+  }, [])
+
   return (
     <div className="min-h-screen">
       <Header />
-      <main>
+      <main aria-label="Nordic Seafood landing">
         <Hero />
         <QualityPromise />
         <TechnicalDetails />

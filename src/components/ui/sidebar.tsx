@@ -24,6 +24,14 @@ const SIDEBAR_WIDTH_MOBILE = "18rem"
 const SIDEBAR_WIDTH_ICON = "3rem"
 const SIDEBAR_KEYBOARD_SHORTCUT = "b"
 
+const setSidebarCookie = (openState: boolean) => {
+  if (typeof document === "undefined") {
+    return
+  }
+
+  document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
+}
+
 type SidebarContext = {
   state: "expanded" | "collapsed"
   open: boolean
@@ -45,14 +53,13 @@ function useSidebar() {
   return context
 }
 
-const SidebarProvider = React.forwardRef<
-  HTMLDivElement,
-  React.ComponentProps<"div"> & {
-    defaultOpen?: boolean
-    open?: boolean
-    onOpenChange?: (open: boolean) => void
-  }
->(
+export type SidebarProviderProps = React.ComponentPropsWithoutRef<"div"> & {
+  defaultOpen?: boolean
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+}
+
+const SidebarProvider = React.forwardRef<HTMLDivElement, SidebarProviderProps>(
   (
     {
       defaultOpen = true,
@@ -82,7 +89,7 @@ const SidebarProvider = React.forwardRef<
         }
 
         // This sets the cookie to keep the sidebar state.
-        document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
+        setSidebarCookie(openState)
       },
       [setOpenProp, open],
     )
@@ -162,14 +169,13 @@ const SidebarProvider = React.forwardRef<
 )
 SidebarProvider.displayName = "SidebarProvider"
 
-const Sidebar = React.forwardRef<
-  HTMLDivElement,
-  React.ComponentProps<"div"> & {
-    side?: "left" | "right"
-    variant?: "sidebar" | "floating" | "inset"
-    collapsible?: "offcanvas" | "icon" | "none"
-  }
->(
+export type SidebarProps = React.ComponentPropsWithoutRef<"div"> & {
+  side?: "left" | "right"
+  variant?: "sidebar" | "floating" | "inset"
+  collapsible?: "offcanvas" | "icon" | "none"
+}
+
+const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
   (
     {
       side = "left",
@@ -265,9 +271,11 @@ const Sidebar = React.forwardRef<
 )
 Sidebar.displayName = "Sidebar"
 
+export type SidebarTriggerProps = React.ComponentPropsWithoutRef<typeof Button>
+
 const SidebarTrigger = React.forwardRef<
   React.ElementRef<typeof Button>,
-  React.ComponentProps<typeof Button>
+  SidebarTriggerProps
 >(({ className, onClick, ...props }, ref) => {
   const { toggleSidebar } = useSidebar()
 
@@ -329,7 +337,7 @@ const SidebarInset = React.forwardRef<
       ref={ref}
       className={cn(
         "relative flex min-h-svh flex-1 flex-col bg-background",
-        "peer-data-[variant=inset]:min-h-[calc(100svh-theme(spacing.4))] md:peer-data-[variant=inset]:m-2 md:peer-data-[state=collapsed]:peer-data-[variant=inset]:ml-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow",
+        "peer-data-[variant=inset]:min-h-[calc(100svh-theme(spacing.4))] md:peer-data-[variant=inset]:m-2 md:peer-data-[state=collapsed]:peer-data-[variant=inset]:ml-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-2xl md:peer-data-[variant=inset]:shadow",
         className,
       )}
       {...props}
@@ -539,13 +547,16 @@ const sidebarMenuButtonVariants = cva(
   },
 )
 
-const SidebarMenuButton = React.forwardRef<
-  HTMLButtonElement,
-  React.ComponentProps<"button"> & {
+export type SidebarMenuButtonProps =
+  React.ComponentPropsWithoutRef<"button"> & {
     asChild?: boolean
     isActive?: boolean
     tooltip?: string | React.ComponentProps<typeof TooltipContent>
   } & VariantProps<typeof sidebarMenuButtonVariants>
+
+const SidebarMenuButton = React.forwardRef<
+  HTMLButtonElement,
+  SidebarMenuButtonProps
 >(
   (
     {

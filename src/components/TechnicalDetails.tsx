@@ -46,30 +46,36 @@ const partners = [
 
 const TechnicalDetails = () => {
   return (
-    <section className="bg-secondary py-24 lg:py-32">
+    <section
+      className="bg-secondary py-24 lg:py-32"
+      aria-labelledby="technical-title"
+    >
       <div className="container mx-auto px-6 lg:px-8">
         {/* Section Header */}
         <div className="mb-16 text-center">
           <p className="mb-4 text-xs uppercase tracking-[0.3em] text-primary">
             Precision Logistics
           </p>
-          <h2 className="mb-6 font-serif text-4xl text-foreground md:text-5xl">
+          <h2
+            id="technical-title"
+            className="mb-6 font-serif text-4xl text-foreground md:text-5xl"
+          >
             Shipment Integrity
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
             Every detail engineered to preserve quality from Arctic waters to
-            your location.
+            your kitchen.
           </p>
         </div>
 
         {/* Specs Grid */}
-        <div className="mb-20 grid grid-cols-2 gap-6 lg:grid-cols-4">
+        <ul className="mb-20 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {specs.map((spec, index) => {
             const Icon = spec.icon
             return (
-              <div
+              <li
                 key={index}
-                className="group rounded-lg border border-border bg-card p-6 text-center transition-colors hover:border-primary/30"
+                className="group rounded-2xl border border-border bg-card p-6 text-center transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg"
               >
                 <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-accent transition-colors group-hover:bg-primary/10">
                   <Icon className="h-5 w-5 text-accent-foreground" />
@@ -83,10 +89,10 @@ const TechnicalDetails = () => {
                 <p className="text-sm text-muted-foreground">
                   {spec.description}
                 </p>
-              </div>
+              </li>
             )
           })}
-        </div>
+        </ul>
 
         {/* Partners Section */}
         <div className="mx-auto max-w-4xl">
@@ -102,11 +108,14 @@ const TechnicalDetails = () => {
             </h3>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-2">
+          <ul
+            className="grid gap-8 md:grid-cols-2"
+            aria-label="Norwegian partners"
+          >
             {partners.map((partner, index) => (
-              <div
+              <li
                 key={index}
-                className="rounded-lg border border-border bg-card p-8 transition-shadow hover:shadow-lg"
+                className="rounded-2xl border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
               >
                 <div className="mb-4 flex items-start justify-between">
                   <div>
@@ -124,9 +133,9 @@ const TechnicalDetails = () => {
                 <p className="text-sm leading-relaxed text-muted-foreground">
                   {partner.description}
                 </p>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </div>
     </section>
