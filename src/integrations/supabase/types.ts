@@ -144,6 +144,7 @@ export type Database = {
           contact_name: string
           contact_phone: string
           created_at: string
+          current_shipment_stage: number | null
           delivery_address: string
           expected_delivery_date: string
           id: string
@@ -161,6 +162,7 @@ export type Database = {
           contact_name: string
           contact_phone: string
           created_at?: string
+          current_shipment_stage?: number | null
           delivery_address: string
           expected_delivery_date: string
           id?: string
@@ -178,6 +180,7 @@ export type Database = {
           contact_name?: string
           contact_phone?: string
           created_at?: string
+          current_shipment_stage?: number | null
           delivery_address?: string
           expected_delivery_date?: string
           id?: string
@@ -230,6 +233,83 @@ export type Database = {
           weight_range?: string | null
         }
         Relationships: []
+      }
+      shipment_stage_definitions: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          location: string
+          stage_name: string
+          stage_number: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          location: string
+          stage_name: string
+          stage_number: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          location?: string
+          stage_name?: string
+          stage_number?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      shipment_stages: {
+        Row: {
+          admin_notes: string | null
+          completed_at: string | null
+          created_at: string
+          id: string
+          order_id: string
+          stage_number: number
+          started_at: string | null
+          status: Database["public"]["Enums"]["shipment_stage_status"]
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          order_id: string
+          stage_number: number
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["shipment_stage_status"]
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          order_id?: string
+          stage_number?: number
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["shipment_stage_status"]
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shipment_stages_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -316,6 +396,7 @@ export type Database = {
         | "delivered"
         | "completed"
         | "cancelled"
+      shipment_stage_status: "pending" | "in_progress" | "completed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -454,6 +535,7 @@ export const Constants = {
         "completed",
         "cancelled",
       ],
+      shipment_stage_status: ["pending", "in_progress", "completed"],
     },
   },
 } as const

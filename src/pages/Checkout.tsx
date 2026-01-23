@@ -297,6 +297,13 @@ const Checkout = () => {
                   <label
                     htmlFor="payment-file"
                     className="flex cursor-pointer flex-col items-center gap-2"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault()
+                        document.getElementById("payment-file")?.click()
+                      }
+                    }}
                   >
                     <Upload
                       className={`h-8 w-8 ${paymentFile ? "text-primary" : "text-muted-foreground"}`}

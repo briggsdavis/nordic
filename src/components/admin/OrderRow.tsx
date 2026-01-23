@@ -1,3 +1,4 @@
+import { ShipmentStageManager } from "@/components/admin/ShipmentStageManager"
 import { OrderStatusBadge } from "@/components/orders/OrderStatusBadge"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
@@ -90,131 +91,135 @@ export const OrderRow = ({
       {/* Expanded Details Row */}
       {isExpanded && (
         <TableRow>
-          <TableCell colSpan={7} className="bg-muted/30 p-6">
-            <div className="space-y-6">
-              {/* Customer Info Section */}
-              <div>
-                <h4 className="mb-3 text-sm font-medium">
-                  Customer Information
-                </h4>
-                <div className="grid gap-4 text-sm md:grid-cols-2">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <User className="h-4 w-4 text-muted-foreground" />
-                      <span>
-                        {order.profile?.full_name || order.contact_name}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Phone className="h-4 w-4 text-muted-foreground" />
-                      <span>{order.contact_phone}</span>
-                    </div>
+          <TableCell colSpan={7} className="bg-muted/20 p-6">
+            <div className="space-y-4">
+
+              {/* Contact + Delivery Row */}
+              <div className="grid gap-6 md:grid-cols-2">
+                {/* Contact - Compact */}
+                <div>
+                  <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    Customer
+                  </h4>
+                  <div className="space-y-1.5">
+                    <p className="font-medium text-foreground">
+                      {order.profile?.full_name || order.contact_name}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {order.profile?.email}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {order.contact_phone}
+                    </p>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex items-start gap-2">
-                      <MapPin className="mt-0.5 h-4 w-4 text-muted-foreground" />
-                      <span>{order.delivery_address}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4 text-muted-foreground" />
-                      <span>
-                        Expected: {formatDate(order.expected_delivery_date)}
-                      </span>
-                    </div>
+                </div>
+
+                {/* Delivery */}
+                <div>
+                  <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    Delivery
+                  </h4>
+                  <div className="space-y-1.5">
+                    <p className="font-medium text-foreground">
+                      {order.delivery_address}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Expected: {formatDate(order.expected_delivery_date)}
+                    </p>
                   </div>
                 </div>
               </div>
 
-              <Separator />
-
-              {/* Order Items Section */}
+              {/* Order Items - Always Expanded */}
               <div>
-                <h4 className="mb-3 text-sm font-medium">Order Items</h4>
-                <div className="max-h-64 space-y-2 overflow-y-auto">
+                <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  Items
+                </h4>
+                <div className="space-y-2">
                   {order.order_items.map((item) => (
                     <div
                       key={item.id}
-                      className="flex justify-between border-b py-2 text-sm"
+                      className="flex items-center justify-between text-sm"
                     >
-                      <span>
-                        {item.product_name} ({item.variant}) × {item.quantity}
+                      <span className="text-foreground">
+                        {item.product_name} × {item.quantity}
                       </span>
                       <span className="font-medium">
                         {formatPrice(Number(item.subtotal))}
                       </span>
                     </div>
                   ))}
-                  <div className="flex justify-between pt-2 font-medium">
+                  <div className="flex items-center justify-between border-t pt-2 font-semibold">
                     <span>Total</span>
                     <span>{formatPrice(Number(order.total_amount))}</span>
                   </div>
                 </div>
               </div>
 
-              <Separator />
-
-              {/* Payment & Certificates Section */}
-              <div>
-                <h4 className="mb-3 text-sm font-medium">
-                  Payment & Documents
+              {/* Payment & Certificates - Secondary */}
+              <div className="flex flex-wrap items-center gap-3">
+                <h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  Docs:
                 </h4>
-                <div className="space-y-3">
-                  {/* Payment Receipt */}
-                  {order.payment_receipt_url ? (
+                {order.payment_receipt_url ? (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleViewFile(order.payment_receipt_url!, "receipt")
+                    }}
+                    disabled={loadingFile === "receipt"}
+                  >
+                    {loadingFile === "receipt" ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <ExternalLink className="mr-2 h-4 w-4" />
+                    )}
+                    Receipt
+                  </Button>
+                ) : (
+                  <span className="text-sm text-muted-foreground">No receipt</span>
+                )}
+                {order.order_certificates.length > 0 ? (
+                  order.order_certificates.map((cert) => (
                     <Button
+                      key={cert.id}
                       variant="outline"
                       size="sm"
                       onClick={(e) => {
                         e.stopPropagation()
-                        handleViewFile(order.payment_receipt_url!, "receipt")
+                        handleViewFile(cert.file_url, cert.id)
                       }}
-                      disabled={loadingFile === "receipt"}
+                      disabled={loadingFile === cert.id}
                     >
-                      {loadingFile === "receipt" ? (
+                      {loadingFile === cert.id ? (
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       ) : (
-                        <ExternalLink className="mr-2 h-4 w-4" />
+                        <FileText className="mr-2 h-4 w-4" />
                       )}
-                      View Payment Receipt
+                      {cert.certificate_type}
                     </Button>
-                  ) : (
-                    <p className="text-sm text-muted-foreground">
-                      No payment receipt uploaded
-                    </p>
-                  )}
-
-                  {/* Certificates Grid */}
-                  {order.order_certificates.length > 0 && (
-                    <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
-                      {order.order_certificates.map((cert) => (
-                        <button
-                          key={cert.id}
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            handleViewFile(cert.file_url, cert.id)
-                          }}
-                          disabled={loadingFile === cert.id}
-                          className="flex items-center gap-2 rounded-lg border p-3 text-left transition-colors hover:bg-muted"
-                        >
-                          {loadingFile === cert.id ? (
-                            <Loader2 className="h-4 w-4 animate-spin text-primary" />
-                          ) : (
-                            <FileText className="h-4 w-4 text-primary" />
-                          )}
-                          <p className="truncate text-sm font-medium">
-                            {cert.certificate_type}
-                          </p>
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                  ))
+                ) : (
+                  <span className="text-sm text-muted-foreground">No certificates</span>
+                )}
               </div>
 
-              <Separator />
+              {/* Shipment Tracking */}
+              {(order.status === "confirmed" ||
+                order.status === "shipped" ||
+                order.status === "delivered") && (
+                <div>
+                  <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    Shipment Tracking
+                  </h4>
+                  <ShipmentStageManager orderId={order.id} />
+                </div>
+              )}
 
-              {/* Action Buttons */}
-              <div className="flex flex-wrap gap-2">
+              {/* Actions */}
+              <div className="flex flex-wrap gap-2 border-t pt-4">
                 {order.status === "verifying" && (
                   <>
                     <Button

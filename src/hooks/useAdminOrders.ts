@@ -103,11 +103,20 @@ export const useAdminOrders = () => {
   // Approve receipt - transitions to confirmed
   const approvePayment = useMutation({
     mutationFn: async (orderId: string) => {
+      // 1. Update order status to confirmed
       const { error } = await supabase
         .from("orders")
         .update({ status: "confirmed" as OrderStatus })
         .eq("id", orderId)
       if (error) throw error
+
+      // 2. Initialize shipment stages (SQL function call)
+      const { error: initError } = await supabase.rpc(
+        "initialize_shipment_stages",
+        { p_order_id: orderId },
+      )
+
+      if (initError) throw initError
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-orders"] })

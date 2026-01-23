@@ -1,3 +1,4 @@
+import { ShipmentTimeline } from "@/components/shipment/ShipmentTimeline"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import {
@@ -68,6 +69,16 @@ export const OrderCard = ({ order }: OrderCardProps) => {
 
         <CollapsibleContent>
           <CardContent className="space-y-6 pt-0">
+            {/* Shipment Timeline Section */}
+            {(order.status === "confirmed" ||
+              order.status === "shipped" ||
+              order.status === "delivered") && (
+              <div>
+                <h4 className="mb-3 text-sm font-medium">Shipment Tracking</h4>
+                <ShipmentTimeline orderId={order.id} compact />
+              </div>
+            )}
+
             {/* Order Items */}
             <div>
               <h4 className="mb-3 text-sm font-medium">Order Items</h4>
