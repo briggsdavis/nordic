@@ -29,18 +29,18 @@ const specs = [
 
 const partners = [
   {
-    name: "Nordlaks AS",
-    location: "Stokmarknes, Norway",
+    name: "Brødrene Remø",
+    location: "Fiskerstrand, Norway",
     description:
-      "One of Norway's largest salmon producers, Nordlaks operates sustainable aquaculture facilities across the Vesterålen archipelago. Their fjord-based farms benefit from pristine Arctic waters and strong currents that promote healthy fish development.",
-    established: "Est. 1989",
+      "A family-owned company with over a century of experience, Brødrene Remø specializes in premium fillet products and award-winning smoked salmon. Their state-of-the-art facility on the Sunnmøre coast combines cutting-edge technology with traditional methods, using no artificial substances in production.",
+    established: "Est. 1918",
   },
   {
-    name: "Lerøy Seafood Group",
-    location: "Bergen, Norway",
+    name: "Fish Corp",
+    location: "Trondheim, Norway",
     description:
-      "A vertically integrated seafood company controlling the entire value chain from egg to export. Lerøy's Bergen processing facility handles our premium-grade Atlantic Salmon with state-of-the-art quality control systems.",
-    established: "Est. 1899",
+      "A modern seafood processing company focused on sustainable salmon sourcing and cold chain logistics. Fish Corp maintains strict quality standards throughout their operations, ensuring optimal freshness and traceability for export markets.",
+    established: "Est. 2008",
   },
 ]
 

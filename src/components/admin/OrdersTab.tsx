@@ -1,4 +1,3 @@
-import { OrderStatusBadge } from "@/components/orders/OrderStatusBadge"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,7 +8,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -17,13 +15,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import {
   Table,
   TableBody,
@@ -34,10 +25,8 @@ import {
 } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { OrderWithProfile, useAdminOrders } from "@/hooks/useAdminOrders"
-import { formatDate, formatPrice } from "@/lib/format"
-import { CheckCircle2, Eye, MoreVertical, Trash2, XCircle } from "lucide-react"
 import { useState } from "react"
-import { OrderDetailDialog } from "./OrderDetailDialog"
+import { OrderRow } from "./OrderRow"
 
 export const OrdersTab = () => {
   const {
@@ -50,24 +39,12 @@ export const OrdersTab = () => {
     rejectPayment,
     deleteOrder,
   } = useAdminOrders()
-  const [selectedOrder, setSelectedOrder] = useState<OrderWithProfile | null>(
-    null,
-  )
-  const [detailOpen, setDetailOpen] = useState(false)
+  const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [orderToDelete, setOrderToDelete] = useState<string | null>(null)
 
-  const handleViewOrder = (order: OrderWithProfile) => {
-    setSelectedOrder(order)
-    setDetailOpen(true)
-  }
-
-  const handleApprovePayment = (orderId: string) => {
-    approvePayment.mutate(orderId)
-  }
-
-  const handleRejectPayment = (orderId: string) => {
-    rejectPayment.mutate(orderId)
+  const toggleOrderExpansion = (orderId: string) => {
+    setExpandedOrderId((prev) => (prev === orderId ? null : orderId))
   }
 
   const handleDeleteClick = (orderId: string) => {
@@ -77,9 +54,13 @@ export const OrdersTab = () => {
 
   const handleDeleteConfirm = () => {
     if (orderToDelete) {
-      deleteOrder.mutate(orderToDelete)
-      setOrderToDelete(null)
-      setDeleteDialogOpen(false)
+      deleteOrder.mutate(orderToDelete, {
+        onSuccess: () => {
+          setExpandedOrderId(null)
+          setOrderToDelete(null)
+          setDeleteDialogOpen(false)
+        },
+      })
     }
   }
 
@@ -87,13 +68,13 @@ export const OrdersTab = () => {
     <Table>
       <TableHeader>
         <TableRow>
+          <TableHead className="w-12"></TableHead>
           <TableHead>Reference</TableHead>
           <TableHead>Customer</TableHead>
           <TableHead>Type</TableHead>
           <TableHead>Value</TableHead>
           <TableHead>Status</TableHead>
           <TableHead>Date</TableHead>
-          <TableHead className="w-[80px]">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -108,68 +89,15 @@ export const OrdersTab = () => {
           </TableRow>
         ) : (
           orderList.map((order) => (
-            <TableRow key={order.id}>
-              <TableCell className="font-medium">
-                {order.reference_number}
-              </TableCell>
-              <TableCell>
-                <div>
-                  <p className="font-medium">
-                    {order.profile?.full_name || order.contact_name}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {order.profile?.email}
-                  </p>
-                </div>
-              </TableCell>
-              <TableCell className="capitalize">
-                {order.profile?.account_type || "-"}
-              </TableCell>
-              <TableCell>{formatPrice(Number(order.total_amount))}</TableCell>
-              <TableCell>
-                <OrderStatusBadge status={order.status} />
-              </TableCell>
-              <TableCell>{formatDate(order.created_at)}</TableCell>
-              <TableCell>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                      <MoreVertical className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => handleViewOrder(order)}>
-                      <Eye className="mr-2 h-4 w-4" />
-                      View Details
-                    </DropdownMenuItem>
-                    {order.status === "verifying" && (
-                      <>
-                        <DropdownMenuItem
-                          onClick={() => handleApprovePayment(order.id)}
-                        >
-                          <CheckCircle2 className="mr-2 h-4 w-4 text-green-600" />
-                          Approve
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() => handleRejectPayment(order.id)}
-                        >
-                          <XCircle className="mr-2 h-4 w-4 text-red-600" />
-                          Reject
-                        </DropdownMenuItem>
-                      </>
-                    )}
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      className="text-destructive"
-                      onClick={() => handleDeleteClick(order.id)}
-                    >
-                      <Trash2 className="mr-2 h-4 w-4" />
-                      Delete Order
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
-            </TableRow>
+            <OrderRow
+              key={order.id}
+              order={order}
+              isExpanded={expandedOrderId === order.id}
+              onToggle={() => toggleOrderExpansion(order.id)}
+              onApprove={() => approvePayment.mutate(order.id)}
+              onReject={() => rejectPayment.mutate(order.id)}
+              onDelete={() => handleDeleteClick(order.id)}
+            />
           ))
         )}
       </TableBody>
@@ -254,15 +182,6 @@ export const OrdersTab = () => {
           </Card>
         </TabsContent>
       </Tabs>
-
-      {/* Order Detail Dialog */}
-      {selectedOrder && (
-        <OrderDetailDialog
-          order={selectedOrder}
-          open={detailOpen}
-          onOpenChange={setDetailOpen}
-        />
-      )}
 
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
