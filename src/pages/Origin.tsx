@@ -1,3 +1,4 @@
+import originHero from "@/assets/origin.jpg"
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import { Award, CheckCircle, Ship, Snowflake } from "lucide-react"
@@ -36,13 +37,36 @@ const Origin = () => {
 
       <main>
         {/* Hero Section */}
-        <section className="relative bg-primary/5 pb-20 pt-32">
-          <div className="container mx-auto px-6">
-            <div className="mx-auto max-w-3xl text-center">
-              <h1 className="mb-6 font-serif text-4xl text-foreground md:text-5xl">
+        <section className="relative -mt-20 flex min-h-[70vh] items-end justify-center overflow-hidden pb-20">
+          {/* Background Image */}
+          <div className="absolute inset-0 z-0">
+            <img
+              src={originHero}
+              alt="Norwegian fjords origin"
+              className="h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-transparent" />
+          </div>
+
+          {/* Content */}
+          <div className="container relative z-10 mx-auto px-6 text-center lg:px-8">
+            <div className="mx-auto max-w-3xl">
+              <p
+                className="mb-4 animate-fade-in-up text-xs uppercase tracking-[0.3em] text-card/80 opacity-0 md:text-sm"
+                style={{ animationDelay: "0.2s" }}
+              >
+                Our Story
+              </p>
+              <h1
+                className="mb-6 animate-fade-in-up font-serif text-4xl text-card opacity-0 md:text-5xl lg:text-6xl"
+                style={{ animationDelay: "0.4s" }}
+              >
                 From Norwegian Fjords to Ethiopian Tables
               </h1>
-              <p className="text-lg leading-relaxed text-muted-foreground">
+              <p
+                className="mx-auto max-w-2xl animate-fade-in-up text-lg font-light leading-relaxed text-card/90 opacity-0"
+                style={{ animationDelay: "0.6s" }}
+              >
                 Nordic Seafood bridges two worlds—bringing the exceptional
                 quality of Norwegian salmon to discerning buyers across
                 Ethiopia. Our commitment to excellence defines every step of our

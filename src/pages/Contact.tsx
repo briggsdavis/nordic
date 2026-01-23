@@ -1,3 +1,4 @@
+import contactHero from "@/assets/contact.jpg"
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import { Button } from "@/components/ui/button"
@@ -9,15 +10,38 @@ const Contact = () => {
     <div className="flex min-h-screen flex-col">
       <Header />
 
-      <main className="flex-1 pt-20">
+      <main className="flex-1">
         {/* Hero Section */}
-        <section className="bg-secondary py-16 lg:py-24">
-          <div className="container mx-auto px-6 lg:px-8">
-            <div className="mx-auto max-w-2xl text-center">
-              <h1 className="mb-6 font-serif text-4xl text-foreground lg:text-5xl">
+        <section className="relative -mt-20 flex min-h-[70vh] items-end justify-center overflow-hidden pb-20">
+          {/* Background Image */}
+          <div className="absolute inset-0 z-0">
+            <img
+              src={contactHero}
+              alt="Contact Nordic Seafood"
+              className="h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-transparent" />
+          </div>
+
+          {/* Content */}
+          <div className="container relative z-10 mx-auto px-6 text-center lg:px-8">
+            <div className="mx-auto max-w-3xl">
+              <p
+                className="mb-4 animate-fade-in-up text-xs uppercase tracking-[0.3em] text-card/80 opacity-0 md:text-sm"
+                style={{ animationDelay: "0.2s" }}
+              >
+                Contact Us
+              </p>
+              <h1
+                className="mb-6 animate-fade-in-up font-serif text-4xl text-card opacity-0 md:text-5xl lg:text-6xl"
+                style={{ animationDelay: "0.4s" }}
+              >
                 Get in Touch
               </h1>
-              <p className="text-lg leading-relaxed text-muted-foreground">
+              <p
+                className="mx-auto max-w-2xl animate-fade-in-up text-lg font-light leading-relaxed text-card/90 opacity-0"
+                style={{ animationDelay: "0.6s" }}
+              >
                 Whether you're a restaurant, hotel, or retailer looking for
                 premium Norwegian salmon, we're here to help. Reach out to
                 discuss your needs.

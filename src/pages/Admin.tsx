@@ -69,7 +69,7 @@ const Admin = () => {
       <Header />
 
       {/* Main Content */}
-      <main className="container mx-auto px-6 py-8 pt-28">
+      <main className="container mx-auto px-6 py-8 pt-12">
         <div className="mb-8">
           <h1 className="font-serif text-3xl font-semibold text-foreground">
             Admin Dashboard

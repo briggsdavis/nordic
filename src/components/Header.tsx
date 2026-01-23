@@ -31,6 +31,9 @@ const Header = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const isHomePage = location.pathname === "/"
+  const hasHeroImage = ["/", "/collection", "/contact", "/origin"].includes(
+    location.pathname,
+  )
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,7 +65,7 @@ const Header = () => {
   return (
     <header
       className={`sticky left-0 right-0 top-0 z-50 duration-300 ${
-        isScrolled || !isHomePage
+        isScrolled || !hasHeroImage
           ? "bg-card/95"
           : "bg-gradient-to-b from-black/40 to-transparent"
       }`}
@@ -70,9 +73,9 @@ const Header = () => {
       <div className="container mx-auto px-6 lg:px-8">
         <div className="grid h-20 grid-cols-[auto_1fr_auto] items-center md:grid-cols-3">
           {/* Logo */}
-          <Link to="/" className="group flex items-center gap-3">
+          <Link to="/" className="group flex w-fit items-center gap-3">
             <div className="relative flex items-center justify-center">
-              {isHomePage && !isScrolled && (
+              {hasHeroImage && !isScrolled && (
                 <div className="absolute h-12 w-12 rounded-full bg-[#f7fafc]" />
               )}
 
@@ -84,7 +87,7 @@ const Header = () => {
             </div>
             <span
               className={`font-serif text-lg font-semibold tracking-wide transition-colors ${
-                isScrolled || !isHomePage ? "text-foreground" : "text-card"
+                isScrolled || !hasHeroImage ? "text-foreground" : "text-card"
               }`}
             >
               Nordic Seafood
@@ -99,7 +102,7 @@ const Header = () => {
                   key={link.href}
                   to={link.href}
                   className={`text-sm font-medium uppercase tracking-wide transition-colors hover:text-primary ${
-                    isScrolled || !isHomePage ? "text-foreground" : "text-card"
+                    isScrolled || !hasHeroImage ? "text-foreground" : "text-card"
                   }`}
                 >
                   {link.label}
@@ -109,7 +112,7 @@ const Header = () => {
                   key={link.href}
                   href={link.href}
                   className={`text-sm font-medium uppercase tracking-wide transition-colors hover:text-primary ${
-                    isScrolled || !isHomePage ? "text-foreground" : "text-card"
+                    isScrolled || !hasHeroImage ? "text-foreground" : "text-card"
                   }`}
                 >
                   {link.label}
@@ -129,7 +132,7 @@ const Header = () => {
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="outline"
-                    className={`gap-2 ${!isScrolled && isHomePage && "border-card/30 bg-card/10 text-card hover:bg-card/20"}`}
+                    className={`gap-2 ${!isScrolled && hasHeroImage && "border-card/30 bg-card/10 text-card hover:bg-card/20"}`}
                   >
                     <User className="h-4 w-4" />
                     <span className="max-w-[100px] truncate text-sm font-medium">
@@ -168,7 +171,7 @@ const Header = () => {
             ) : (
               <Button
                 variant="outline"
-                className={`gap-2 ${!isScrolled && isHomePage && "border-card/30 bg-card/10 text-card hover:bg-card/20"}`}
+                className={`gap-2 ${!isScrolled && hasHeroImage && "border-card/30 bg-card/10 text-card hover:bg-card/20"}`}
                 onClick={handlePortalClick}
               >
                 <User className="h-4 w-4" />
@@ -179,7 +182,7 @@ const Header = () => {
 
           {/* Mobile Menu Toggle */}
           <button
-            className={`justify-self-end p-2 md:hidden ${isScrolled || !isHomePage ? "text-foreground" : "text-card"}`}
+            className={`justify-self-end p-2 md:hidden ${isScrolled || !hasHeroImage ? "text-foreground" : "text-card"}`}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? (

@@ -115,7 +115,7 @@ const ProductDetail = () => {
     <div className="min-h-screen bg-background">
       <Header />
 
-      <main className="container mx-auto px-6 pb-12 pt-28">
+      <main className="container mx-auto px-6 pb-12 pt-8">
         {/* Back Button */}
         <Button
           variant="ghost"

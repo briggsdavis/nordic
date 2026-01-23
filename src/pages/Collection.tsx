@@ -1,3 +1,4 @@
+import collectionHero from "@/assets/collection.jpg"
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -14,23 +15,49 @@ const Collection = () => {
     <div className="min-h-screen bg-background">
       <Header />
 
-      <main className="container mx-auto px-6 pb-12 pt-32">
-        {/* Page Header */}
-        <div className="mb-12 text-center">
-          <p className="mb-4 text-xs uppercase tracking-[0.3em] text-primary">
-            The Collection
-          </p>
-          <h1 className="mb-4 font-serif text-4xl text-foreground md:text-5xl">
-            Premium Norwegian Salmon
-          </h1>
-          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-            Browse our selection of premium-grade Atlantic salmon, sourced
-            directly from Norwegian fjords and delivered with precision.
-          </p>
-        </div>
+      <main>
+        {/* Hero Section */}
+        <section className="relative -mt-20 flex min-h-[70vh] items-end justify-center overflow-hidden pb-20">
+          {/* Background Image */}
+          <div className="absolute inset-0 z-0">
+            <img
+              src={collectionHero}
+              alt="Premium Norwegian salmon collection"
+              className="h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-transparent" />
+          </div>
 
-        {/* Products Grid */}
-        {isLoading ? (
+          {/* Content */}
+          <div className="container relative z-10 mx-auto px-6 text-center lg:px-8">
+            <div className="mx-auto max-w-3xl">
+              <p
+                className="mb-4 animate-fade-in-up text-xs uppercase tracking-[0.3em] text-card/80 opacity-0 md:text-sm"
+                style={{ animationDelay: "0.2s" }}
+              >
+                The Collection
+              </p>
+              <h1
+                className="mb-6 animate-fade-in-up font-serif text-4xl text-card opacity-0 md:text-5xl lg:text-6xl"
+                style={{ animationDelay: "0.4s" }}
+              >
+                Premium Norwegian Salmon
+              </h1>
+              <p
+                className="mx-auto max-w-2xl animate-fade-in-up text-lg font-light leading-relaxed text-card/90 opacity-0"
+                style={{ animationDelay: "0.6s" }}
+              >
+                Browse our selection of premium-grade Atlantic salmon, sourced
+                directly from Norwegian fjords and delivered with precision.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Products Section */}
+        <div className="container mx-auto px-6 py-16">
+
+          {isLoading ? (
           <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-2 lg:grid-cols-3">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div key={i} className="space-y-4">
@@ -91,6 +118,7 @@ const Collection = () => {
             </p>
           </div>
         )}
+        </div>
       </main>
 
       <Footer />
