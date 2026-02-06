@@ -83,19 +83,19 @@ const Collection = () => {
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
-                <div className="p-6">
-                  <h3 className="mb-3 font-serif text-xl text-foreground transition-colors group-hover:text-primary">
+                <div className="p-8">
+                  <h3 className="mb-4 font-serif text-xl text-foreground transition-colors group-hover:text-primary">
                     {product.name}
                   </h3>
-                  <p className="mb-4 text-sm text-muted-foreground">
+                  <p className="mb-5 text-sm text-muted-foreground">
                     {product.weight_range}
                   </p>
                   {product.description && (
-                    <p className="mb-5 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+                    <p className="mb-6 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
                       {product.description}
                     </p>
                   )}
-                  <div className="flex items-center justify-between border-t border-border pt-4">
+                  <div className="flex items-center justify-between border-t border-border pt-5">
                     <span className="text-sm font-medium text-primary">
                       {formatPrice(product.price_per_kg)}/kg
                     </span>
