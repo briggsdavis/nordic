@@ -5,6 +5,7 @@ import Hero from "@/components/Hero"
 import QualityPromise from "@/components/QualityPromise"
 import TechnicalDetails from "@/components/TechnicalDetails"
 import TrimmingGuide from "@/components/TrimmingGuide"
+import WhatWeDo from "@/components/WhatWeDo"
 import { useEffect } from "react"
 
 const Index = () => {
@@ -26,6 +27,7 @@ const Index = () => {
       <Header />
       <main aria-label="Nordic Seafood landing">
         <Hero />
+        <WhatWeDo />
         <QualityPromise />
         <TechnicalDetails />
         <CatalogTeaser />
