@@ -34,8 +34,7 @@ const partners = [
     established: "Est. 1918",
     description:
       "With a heritage spanning over a century since 1918, Brødrene Remø has evolved from a coastal family shop on the Sunnmøre coast into a global leader in sustainable seafood. They combine time-honored seafaring wisdom with cutting-edge technology to produce world-recognized Atlantic salmon and traditional smoked delicacies. Our partnership brings over 100 years of passion and sustainable craftsmanship to you, guaranteeing a level of quality and authenticity that only a century of experience can provide.",
-    image:
-      "https://images.unsplash.com/photo-1534943441045-1971e6854b46?auto=format&fit=crop&w=800&q=80",
+    image: "/remo.jpg",
     link: "https://www.goldfish.no/",
     buttonText: "Visit Brødrene Remø",
     imagePosition: "right" as const,
@@ -45,8 +44,7 @@ const partners = [
     established: "Since 9th Century Tradition",
     description:
       "Drawing from over a millennium of tradition, Fishcorp of Norway is a premier exporter dedicated to sharing nutrient-rich, sustainable seafood with the world. Specializing in delicacies like authentic Arctic stockfish and premium Atlantic salmon, they utilize strict quality controls that honor 9th-century Viking innovations. By partnering with Fishcorp, we provide \"Seafood for Healthy Generations,\" ensuring every product meets Norway's most rigorous food safety standards.",
-    image:
-      "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80",
+    image: "/fishcorp.jpg",
     link: "https://www.fishcorp.no/#about_us",
     buttonText: "Visit Fishcorp",
     imagePosition: "left" as const,

@@ -56,9 +56,8 @@ const NorwegianPartners = () => {
 
               {/* Image - Right */}
               <div className="relative h-64 lg:h-auto">
-                {/* TODO: Replace with /remo.jpg when image is added to public directory */}
                 <img
-                  src="https://images.unsplash.com/photo-1534943441045-1971e6854b46?auto=format&fit=crop&w=800&q=80"
+                  src="/remo.jpg"
                   alt="Brødrene Remø seafood processing facility in Norway"
                   className="h-full w-full object-cover"
                 />
@@ -72,9 +71,8 @@ const NorwegianPartners = () => {
             <div className="grid gap-8 lg:grid-cols-2 lg:grid-flow-dense">
               {/* Image - Left */}
               <div className="relative h-64 lg:h-auto">
-                {/* TODO: Replace with /fishcorp.jpg when image is added to public directory */}
                 <img
-                  src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80"
+                  src="/fishcorp.jpg"
                   alt="Fishcorp of Norway Atlantic salmon and stockfish"
                   className="h-full w-full object-cover"
                 />
