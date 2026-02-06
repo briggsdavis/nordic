@@ -1,4 +1,12 @@
-import { Building2, Clock, FileText, Shield, Thermometer } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import {
+  Building2,
+  Clock,
+  ExternalLink,
+  FileText,
+  Shield,
+  Thermometer,
+} from "lucide-react"
 
 const specs = [
   {
@@ -32,15 +40,25 @@ const partners = [
     name: "Brødrene Remø",
     location: "Fiskerstrand, Norway",
     description:
-      "A family-owned company with over a century of experience, Brødrene Remø specializes in premium fillet products and award-winning smoked salmon. Their state-of-the-art facility on the Sunnmøre coast combines cutting-edge technology with traditional methods, using no artificial substances in production.",
+      "With a heritage spanning over a century since 1918, Brødrene Remø has evolved from a coastal family shop on the Sunnmøre coast into a global leader in sustainable seafood. They combine time-honored seafaring wisdom with cutting-edge technology to produce world-recognized Atlantic salmon and traditional smoked delicacies. Our partnership brings over 100 years of passion and sustainable craftsmanship to you, guaranteeing a level of quality and authenticity that only a century of experience can provide.",
     established: "Est. 1918",
+    website: "https://www.goldfish.no/",
+    buttonLabel: "Visit Brødrene Remø",
+    imageUrl:
+      "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80",
+    imageAlt: "Norwegian coastal facility of Brødrene Remø",
   },
   {
-    name: "Fish Corp",
-    location: "Trondheim, Norway",
+    name: "Fishcorp of Norway",
+    location: "Norway",
     description:
-      "A modern seafood processing company focused on sustainable salmon sourcing and cold chain logistics. Fish Corp maintains strict quality standards throughout their operations, ensuring optimal freshness and traceability for export markets.",
-    established: "Est. 2008",
+      "Drawing from over a millennium of tradition, Fishcorp of Norway is a premier exporter dedicated to sharing nutrient-rich, sustainable seafood with the world. Specializing in delicacies like authentic Arctic stockfish and premium Atlantic salmon, they utilize strict quality controls that honor 9th-century Viking innovations. By partnering with Fishcorp, we provide "Seafood for Healthy Generations," ensuring every product meets Norway's most rigorous food safety standards.",
+    established: "Est. 9th Century Tradition",
+    website: "https://www.fishcorp.no/#about_us",
+    buttonLabel: "Visit Fishcorp",
+    imageUrl:
+      "https://images.unsplash.com/photo-1574781330855-d0db3cc5cc1e?auto=format&fit=crop&w=1200&q=80",
+    imageAlt: "Premium Atlantic salmon from Fishcorp of Norway",
   },
 ]
 
@@ -95,47 +113,122 @@ const TechnicalDetails = () => {
         </ul>
 
         {/* Partners Section */}
-        <div id="norwegian-partners" className="mx-auto max-w-4xl">
-          <div className="mb-12 text-center">
+        <div id="norwegian-partners" className="mx-auto max-w-7xl">
+          <div className="mb-16 text-center">
             <div className="mb-4 inline-flex items-center gap-2 text-muted-foreground">
               <Building2 className="h-4 w-4" />
               <span className="text-xs uppercase tracking-[0.2em]">
                 Sourcing Partners
               </span>
             </div>
-            <h3 className="font-serif text-3xl text-foreground">
+            <h3 className="mb-4 font-serif text-3xl text-foreground md:text-4xl">
               Trusted Norwegian Origins
             </h3>
+            <p className="mx-auto max-w-2xl text-muted-foreground">
+              We partner with Norway's most respected seafood producers,
+              combining centuries of tradition with uncompromising quality
+              standards.
+            </p>
           </div>
 
-          <ul
-            className="grid gap-8 md:grid-cols-2"
-            aria-label="Norwegian partners"
-          >
-            {partners.map((partner, index) => (
-              <li
-                key={index}
-                className="rounded-2xl border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
-              >
-                <div className="mb-4 flex items-start justify-between">
-                  <div>
-                    <h4 className="font-serif text-xl text-foreground">
-                      {partner.name}
+          {/* Partner Cards */}
+          <div className="space-y-12">
+            {/* Brødrene Remø - Text Left, Image Right */}
+            <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-lg transition-all duration-300 hover:shadow-xl">
+              <div className="grid gap-0 lg:grid-cols-2">
+                {/* Text Content */}
+                <div className="flex flex-col justify-center p-8 lg:p-12">
+                  <div className="mb-4">
+                    <span className="mb-2 inline-block text-xs font-medium uppercase tracking-wide text-primary">
+                      {partners[0].established}
+                    </span>
+                    <h4 className="mb-2 font-serif text-3xl text-foreground">
+                      {partners[0].name}
                     </h4>
                     <p className="text-sm text-muted-foreground">
-                      {partner.location}
+                      {partners[0].location}
                     </p>
                   </div>
-                  <span className="text-xs font-medium text-primary">
-                    {partner.established}
-                  </span>
+                  <p className="mb-6 leading-relaxed text-muted-foreground">
+                    {partners[0].description}
+                  </p>
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="lg"
+                    className="w-fit gap-2"
+                  >
+                    <a
+                      href={partners[0].website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {partners[0].buttonLabel}
+                      <ExternalLink className="h-4 w-4" />
+                    </a>
+                  </Button>
                 </div>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {partner.description}
-                </p>
-              </li>
-            ))}
-          </ul>
+
+                {/* Image */}
+                <div className="relative h-64 lg:h-auto">
+                  <img
+                    src={partners[0].imageUrl}
+                    alt={partners[0].imageAlt}
+                    className="h-full w-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-card/20 to-transparent" />
+                </div>
+              </div>
+            </div>
+
+            {/* Fishcorp - Image Left, Text Right */}
+            <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-lg transition-all duration-300 hover:shadow-xl">
+              <div className="grid gap-0 lg:grid-cols-2">
+                {/* Image */}
+                <div className="relative h-64 lg:h-auto">
+                  <img
+                    src={partners[1].imageUrl}
+                    alt={partners[1].imageAlt}
+                    className="h-full w-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-l from-card/20 to-transparent" />
+                </div>
+
+                {/* Text Content */}
+                <div className="flex flex-col justify-center p-8 lg:p-12">
+                  <div className="mb-4">
+                    <span className="mb-2 inline-block text-xs font-medium uppercase tracking-wide text-primary">
+                      {partners[1].established}
+                    </span>
+                    <h4 className="mb-2 font-serif text-3xl text-foreground">
+                      {partners[1].name}
+                    </h4>
+                    <p className="text-sm text-muted-foreground">
+                      {partners[1].location}
+                    </p>
+                  </div>
+                  <p className="mb-6 leading-relaxed text-muted-foreground">
+                    {partners[1].description}
+                  </p>
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="lg"
+                    className="w-fit gap-2"
+                  >
+                    <a
+                      href={partners[1].website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {partners[1].buttonLabel}
+                      <ExternalLink className="h-4 w-4" />
+                    </a>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
