@@ -10,10 +10,10 @@ const CatalogTeaser = () => {
   const navigate = useNavigate()
 
   return (
-    <section id="collection" className="bg-background py-24 lg:py-32">
+    <section id="collection" className="bg-background py-16 lg:py-20">
       <div className="container mx-auto px-6 lg:px-8">
         {/* Section Header */}
-        <div className="mb-16 flex flex-col md:flex-row md:items-end md:justify-between">
+        <div className="mb-12 flex flex-col md:flex-row md:items-end md:justify-between">
           <div>
             <p className="mb-4 text-xs uppercase tracking-[0.3em] text-primary">
               The Collection

@@ -5,10 +5,10 @@ import { Link } from "react-router-dom"
 const FullTransparency = () => {
 
   return (
-    <section className="bg-secondary py-20 lg:py-28">
+    <section className="bg-secondary py-16 lg:py-20">
       <div className="container mx-auto px-6 lg:px-8">
         {/* Section Header */}
-        <div className="mb-16 text-center">
+        <div className="mb-12 text-center">
           <h2 className="mb-4 font-serif text-4xl text-foreground md:text-5xl">
             Full Transparency
           </h2>
