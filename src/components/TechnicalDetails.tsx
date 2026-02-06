@@ -52,7 +52,7 @@ const partners = [
     name: "Fishcorp of Norway",
     location: "Norway",
     description:
-      "Drawing from over a millennium of tradition, Fishcorp of Norway is a premier exporter dedicated to sharing nutrient-rich, sustainable seafood with the world. Specializing in delicacies like authentic Arctic stockfish and premium Atlantic salmon, they utilize strict quality controls that honor 9th-century Viking innovations. By partnering with Fishcorp, we provide "Seafood for Healthy Generations," ensuring every product meets Norway's most rigorous food safety standards.",
+      "Drawing from over a millennium of tradition, Fishcorp of Norway is a premier exporter dedicated to sharing nutrient-rich, sustainable seafood with the world. Specializing in delicacies like authentic Arctic stockfish and premium Atlantic salmon, they utilize strict quality controls that honor 9th-century Viking innovations. By partnering with Fishcorp, we provide \"Seafood for Healthy Generations,\" ensuring every product meets Norway's most rigorous food safety standards.",
     established: "Est. 9th Century Tradition",
     website: "https://www.fishcorp.no/#about_us",
     buttonLabel: "Visit Fishcorp",
