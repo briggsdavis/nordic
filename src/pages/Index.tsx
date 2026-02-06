@@ -1,9 +1,9 @@
 import CatalogTeaser from "@/components/CatalogTeaser"
 import Footer from "@/components/Footer"
+import FullTransparency from "@/components/FullTransparency"
 import Header from "@/components/Header"
 import Hero from "@/components/Hero"
-import QualityPromise from "@/components/QualityPromise"
-import TechnicalDetails from "@/components/TechnicalDetails"
+import ServiceHighlight from "@/components/ServiceHighlight"
 import TrimmingGuide from "@/components/TrimmingGuide"
 import { useEffect } from "react"
 
@@ -26,8 +26,8 @@ const Index = () => {
       <Header />
       <main aria-label="Nordic Seafood landing">
         <Hero />
-        <QualityPromise />
-        <TechnicalDetails />
+        <ServiceHighlight />
+        <FullTransparency />
         <CatalogTeaser />
         <TrimmingGuide />
       </main>
