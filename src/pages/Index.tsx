@@ -1,5 +1,6 @@
 import CatalogTeaser from "@/components/CatalogTeaser"
 import Footer from "@/components/Footer"
+import FullTransparency from "@/components/FullTransparency"
 import Header from "@/components/Header"
 import Hero from "@/components/Hero"
 import QualityPromise from "@/components/QualityPromise"
@@ -28,6 +29,7 @@ const Index = () => {
       <main aria-label="Nordic Seafood landing">
         <Hero />
         <ServiceHighlight />
+        <FullTransparency />
         <QualityPromise />
         <TechnicalDetails />
         <CatalogTeaser />

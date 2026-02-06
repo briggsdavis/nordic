@@ -95,7 +95,7 @@ const TechnicalDetails = () => {
         </ul>
 
         {/* Partners Section */}
-        <div className="mx-auto max-w-4xl">
+        <div id="norwegian-partners" className="mx-auto max-w-4xl">
           <div className="mb-12 text-center">
             <div className="mb-4 inline-flex items-center gap-2 text-muted-foreground">
               <Building2 className="h-4 w-4" />

@@ -15,12 +15,11 @@ const ServiceHighlight = () => {
                 How It Works
               </p>
               <h2 className="mb-6 font-serif text-4xl text-foreground md:text-5xl">
-                From Norway to Your Door in 48 Hours
+                Norway to Your Door in 48 Hours
               </h2>
               <p className="text-lg leading-relaxed text-muted-foreground">
-                We import premium Norwegian Atlantic salmon directly from Norway
-                to Ethiopia in under two days, delivering fresh, chef-ready cuts
-                straight to your doorstep.
+                Premium Norwegian salmon delivered fresh to your doorstep in
+                under two days.
               </p>
             </div>
 
@@ -36,8 +35,7 @@ const ServiceHighlight = () => {
                     Order Online Anytime
                   </h3>
                   <p className="text-muted-foreground">
-                    Browse our collection and place orders 24/7 through our
-                    secure platform. Simple, fast, and convenient.
+                    Browse and order 24/7 through our secure platform.
                   </p>
                 </div>
               </div>
@@ -52,9 +50,8 @@ const ServiceHighlight = () => {
                     Full Transparency
                   </h3>
                   <p className="text-muted-foreground">
-                    Every shipment includes verifiable health and quality
-                    certificates. View all certifications and individual order
-                    documents directly on our site.
+                    View all health and quality certificates directly on our
+                    site.
                   </p>
                 </div>
               </div>
@@ -69,9 +66,8 @@ const ServiceHighlight = () => {
                     Live Delivery Tracking
                   </h3>
                   <p className="text-muted-foreground">
-                    Track your order through all 7 stages of delivery with
-                    real-time updates. From harvest to doorstep, know exactly
-                    where your salmon is.
+                    Track your order through all 7 stages with real-time
+                    updates.
                   </p>
                 </div>
               </div>
@@ -86,8 +82,8 @@ const ServiceHighlight = () => {
                     Direct Home Delivery
                   </h3>
                   <p className="text-muted-foreground">
-                    Refrigerated delivery across Addis Ababa. No middlemen, no
-                    delays—just premium salmon delivered fresh to your home.
+                    Refrigerated delivery across Addis Ababa—no middlemen, no
+                    delays.
                   </p>
                 </div>
               </div>
