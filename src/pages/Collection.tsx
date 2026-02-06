@@ -58,7 +58,7 @@ const Collection = () => {
         <div className="container mx-auto px-6 pb-24 pt-20">
 
           {isLoading ? (
-          <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="animate-fade-in mx-auto grid max-w-5xl gap-8 opacity-0 md:grid-cols-2 lg:grid-cols-3" style={{ animationDelay: "0.2s" }}>
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div key={i} className="space-y-5">
                 <Skeleton className="aspect-[16/15] rounded-2xl" />
@@ -69,7 +69,7 @@ const Collection = () => {
             ))}
           </div>
         ) : products && products.length > 0 ? (
-          <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="animate-fade-in mx-auto grid max-w-5xl gap-8 opacity-0 md:grid-cols-2 lg:grid-cols-3" style={{ animationDelay: "0.2s" }}>
             {products.map((product) => (
               <div
                 key={product.id}

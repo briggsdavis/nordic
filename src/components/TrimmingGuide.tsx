@@ -10,7 +10,7 @@ const TrimmingGuide = () => {
     >
       <div className="container mx-auto px-6 lg:px-8">
         {/* Section Header */}
-        <div className="mb-16 flex flex-col lg:flex-row lg:items-center lg:justify-between">
+        <div className="animate-fade-in mb-16 flex flex-col opacity-0 lg:flex-row lg:items-center lg:justify-between" style={{ animationDelay: "0.1s" }}>
           <div className="lg:max-w-xl">
             <div className="mb-4 inline-flex items-center gap-2 text-muted-foreground">
               <ChefHat className="h-4 w-4" />
@@ -52,7 +52,7 @@ const TrimmingGuide = () => {
         </div>
 
         {/* Salmon Diagram Placeholder */}
-        <div className="relative mb-16 overflow-hidden rounded-2xl border border-card/10 bg-card/5">
+        <div className="animate-fade-in relative mb-16 overflow-hidden rounded-2xl border border-card/10 bg-card/5 opacity-0" style={{ animationDelay: "0.3s" }}>
           <div className="flex aspect-[21/9] items-center justify-center">
             <img
               src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=1600&q=80"

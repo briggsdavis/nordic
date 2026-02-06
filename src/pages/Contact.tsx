@@ -71,7 +71,7 @@ const Contact = () => {
         {/* Contact Cards */}
         <section className="py-16 lg:py-24" aria-labelledby="contact-details">
           <div className="container mx-auto px-6 lg:px-8">
-            <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <div className="animate-fade-in mx-auto grid max-w-5xl gap-8 opacity-0 md:grid-cols-2 lg:grid-cols-3" style={{ animationDelay: "0.2s" }}>
               <h2 id="contact-details" className="sr-only">
                 Contact details
               </h2>
@@ -144,7 +144,7 @@ const Contact = () => {
         >
           <div className="container mx-auto px-6 lg:px-8">
             <div className="mx-auto max-w-3xl">
-              <div className="mb-12 text-center">
+              <div className="animate-fade-in mb-12 text-center opacity-0" style={{ animationDelay: "0.1s" }}>
                 <h2
                   id="contact-b2b"
                   className="mb-4 font-serif text-3xl text-foreground lg:text-4xl"
@@ -157,7 +157,7 @@ const Contact = () => {
                 </p>
               </div>
 
-              <Card className="border-border">
+              <Card className="animate-fade-in border-border opacity-0" style={{ animationDelay: "0.3s" }}>
                 <CardContent className="p-8">
                   <div className="grid gap-8 md:grid-cols-2">
                     <div className="space-y-6">
