@@ -3,9 +3,7 @@ import Footer from "@/components/Footer"
 import FullTransparency from "@/components/FullTransparency"
 import Header from "@/components/Header"
 import Hero from "@/components/Hero"
-import QualityPromise from "@/components/QualityPromise"
 import ServiceHighlight from "@/components/ServiceHighlight"
-import TechnicalDetails from "@/components/TechnicalDetails"
 import TrimmingGuide from "@/components/TrimmingGuide"
 import { useEffect } from "react"
 
@@ -30,8 +28,6 @@ const Index = () => {
         <Hero />
         <ServiceHighlight />
         <FullTransparency />
-        <QualityPromise />
-        <TechnicalDetails />
         <CatalogTeaser />
         <TrimmingGuide />
       </main>

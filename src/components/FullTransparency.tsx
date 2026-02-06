@@ -1,13 +1,8 @@
 import { Button } from "@/components/ui/button"
 import { Award, Clock, Globe, Package, Shield, Truck } from "lucide-react"
+import { Link } from "react-router-dom"
 
 const FullTransparency = () => {
-  const scrollToPartners = () => {
-    const partnersSection = document.getElementById("norwegian-partners")
-    if (partnersSection) {
-      partnersSection.scrollIntoView({ behavior: "smooth", block: "start" })
-    }
-  }
 
   return (
     <section className="bg-secondary py-20 lg:py-28">
@@ -161,12 +156,12 @@ const FullTransparency = () => {
             {/* CTA Button */}
             <div className="pt-4">
               <Button
-                onClick={scrollToPartners}
+                asChild
                 variant="outline"
                 size="lg"
                 className="w-full gap-2 text-sm font-medium uppercase tracking-wide sm:w-auto"
               >
-                Find Out More
+                <Link to="/collection">Explore Our Collection</Link>
               </Button>
             </div>
           </div>
