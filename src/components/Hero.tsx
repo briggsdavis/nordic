@@ -20,7 +20,7 @@ const Hero = () => {
       </div>
 
       {/* Content */}
-      <div className="container relative z-10 mx-auto px-6 text-center lg:px-8">
+      <div className="container relative z-10 mx-auto px-4 text-center lg:px-6">
         <div className="mx-auto max-w-4xl">
           {/* Tagline */}
           <p

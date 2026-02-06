@@ -5,12 +5,12 @@ import { ChefHat, FileText } from "lucide-react"
 const TrimmingGuide = () => {
   return (
     <section
-      className="bg-secondary py-16 lg:py-20"
+      className="bg-secondary py-24 lg:py-32"
       aria-labelledby="trimming-guide-title"
     >
-      <div className="container mx-auto px-6 lg:px-8">
+      <div className="container mx-auto px-4 lg:px-6">
         {/* Section Header */}
-        <div className="mb-12 flex flex-col lg:flex-row lg:items-center lg:justify-between">
+        <div className="mb-16 flex flex-col lg:flex-row lg:items-center lg:justify-between">
           <div className="lg:max-w-xl">
             <div className="mb-4 inline-flex items-center gap-2 text-muted-foreground">
               <ChefHat className="h-4 w-4" />

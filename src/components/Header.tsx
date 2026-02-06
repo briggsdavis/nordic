@@ -70,7 +70,7 @@ const Header = () => {
           : "bg-gradient-to-b from-black/40 to-transparent"
       }`}
     >
-      <div className="container mx-auto px-6 lg:px-8">
+      <div className="container mx-auto px-4 lg:px-6">
         <div className="grid h-20 grid-cols-[auto_1fr_auto] items-center md:grid-cols-3">
           {/* Logo */}
           <Link to="/" className="group flex w-fit items-center gap-3">

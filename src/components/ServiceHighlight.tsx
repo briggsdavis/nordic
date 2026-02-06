@@ -4,8 +4,8 @@ import { Link } from "react-router-dom"
 
 const ServiceHighlight = () => {
   return (
-    <section className="bg-background py-16 lg:py-20">
-      <div className="container mx-auto px-6 lg:px-8">
+    <section className="bg-background py-24 lg:py-32">
+      <div className="container mx-auto px-4 lg:px-6">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Left Content */}
           <div className="space-y-8">
