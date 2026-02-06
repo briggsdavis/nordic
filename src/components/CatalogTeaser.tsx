@@ -13,7 +13,7 @@ const CatalogTeaser = () => {
     <section id="collection" className="bg-background py-24 lg:py-32">
       <div className="container mx-auto px-6 lg:px-8">
         {/* Section Header */}
-        <div className="mb-16 flex flex-col md:flex-row md:items-end md:justify-between">
+        <div className="animate-fade-in mb-16 flex flex-col opacity-0 md:flex-row md:items-end md:justify-between" style={{ animationDelay: "0.1s" }}>
           <div>
             <p className="mb-4 text-xs uppercase tracking-[0.3em] text-primary">
               The Collection
@@ -35,7 +35,7 @@ const CatalogTeaser = () => {
         </div>
 
         {/* Products Grid */}
-        <div className="mb-16 grid gap-8 md:grid-cols-3">
+        <div className="animate-fade-in mb-16 grid gap-8 opacity-0 md:grid-cols-3" style={{ animationDelay: "0.3s" }}>
           {isLoading ? (
             <>
               {[1, 2, 3].map((i) => (

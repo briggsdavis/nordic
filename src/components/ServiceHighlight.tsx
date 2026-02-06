@@ -8,7 +8,7 @@ const ServiceHighlight = () => {
       <div className="container mx-auto px-6 lg:px-8">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Left Content */}
-          <div className="space-y-8">
+          <div className="animate-fade-in space-y-8 opacity-0" style={{ animationDelay: "0.2s" }}>
             {/* Header */}
             <div>
               <p className="mb-4 text-xs uppercase tracking-[0.3em] text-primary">
@@ -105,11 +105,11 @@ const ServiceHighlight = () => {
           </div>
 
           {/* Right Image */}
-          <div className="relative lg:order-last">
+          <div className="animate-fade-in relative opacity-0 lg:order-last" style={{ animationDelay: "0.4s" }}>
             <div className="relative overflow-hidden rounded-2xl shadow-2xl">
               <img
-                src="https://images.unsplash.com/photo-1580959375944-0a23d9df6e86?auto=format&fit=crop&w=1200&q=80"
-                alt="Fresh Norwegian salmon fillet being prepared in modern kitchen"
+                src="/map.jpg"
+                alt="Norwegian salmon delivery route map from fjords to Ethiopia"
                 className="aspect-[4/5] w-full object-cover lg:aspect-square"
               />
               {/* Overlay Badge */}

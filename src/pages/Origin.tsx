@@ -98,11 +98,12 @@ const Origin = () => {
           <div className="container mx-auto px-6">
             <h2
               id="origin-values"
-              className="mb-12 text-center font-serif text-3xl text-foreground"
+              className="animate-fade-in mb-12 text-center font-serif text-3xl text-foreground opacity-0"
+              style={{ animationDelay: "0.1s" }}
             >
               Our Core Values
             </h2>
-            <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-2">
+            <div className="animate-fade-in mx-auto grid max-w-5xl gap-8 opacity-0 md:grid-cols-2" style={{ animationDelay: "0.3s" }}>
               {values.map((value) => (
                 <div
                   key={value.title}
@@ -127,11 +128,12 @@ const Origin = () => {
             <div className="mx-auto max-w-3xl">
               <h2
                 id="origin-story"
-                className="mb-8 text-center font-serif text-3xl text-foreground"
+                className="animate-fade-in mb-8 text-center font-serif text-3xl text-foreground opacity-0"
+                style={{ animationDelay: "0.1s" }}
               >
                 Our Story
               </h2>
-              <div className="space-y-6 leading-relaxed text-muted-foreground">
+              <div className="animate-fade-in space-y-6 leading-relaxed text-muted-foreground opacity-0" style={{ animationDelay: "0.3s" }}>
                 <p>
                   Nordic Seafood was founded to bridge a clear market gap:
                   Ethiopia's growing demand for premium seafood and the lack of
@@ -160,16 +162,17 @@ const Origin = () => {
             <div className="mx-auto max-w-3xl text-center">
               <h2
                 id="origin-promise"
-                className="mb-6 font-serif text-3xl text-foreground"
+                className="animate-fade-in mb-6 font-serif text-3xl text-foreground opacity-0"
+                style={{ animationDelay: "0.1s" }}
               >
                 The Nordic Promise
               </h2>
-              <p className="mb-8 text-lg text-muted-foreground">
+              <p className="animate-fade-in mb-8 text-lg text-muted-foreground opacity-0" style={{ animationDelay: "0.3s" }}>
                 When you choose Nordic Seafood, you choose a partner committed
                 to consistent supply, transparent sourcing, and dependable
                 logistics.
               </p>
-              <div className="flex flex-wrap justify-center gap-4 text-sm text-foreground">
+              <div className="animate-fade-in flex flex-wrap justify-center gap-4 text-sm text-foreground opacity-0" style={{ animationDelay: "0.5s" }}>
                 <span className="rounded-full bg-primary/10 px-4 py-2">
                   100% Norwegian Origin
                 </span>

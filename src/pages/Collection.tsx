@@ -55,13 +55,13 @@ const Collection = () => {
         </section>
 
         {/* Products Section */}
-        <div className="container mx-auto px-6 py-16">
+        <div className="container mx-auto px-6 pb-24 pt-20">
 
           {isLoading ? (
-          <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="animate-fade-in mx-auto grid max-w-5xl gap-8 opacity-0 md:grid-cols-2 lg:grid-cols-3" style={{ animationDelay: "0.2s" }}>
             {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="space-y-4">
-                <Skeleton className="aspect-[4/3] rounded-2xl" />
+              <div key={i} className="space-y-5">
+                <Skeleton className="aspect-[16/15] rounded-2xl" />
                 <Skeleton className="h-6 w-3/4" />
                 <Skeleton className="h-4 w-1/2" />
                 <Skeleton className="h-4 w-2/3" />
@@ -69,33 +69,33 @@ const Collection = () => {
             ))}
           </div>
         ) : products && products.length > 0 ? (
-          <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="animate-fade-in mx-auto grid max-w-5xl gap-8 opacity-0 md:grid-cols-2 lg:grid-cols-3" style={{ animationDelay: "0.2s" }}>
             {products.map((product) => (
               <div
                 key={product.id}
                 className="group cursor-pointer overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:shadow-lg"
                 onClick={() => navigate(`/products/${product.slug}`)}
               >
-                <div className="aspect-[4/3] overflow-hidden bg-muted">
+                <div className="aspect-[16/15] overflow-hidden bg-muted">
                   <img
                     src={product.image_url || ""}
                     alt={product.name}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
-                <div className="p-4">
-                  <h3 className="mb-1 font-serif text-xl text-foreground transition-colors group-hover:text-primary">
+                <div className="p-8">
+                  <h3 className="mb-4 font-serif text-xl text-foreground transition-colors group-hover:text-primary">
                     {product.name}
                   </h3>
-                  <p className="mb-2 text-sm text-muted-foreground">
+                  <p className="mb-5 text-sm text-muted-foreground">
                     {product.weight_range}
                   </p>
                   {product.description && (
-                    <p className="mb-3 line-clamp-2 text-sm text-muted-foreground">
+                    <p className="mb-6 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
                       {product.description}
                     </p>
                   )}
-                  <div className="flex items-center justify-between border-t border-border pt-2">
+                  <div className="flex items-center justify-between border-t border-border pt-5">
                     <span className="text-sm font-medium text-primary">
                       {formatPrice(product.price_per_kg)}/kg
                     </span>
