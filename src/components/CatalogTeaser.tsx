@@ -2,12 +2,15 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useProducts } from "@/hooks/useProducts"
 import { formatPrice } from "@/lib/format"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Package } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
 const CatalogTeaser = () => {
   const { data: products, isLoading } = useProducts()
   const navigate = useNavigate()
+
+  // Show only first 3 products for teaser
+  const teaserProducts = products?.slice(0, 3)
 
   return (
     <section id="collection" className="bg-background py-24 lg:py-32">
@@ -35,7 +38,11 @@ const CatalogTeaser = () => {
         </div>
 
         {/* Products Grid */}
+<<<<<<< HEAD
         <div className="animate-fade-in mb-16 grid gap-8 opacity-0 md:grid-cols-3" style={{ animationDelay: "0.3s" }}>
+=======
+        <div className="mb-16 grid gap-6 sm:gap-8 md:grid-cols-3">
+>>>>>>> 8d2e06e (nordic stuff)
           {isLoading ? (
             <>
               {[1, 2, 3].map((i) => (
@@ -47,29 +54,39 @@ const CatalogTeaser = () => {
               ))}
             </>
           ) : (
-            products?.map((product) => (
+            teaserProducts?.map((product) => (
               <div
                 key={product.id}
-                className="group cursor-pointer"
+                className="group cursor-pointer active:scale-[0.98] transition-transform"
                 onClick={() => navigate(`/products/${product.slug}`)}
               >
                 <div className="mb-4 aspect-[4/3] overflow-hidden rounded-2xl bg-muted">
-                  <img
-                    src={product.image_url || ""}
-                    alt={product.name}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
+                  {product.image_url ? (
+                    <img
+                      src={product.image_url}
+                      alt={product.name}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      onError={(e) => {
+                        e.currentTarget.style.display = "none"
+                      }}
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center text-muted-foreground">
+                      <Package className="h-12 w-12 opacity-50" />
+                    </div>
+                  )}
                 </div>
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h3 className="font-serif text-xl text-foreground transition-colors group-hover:text-primary">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0 flex-1">
+                    <h3 className="truncate font-serif text-lg text-foreground transition-colors group-hover:text-primary sm:text-xl">
                       {product.name}
                     </h3>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="truncate text-sm text-muted-foreground">
                       {product.weight_range}
                     </p>
                   </div>
-                  <span className="text-xs font-medium tracking-wide text-primary">
+                  <span className="whitespace-nowrap text-xs font-medium tracking-wide text-primary sm:text-sm">
                     {formatPrice(product.price_per_kg)}/kg
                   </span>
                 </div>

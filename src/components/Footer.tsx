@@ -56,6 +56,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
+<<<<<<< HEAD
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 md:flex-row">
           <div className="flex flex-col items-center gap-2 text-xs text-muted-foreground md:flex-row md:gap-4">
             <p>© 2026 Nordic Seafood Ethiopia. All rights reserved.</p>
@@ -72,8 +73,14 @@ const Footer = () => {
               </a>
             </p>
           </div>
+=======
+        <div className="mt-16 grid grid-cols-1 items-center gap-4 border-t border-border pt-8 text-center md:grid-cols-3 md:text-left">
+          <p className="text-xs text-muted-foreground">
+            © 2026 Nordic Seafood Ethiopia. All rights reserved.
+          </p>
+>>>>>>> 8d2e06e (nordic stuff)
 
-          <div className="flex gap-6 text-xs text-muted-foreground">
+          <div className="flex justify-center gap-6 text-xs text-muted-foreground">
             <a
               href={policies}
               target="_blank"
@@ -91,6 +98,17 @@ const Footer = () => {
               Terms
             </a>
           </div>
+
+          <p className="text-xs text-muted-foreground md:text-right">
+            <a
+              href="https://briggsdavis.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-foreground"
+            >
+              Made by Briggs Davis
+            </a>
+          </p>
         </div>
       </div>
     </footer>

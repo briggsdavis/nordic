@@ -56,18 +56,43 @@ const Checkout = () => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-    if (file) {
-      if (file.size > MAX_FILE_SIZE) {
-        toast({
-          variant: "destructive",
-          title: "File too large",
-          description: `File size must be less than ${MAX_FILE_SIZE / 1024 / 1024}MB. Your file is ${(file.size / 1024 / 1024).toFixed(2)}MB.`,
-        })
-        e.target.value = "" // Reset input
-        return
-      }
-      setPaymentFile(file)
+    if (!file) return
+
+    // Validate file type
+    const ALLOWED_TYPES = [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "image/webp",
+      "application/pdf",
+    ]
+
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      toast({
+        variant: "destructive",
+        title: "Invalid file type",
+        description: "Only images (JPEG, PNG, GIF, WebP) and PDF files are allowed.",
+      })
+      e.target.value = "" // Reset input
+      return
     }
+
+    // Validate file size
+    if (file.size > MAX_FILE_SIZE) {
+      toast({
+        variant: "destructive",
+        title: "File too large",
+        description: `File size must be less than ${MAX_FILE_SIZE / 1024 / 1024}MB. Your file is ${(file.size / 1024 / 1024).toFixed(2)}MB.`,
+      })
+      e.target.value = "" // Reset input
+      return
+    }
+
+    // Sanitize filename - remove path traversal and special characters
+    const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_")
+    const sanitizedFile = new File([file], safeName, { type: file.type })
+
+    setPaymentFile(sanitizedFile)
   }
 
   const handleSubmitClick = () => {

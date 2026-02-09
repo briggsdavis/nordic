@@ -170,13 +170,30 @@ export const useAdminOrders = () => {
       file: File
       certificateType: string
     }) => {
+      // Validate file type
+      const ALLOWED_TYPES = [
+        "image/jpeg",
+        "image/png",
+        "image/gif",
+        "image/webp",
+        "application/pdf",
+      ]
+
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        throw new Error(
+          "Invalid file type. Only images and PDF files are allowed.",
+        )
+      }
+
       if (file.size > MAX_FILE_SIZE) {
         throw new Error(
           `File size must be less than ${MAX_FILE_SIZE / 1024 / 1024}MB`,
         )
       }
 
-      const filePath = `certificates/${orderId}/${Date.now()}-${file.name}`
+      // Sanitize filename
+      const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_")
+      const filePath = `certificates/${orderId}/${Date.now()}-${safeName}`
 
       const { error: uploadError } = await supabase.storage
         .from("order-files")

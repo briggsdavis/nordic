@@ -2,136 +2,158 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Commands
+## Project Overview
 
-**Development:**
+Nordic Seafood - E-commerce platform delivering premium Norwegian salmon to Ethiopia. Built with React + TypeScript + Vite, backed by Supabase (PostgreSQL).
 
-- `bun dev` - Start Vite dev server (default: http://localhost:5173)
-- `bun build` - Production build
-- `bun build:dev` - Development build
-- `bun preview` - Preview production build locally
-- `bun lint` - Run ESLint
+## Development Commands
 
-**Package Management:**
+```bash
+# Install dependencies (use bun, not npm)
+bun install
 
-- Use `bun` (NOT npm) for all package operations
-- `bun add <package>` - Add dependency
-- `bun add -d <package>` - Add dev dependency
+# Start dev server (runs on port 8080)
+bun run dev
 
-## Architecture
+# Build for production
+bun run build
 
-### Tech Stack
+# Build for development
+bun run build:dev
 
-- **Frontend:** React 18 + TypeScript + Vite
-- **UI:** shadcn/ui (Radix UI primitives) + Tailwind CSS
-- **Backend:** Supabase (PostgreSQL, Auth, Storage)
-- **State:** TanStack React Query (server state) + React Context (auth)
-- **Forms:** React Hook Form + Zod validation
-- **Routing:** React Router v6
+# Lint code
+bun run lint
 
-### Core Application Flow
-
-**Provider Hierarchy (App.tsx):**
-
-```
-QueryClientProvider
-  └─ TooltipProvider
-      └─ BrowserRouter
-          └─ AuthProvider (AuthContext)
-              └─ Routes
+# Preview production build
+bun run preview
 ```
 
-**Authentication System:**
+## Environment Setup
 
-- `AuthContext` provides: `user`, `session`, `profile`, `role`, `loading`, `signOut()`, `refreshProfile()`
-- On auth state change, fetches user `profile` (from `profiles` table) and `role` (from `user_roles` table)
-- Uses `setTimeout` workaround to defer Supabase calls in `onAuthStateChange` to avoid RLS deadlock
-- Auth listener setup BEFORE `getSession()` call to prevent race conditions
+Requires env vars in `.env`:
 
-**Route Protection:**
+- `VITE_SUPABASE_URL` - Supabase project URL
+- `VITE_SUPABASE_PUBLISHABLE_KEY` - Supabase anon/public key
 
-- `<ProtectedRoute>` wrapper checks auth and optionally admin role
-- Redirects to `/auth` if not authenticated, to `/portal` if not admin
-- Shows loader during auth state resolution
+## Key Architectural Patterns
 
-**Database Schema (Key Tables):**
+### Authentication Flow
 
-- `profiles` - User profile data (full_name, email, phone, address, account_type)
-- `user_roles` - Role assignments (app_role enum: 'admin' | 'client')
-- `products` - Salmon products (name, description, price_per_kg, specifications, images)
-- `cart_items` - Shopping cart (user_id, product_id, variant, quantity)
-- `orders` - Order records (user_id, total_amount, status, delivery_address)
-- `order_items` - Line items per order
-- `order_certificates` - Uploaded certificates (health, quality docs)
+Auth is centralized in `AuthContext` (`src/contexts/AuthContext.tsx`) with:
 
-**RLS Security Pattern:**
+- Automatic session restoration on load
+- Profile + role fetching with retry logic for network errors
+- Optimistic updates via `refreshProfile()`
+- Protected routes enforce auth state and admin role via `ProtectedRoute` component
 
-- Uses `SECURITY DEFINER` functions (`has_role()`, `get_user_role()`) to check roles without RLS recursion
-- Policies separate user data access (own records) from admin access (all records)
-- New users auto-assigned 'client' role via trigger on `auth.users`
+**Auth state includes:**
 
-### State Management Patterns
+- `user` - Supabase auth user
+- `session` - Active session
+- `profile` - User profile from `profiles` table
+- `role` - Role from `user_roles` table (`admin` or `client`)
 
-**Server State (React Query):**
+### Data Fetching Architecture
 
-- Custom hooks wrap queries/mutations: `useProducts`, `useCart`, `useOrders`, `useAdminOrders`, `useAdminProducts`
-- Query keys include user ID where relevant: `["cart", user?.id]`
-- Mutations invalidate related queries on success
-- Toast notifications on errors
+All server state uses **TanStack React Query**:
 
-**Cart Logic (`useCart`):**
+- Custom hooks in `/src/hooks` (e.g., `useCart`, `useProducts`, `useOrders`)
+- Query keys follow pattern: `["resource", userId/contextId]`
+- Mutations auto-invalidate related queries
+- Auth-dependent queries use `enabled: !!user`
 
-- Variant pricing: `pricePerKg * weight` (100g=0.1kg, 200g=0.2kg, 300g=0.3kg)
-- Upsert pattern: update quantity if item exists, insert if new
-- `cartTotal` and `cartCount` computed from items
-- `clearCart()` used after successful checkout
+### Cart State Management
 
-**Protected Data Fetching:**
+Cart is **server-synced** via Supabase:
 
-- Queries use `enabled: !!user` to prevent fetch when unauthenticated
-- Return empty array/null when user not present
+- `useCart` hook manages all cart operations
+- Cart items stored in `cart_items` table with product join
+- Variant pricing calculated client-side using `getVariantPrice()`
+- Standard variants: `100g`, `200g`, `300g` (weight in kg × price_per_kg)
 
-### Routing Structure
+### Database Schema (Key Tables)
 
-**Public Routes:**
+- `profiles` - User info (name, phone, address, account_type)
+- `user_roles` - Role mapping (admin/client), separate table for security
+- `products` - Product catalog (name, price_per_kg, description, image_url)
+- `cart_items` - Shopping cart with variant
+- `orders` - Order records (status, delivery info, totals)
+- `order_items` - Line items in orders
+- `shipment_tracking` - Shipment stage history
+- `order_certificates` - Uploaded documents for orders
 
-- `/` - Landing page (Hero, QualityPromise, TechnicalDetails, CatalogTeaser)
-- `/auth` - Login/signup
-- `/products/:slug` - Product detail page
+### Routing & Code Splitting
 
-**Protected Routes (require auth):**
+Routes in `App.tsx`:
 
-- `/checkout` - Cart review and order placement
-- `/portal` - User dashboard (order history, profile)
+- Landing page (`/`) loads immediately
+- All other pages lazy-loaded via `React.lazy()`
+- Protected routes wrap auth-required pages
+- Admin routes require `requireAdmin` prop
+- **Critical:** Add custom routes ABOVE the catch-all `*` route
 
-**Admin Routes (require admin role):**
+### Type Safety
 
-- `/admin` - Admin dashboard (manage products, orders, upload certificates)
+- Full TypeScript with strict mode disabled (`noImplicitAny: false`)
+- Database types auto-generated in `src/integrations/supabase/types.ts`
+- Import via `import type { Database } from "@/integrations/supabase/types"`
+- Type helpers: `Database["public"]["Tables"]["table_name"]["Row"]`
 
-**Important:** Always add custom routes ABOVE the catch-all `*` route in App.tsx (which renders NotFound)
+### Component Architecture
 
-### File Organization
+- UI primitives in `/src/components/ui` (shadcn/ui components)
+- Feature components in `/src/components` (Header, Footer, Hero, etc.)
+- Admin components in `/src/components/admin`
+- Page components in `/src/pages`
+- Use `@/` alias for imports (resolves to `src/`)
 
-**Pages (`/src/pages`):** Top-level route components
-**Components (`/src/components`):** Reusable UI (organized by domain: `auth/`, `admin/`, etc.) + shadcn UI library (`ui/`)
-**Hooks (`/src/hooks`):** Custom React Query hooks for data fetching
-**Contexts (`/src/contexts`):** Global state (AuthContext only currently)
-**Integrations (`/src/integrations/supabase`):** Supabase client + auto-generated TypeScript types
+### Styling Conventions
 
-### Environment Variables
+- Tailwind CSS utility-first
+- Prettier configured with `prettier-plugin-tailwindcss` (auto-sorts classes)
+- No semicolons (Prettier config: `semi: false`)
+- Imports auto-organized via `prettier-plugin-organize-imports`
 
-Required in `.env`:
+### File Storage
 
-```
-VITE_SUPABASE_URL=<supabase-project-url>
-VITE_SUPABASE_PUBLISHABLE_KEY=<supabase-anon-key>
-```
+Supabase Storage buckets:
 
-### Key Implementation Notes
+- `payment-receipts` - Uploaded during checkout (10MB max)
+- `certificates` - Company documents (ISO, Free Sale, etc.)
+- Access via `supabase.storage.from(bucket).upload()`
 
-- **Supabase types are auto-generated** - See `/src/integrations/supabase/types.ts` (do not manually edit)
-- **shadcn components** - Located in `/src/components/ui`, follow shadcn conventions
-- **Product variants** - Fixed set: 100g, 200g, 300g (extend `getVariantPrice()` in useCart if adding more)
-- **Order status flow** - pending → processing → shipped → delivered
-- **Image handling** - Supabase Storage bucket for product images and certificates
-- **Form validation** - Use Zod schemas with React Hook Form's `zodResolver`
+### Phone Number Handling
+
+Ethiopian phone format in `src/lib/phone-utils.ts`:
+
+- Normalizes to E.164 format (`+251...`)
+- Handles both `09` and `9` prefixes
+- Validates 9-digit local numbers
+
+### Admin Features
+
+Admin dashboard (`/admin`) uses tabs:
+
+- Overview - Metrics and stats
+- Orders - Full order management with shipment tracking
+- Products - CRUD operations
+- Customers - User list with account types
+
+Only users with `admin` role in `user_roles` can access.
+
+## Code Quality
+
+ESLint + Prettier configured:
+
+- React hooks rules enforced
+- Unused vars/params allowed (TS config relaxed)
+- Auto-format on save recommended
+
+## Migration Pattern
+
+Migrations in `supabase/migrations/`:
+
+- Named with timestamp + UUID
+- Create enums before tables that use them
+- Always enable RLS on new tables
+- Foreign keys cascade on delete where appropriate

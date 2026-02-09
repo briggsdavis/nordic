@@ -1,26 +1,20 @@
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import { Button } from "@/components/ui/button"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useAuth } from "@/contexts/AuthContext"
 import { useCart } from "@/hooks/useCart"
+import { formatPrice } from "@/lib/format"
 import { supabase } from "@/integrations/supabase/client"
 import { useQuery } from "@tanstack/react-query"
-import { ArrowLeft, Minus, Plus, ShoppingCart } from "lucide-react"
+import { ArrowLeft, Check, Minus, Package, Plus, ShoppingCart } from "lucide-react"
 import { useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 
 const variants = [
-  { value: "100g", label: "100g", weight: 0.1 },
-  { value: "200g", label: "200g", weight: 0.2 },
-  { value: "300g", label: "300g", weight: 0.3 },
+  { value: "100g", label: "100g", weight: 0.1, description: "Single serving" },
+  { value: "200g", label: "200g", weight: 0.2, description: "Double serving" },
+  { value: "300g", label: "300g", weight: 0.3, description: "Family size" },
 ]
 
 const ProductDetail = () => {
@@ -53,13 +47,6 @@ const ProductDetail = () => {
     ? product.price_per_kg * (selectedVariantData?.weight || 0.1)
     : 0
   const totalPrice = unitPrice * quantity
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(price)
-  }
 
   const handleAddToCart = () => {
     if (!user) {
@@ -126,18 +113,24 @@ const ProductDetail = () => {
           Back to Collection
         </Button>
 
-        <div className="grid gap-12 md:grid-cols-2">
+        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
           {/* Product Image */}
           <div className="aspect-square overflow-hidden rounded-2xl bg-muted">
             {product.image_url ? (
               <img
                 src={product.image_url}
                 alt={product.name}
+                loading="eager"
                 className="h-full w-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.style.display = "none"
+                }}
               />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center text-muted-foreground">
-                No image available
+            ) : null}
+            {!product.image_url && (
+              <div className="flex h-full w-full flex-col items-center justify-center gap-4 text-muted-foreground">
+                <Package className="h-16 w-16 opacity-50" />
+                <p className="text-sm">Image not available</p>
               </div>
             )}
           </div>
@@ -145,7 +138,7 @@ const ProductDetail = () => {
           {/* Product Info */}
           <div className="space-y-6">
             <div>
-              <h1 className="mb-2 font-serif text-4xl text-foreground">
+              <h1 className="mb-2 font-serif text-3xl text-foreground sm:text-4xl">
                 {product.name}
               </h1>
               <p className="text-lg font-medium text-primary">
@@ -164,45 +157,62 @@ const ProductDetail = () => {
               </p>
             )}
 
-            {/* Variant Selection */}
-            <div className="space-y-2">
+            {/* Variant Selection - Card Style */}
+            <div className="space-y-3">
               <label className="text-sm font-medium">Select Size</label>
-              <Select
-                value={selectedVariant}
-                onValueChange={setSelectedVariant}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {variants.map((variant) => (
-                    <SelectItem key={variant.value} value={variant.value}>
-                      {variant.label} -{" "}
-                      {formatPrice(product.price_per_kg * variant.weight)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <div className="grid gap-3 sm:grid-cols-3">
+                {variants.map((variant) => {
+                  const isSelected = selectedVariant === variant.value
+                  const price = product.price_per_kg * variant.weight
+                  return (
+                    <button
+                      key={variant.value}
+                      type="button"
+                      onClick={() => setSelectedVariant(variant.value)}
+                      className={`relative rounded-lg border-2 p-4 text-left transition-all ${
+                        isSelected
+                          ? "border-primary bg-primary/5 shadow-sm"
+                          : "border-border hover:border-primary/50 hover:bg-muted/50"
+                      }`}
+                    >
+                      {isSelected && (
+                        <div className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary">
+                          <Check className="h-3 w-3 text-primary-foreground" />
+                        </div>
+                      )}
+                      <div className="text-base font-medium">{variant.label}</div>
+                      <div className="mt-1 text-xs text-muted-foreground">
+                        {variant.description}
+                      </div>
+                      <div className="mt-2 text-sm font-medium text-primary">
+                        {formatPrice(price)}
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
             </div>
 
             {/* Quantity */}
-            <div className="space-y-2">
+            <div className="space-y-3">
               <label className="text-sm font-medium">Quantity</label>
               <div className="flex items-center gap-4">
                 <Button
                   variant="outline"
                   size="icon"
+                  className="h-10 w-10"
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                   disabled={quantity <= 1}
                 >
                   <Minus className="h-4 w-4" />
                 </Button>
-                <span className="w-12 text-center text-lg font-medium">
+                <span className="w-16 text-center text-lg font-medium">
                   {quantity}
                 </span>
                 <Button
                   variant="outline"
                   size="icon"
+                  className="h-10 w-10"
                   onClick={() => setQuantity((q) => q + 1)}
                 >
                   <Plus className="h-4 w-4" />
@@ -211,22 +221,22 @@ const ProductDetail = () => {
             </div>
 
             {/* Price Summary */}
-            <div className="space-y-2 border-t pt-6">
+            <div className="space-y-3 rounded-lg border border-border bg-muted/30 p-4">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">
                   {selectedVariant} × {quantity}
                 </span>
-                <span>{formatPrice(totalPrice)}</span>
+                <span className="font-medium">{formatPrice(totalPrice)}</span>
               </div>
-              <div className="flex justify-between text-lg font-medium">
+              <div className="flex justify-between border-t border-border pt-3 text-lg font-medium">
                 <span>Total</span>
-                <span>{formatPrice(totalPrice)}</span>
+                <span className="text-primary">{formatPrice(totalPrice)}</span>
               </div>
             </div>
 
             {/* Add to Cart Button */}
             <Button
-              className="w-full"
+              className="w-full touch-manipulation"
               size="lg"
               onClick={handleAddToCart}
               disabled={addToCart.isPending}

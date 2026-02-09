@@ -82,130 +82,99 @@ export const OrderRow = ({
 
       {isExpanded && (
         <TableRow>
-          <TableCell colSpan={7} className="bg-muted/20 p-6">
-            <div className="space-y-4">
-              <div className="grid gap-6 md:grid-cols-2">
-                <div>
-                  <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                    Customer
-                  </h4>
-                  <div className="space-y-1.5">
-                    <p className="font-medium text-foreground">
-                      {order.profile?.full_name || order.contact_name}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      {order.profile?.email}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      {order.contact_phone}
-                    </p>
-                  </div>
-                </div>
-                <div>
-                  <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                    Delivery
-                  </h4>
-                  <div className="space-y-1.5">
-                    <p className="font-medium text-foreground">
-                      {order.delivery_address}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      Expected: {formatDate(order.expected_delivery_date)}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
+          <TableCell colSpan={7} className="p-4">
+            <div className="space-y-3 text-sm">
               <div>
-                <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  Items
-                </h4>
-                <div className="space-y-2">
+                <strong>Customer:</strong> {order.profile?.full_name || order.contact_name}
+              </div>
+              <div>
+                <strong>Email:</strong> {order.profile?.email}
+              </div>
+              <div>
+                <strong>Phone:</strong> {order.contact_phone}
+              </div>
+              <div>
+                <strong>Delivery Address:</strong> {order.delivery_address}
+              </div>
+              <div>
+                <strong>Expected Delivery:</strong> {formatDate(order.expected_delivery_date)}
+              </div>
+
+              <div className="border-t pt-3">
+                <strong>Items:</strong>
+                <ul className="ml-4 mt-1 list-disc">
                   {order.order_items.map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex items-center justify-between text-sm"
-                    >
-                      <span className="text-foreground">
-                        {item.product_name} × {item.quantity}
-                      </span>
-                      <span className="font-medium">
-                        {formatPrice(Number(item.subtotal))}
-                      </span>
-                    </div>
+                    <li key={item.id}>
+                      {item.product_name} × {item.quantity} - {formatPrice(Number(item.subtotal))}
+                    </li>
                   ))}
-                  <div className="flex items-center justify-between border-t pt-2 font-semibold">
-                    <span>Total</span>
-                    <span>{formatPrice(Number(order.total_amount))}</span>
-                  </div>
+                </ul>
+                <div className="mt-2">
+                  <strong>Total:</strong> {formatPrice(Number(order.total_amount))}
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-3">
-                <h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  Docs:
-                </h4>
-                {order.payment_receipt_url ? (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={(event) => {
-                      event.stopPropagation()
-                      handleViewFile(order.payment_receipt_url!, "receipt")
-                    }}
-                    disabled={loadingFile === "receipt"}
-                  >
-                    {loadingFile === "receipt" ? (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    ) : (
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                    )}
-                    Receipt
-                  </Button>
-                ) : (
-                  <span className="text-sm text-muted-foreground">
-                    No receipt
-                  </span>
-                )}
-                {order.order_certificates.length > 0 ? (
-                  order.order_certificates.map((cert) => (
+              <div className="border-t pt-3">
+                <strong>Documents:</strong>
+                <div className="mt-1 flex flex-wrap gap-2">
+                  {order.payment_receipt_url ? (
                     <Button
-                      key={cert.id}
                       variant="outline"
                       size="sm"
                       onClick={(event) => {
                         event.stopPropagation()
-                        handleViewFile(cert.file_url, cert.id)
+                        handleViewFile(order.payment_receipt_url!, "receipt")
                       }}
-                      disabled={loadingFile === cert.id}
+                      disabled={loadingFile === "receipt"}
                     >
-                      {loadingFile === cert.id ? (
+                      {loadingFile === "receipt" ? (
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       ) : (
-                        <FileText className="mr-2 h-4 w-4" />
+                        <ExternalLink className="mr-2 h-4 w-4" />
                       )}
-                      {cert.certificate_type}
+                      Receipt
                     </Button>
-                  ))
-                ) : (
-                  <span className="text-sm text-muted-foreground">
-                    No certificates
-                  </span>
-                )}
+                  ) : (
+                    <span className="text-muted-foreground">No receipt</span>
+                  )}
+                  {order.order_certificates.length > 0 ? (
+                    order.order_certificates.map((cert) => (
+                      <Button
+                        key={cert.id}
+                        variant="outline"
+                        size="sm"
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          handleViewFile(cert.file_url, cert.id)
+                        }}
+                        disabled={loadingFile === cert.id}
+                      >
+                        {loadingFile === cert.id ? (
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        ) : (
+                          <FileText className="mr-2 h-4 w-4" />
+                        )}
+                        {cert.certificate_type}
+                      </Button>
+                    ))
+                  ) : (
+                    <span className="text-muted-foreground">No certificates</span>
+                  )}
+                </div>
               </div>
 
               {(order.status === "confirmed" ||
                 order.status === "shipped" ||
                 order.status === "delivered") && (
-                <div>
-                  <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                    Shipment Tracking
-                  </h4>
-                  <ShipmentStageManager orderId={order.id} />
+                <div className="border-t pt-3">
+                  <strong>Shipment Tracking:</strong>
+                  <div className="mt-2">
+                    <ShipmentStageManager orderId={order.id} />
+                  </div>
                 </div>
               )}
 
-              <div className="flex flex-wrap gap-2 border-t pt-4">
+              <div className="flex flex-wrap gap-2 border-t pt-3">
                 {order.status === "verifying" && (
                   <>
                     <Button

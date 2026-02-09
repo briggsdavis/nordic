@@ -30,7 +30,7 @@ const productSchema = z.object({
   description: z.string().max(1000).optional(),
   weight_range: z.string().max(50).optional(),
   price_per_kg: z.coerce.number().min(0, "Price must be positive"),
-  image_url: z.string().url().optional().or(z.literal("")),
+  image_url: z.string().max(500).optional().or(z.literal("")),
   is_available: z.boolean(),
 })
 
