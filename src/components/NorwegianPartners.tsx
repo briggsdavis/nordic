@@ -23,6 +23,12 @@ const NorwegianPartners = () => {
         {/* Partners Grid */}
         <div className="space-y-12" aria-label="Norwegian partners">
           {/* Brødrene Remø - Text Left, Image Right */}
+          <div className="space-y-4">
+          <img
+            src="/remo.jpg"
+            alt="Brødrene Remø"
+            className="w-full h-64 object-cover rounded-2xl"
+          />
           <div className="animate-fade-in overflow-hidden rounded-2xl border border-border bg-card shadow-lg opacity-0 transition-all duration-300 hover:shadow-xl" style={{ animationDelay: "0.3s" }}>
             <div className="grid gap-8 lg:grid-cols-2">
               {/* Text Content - Left */}
@@ -65,8 +71,15 @@ const NorwegianPartners = () => {
               </div>
             </div>
           </div>
+          </div>
 
           {/* Fishcorp of Norway - Image Left, Text Right */}
+          <div className="space-y-4">
+          <img
+            src="/fishcorp.jpg"
+            alt="Fishcorp of Norway"
+            className="w-full h-64 object-cover rounded-2xl"
+          />
           <div className="animate-fade-in overflow-hidden rounded-2xl border border-border bg-card shadow-lg opacity-0 transition-all duration-300 hover:shadow-xl" style={{ animationDelay: "0.5s" }}>
             <div className="grid gap-8 lg:grid-cols-2 lg:grid-flow-dense">
               {/* Image - Left */}
@@ -108,6 +121,7 @@ const NorwegianPartners = () => {
                 </div>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </div>
