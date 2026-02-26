@@ -108,7 +108,7 @@ const ServiceHighlight = () => {
           <div className="animate-fade-in relative opacity-0 lg:order-last" style={{ animationDelay: "0.4s" }}>
             <div className="relative overflow-hidden rounded-2xl shadow-2xl">
               <img
-                src="/map.jpg"
+                src="/revisedmap.jpg"
                 alt="Norwegian salmon delivery route map from fjords to Ethiopia"
                 className="aspect-[4/5] w-full object-cover lg:aspect-square"
               />
