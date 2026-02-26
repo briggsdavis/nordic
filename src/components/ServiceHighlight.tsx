@@ -6,7 +6,7 @@ const ServiceHighlight = () => {
   return (
     <section className="bg-background py-20 lg:py-28">
       <div className="container mx-auto px-6 lg:px-8">
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Left Content */}
           <div className="animate-fade-in space-y-8 opacity-0" style={{ animationDelay: "0.2s" }}>
             {/* Header */}
@@ -105,12 +105,12 @@ const ServiceHighlight = () => {
           </div>
 
           {/* Right Image */}
-          <div className="animate-fade-in relative opacity-0 lg:order-last" style={{ animationDelay: "0.4s" }}>
-            <div className="relative overflow-hidden rounded-2xl shadow-2xl">
+          <div className="animate-fade-in relative lg:min-h-0 opacity-0 lg:order-last" style={{ animationDelay: "0.4s" }}>
+            <div className="relative overflow-hidden rounded-2xl shadow-2xl lg:h-full">
               <img
                 src="/revisedmap.jpg"
                 alt="Norwegian salmon delivery route map from fjords to Ethiopia"
-                className="aspect-[4/5] w-full object-cover lg:aspect-square"
+                className="w-full lg:h-full lg:object-contain"
               />
               {/* Overlay Badge */}
               <div className="absolute bottom-6 left-6 right-6 rounded-xl bg-card/95 p-6 backdrop-blur-sm">
