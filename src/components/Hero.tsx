@@ -68,7 +68,7 @@ const Hero = () => {
               size="lg"
               className="w-full border-white/40 bg-transparent px-8 py-6 text-sm font-medium uppercase tracking-wide text-white hover:bg-white/10 hover:text-white sm:w-auto"
             >
-              <Link to="/contact">B2B Inquiries</Link>
+              <Link to="/culinary-opportunity">Culinary Opportunity</Link>
             </Button>
           </div>
         </div>

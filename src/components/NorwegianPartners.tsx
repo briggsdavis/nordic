@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
-import { Building2, ExternalLink } from "lucide-react"
+import { ArrowRight, Building2, ExternalLink } from "lucide-react"
+import { Link } from "react-router-dom"
 
 const NorwegianPartners = () => {
   return (
@@ -109,6 +110,24 @@ const NorwegianPartners = () => {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Culinary Opportunity CTA */}
+        <div className="animate-fade-in mt-16 text-center opacity-0" style={{ animationDelay: "0.7s" }}>
+          <p className="mb-4 text-lg text-muted-foreground">
+            See how this quality translates to culinary excellence
+          </p>
+          <Button
+            asChild
+            variant="outline"
+            size="lg"
+            className="gap-2 text-sm font-medium uppercase tracking-wide"
+          >
+            <Link to="/culinary-opportunity">
+              Explore Culinary Opportunity
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </Button>
         </div>
       </div>
     </section>
