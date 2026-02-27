@@ -31,7 +31,7 @@ const Header = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const isHomePage = location.pathname === "/"
-  const hasHeroImage = ["/", "/collection", "/contact", "/origin"].includes(
+  const hasHeroImage = ["/", "/collection", "/contact", "/origin", "/culinary-opportunity"].includes(
     location.pathname,
   )
 

@@ -1,8 +1,10 @@
 import originHero from "@/assets/origin.jpg"
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
-import { Award, CheckCircle, Ship, Snowflake } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { ArrowRight, Award, CheckCircle, Ship, Snowflake } from "lucide-react"
 import { useEffect } from "react"
+import { Link } from "react-router-dom"
 
 const Origin = () => {
   useEffect(() => {
@@ -152,6 +154,18 @@ const Origin = () => {
                   handled with care and delivered with integrity.
                 </p>
               </div>
+              <div className="animate-fade-in mt-10 text-center opacity-0" style={{ animationDelay: "0.5s" }}>
+                <Button
+                  asChild
+                  size="lg"
+                  className="gap-2 px-8 py-6 text-sm font-medium uppercase tracking-wide"
+                >
+                  <Link to="/culinary-opportunity">
+                    Discover the Culinary Opportunity
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
         </section>
@@ -185,6 +199,29 @@ const Origin = () => {
                 <span className="rounded-full bg-primary/10 px-4 py-2">
                   Quality Certified
                 </span>
+              </div>
+              <div className="animate-fade-in mt-10 flex flex-col items-center justify-center gap-4 opacity-0 sm:flex-row" style={{ animationDelay: "0.7s" }}>
+                <Button
+                  asChild
+                  size="lg"
+                  className="gap-2 px-8 py-6 text-sm font-medium uppercase tracking-wide"
+                >
+                  <Link to="/culinary-opportunity">
+                    Culinary Opportunity
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="gap-2 px-8 py-6 text-sm font-medium uppercase tracking-wide"
+                >
+                  <Link to="/collection">
+                    Browse Collection
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </Button>
               </div>
             </div>
           </div>

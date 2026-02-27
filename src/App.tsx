@@ -17,6 +17,7 @@ const Checkout = lazy(() => import("./pages/Checkout"))
 const Collection = lazy(() => import("./pages/Collection"))
 const Contact = lazy(() => import("./pages/Contact"))
 const Origin = lazy(() => import("./pages/Origin"))
+const CulinaryOpportunity = lazy(() => import("./pages/CulinaryOpportunity"))
 const Portal = lazy(() => import("./pages/Portal"))
 const ProductDetail = lazy(() => import("./pages/ProductDetail"))
 
@@ -42,6 +43,7 @@ const App = () => (
               <Route path="/auth" element={<Auth />} />
               <Route path="/collection" element={<Collection />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/culinary-opportunity" element={<CulinaryOpportunity />} />
               <Route path="/origin" element={<Origin />} />
               <Route path="/products/:slug" element={<ProductDetail />} />
               <Route
