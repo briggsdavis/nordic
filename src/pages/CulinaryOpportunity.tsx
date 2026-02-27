@@ -88,19 +88,9 @@ const CulinaryOpportunity = () => {
               >
                 Elevate Your Offer with Norwegian Salmon
               </h1>
-              <p
-                className="mx-auto mb-10 max-w-2xl animate-fade-in-up text-lg font-light leading-relaxed text-card/90 opacity-0"
-                style={{ animationDelay: "0.6s" }}
-              >
-                Whether you are a chef looking to refine your menu or a business
-                seeking to stand out, premium salmon is the gateway to a more
-                compelling culinary identity. Restaurants, hotels, and retailers
-                across Ethiopia are discovering how Norwegian Atlantic salmon
-                transforms their offer and attracts discerning customers.
-              </p>
               <div
                 className="flex animate-fade-in-up flex-col items-center justify-center gap-4 opacity-0 sm:flex-row"
-                style={{ animationDelay: "0.8s" }}
+                style={{ animationDelay: "0.6s" }}
               >
                 <Button
                   asChild
