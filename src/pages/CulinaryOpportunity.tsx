@@ -6,38 +6,15 @@ import { useEffect } from "react"
 import { Link } from "react-router-dom"
 
 const galleryImages = [
-  {
-    src: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80",
-    alt: "Elegant salmon sashimi platter with garnishes",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=800&q=80",
-    alt: "Chef preparing fresh salmon fillet",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1485921325833-c519f76c4927?auto=format&fit=crop&w=800&q=80",
-    alt: "Grilled salmon with herbs and lemon",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1432139509613-5c4255a1d916?auto=format&fit=crop&w=800&q=80",
-    alt: "Salmon tartare with avocado on fine dining plate",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
-    alt: "Beautifully plated salmon dish in restaurant setting",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=800&q=80",
-    alt: "Smoked salmon on artisan bread with cream cheese",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?auto=format&fit=crop&w=800&q=80",
-    alt: "Salmon sushi rolls arranged on wooden board",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=800&q=80",
-    alt: "Fine dining salmon course with microgreens",
-  },
+  { src: "/c1.jpg", alt: "Premium Norwegian salmon preparation" },
+  { src: "/c2.jpg", alt: "Elegant salmon culinary presentation" },
+  { src: "/c3.jpg", alt: "Fresh salmon fillet ready for cooking" },
+  { src: "/c4.jpg", alt: "Salmon dish with fine dining plating" },
+  { src: "/c5.jpg", alt: "Norwegian salmon in professional kitchen" },
+  { src: "/c6.jpg", alt: "Artisan salmon creation with garnishes" },
+  { src: "/c7.jpg", alt: "Salmon tartare with seasonal ingredients" },
+  { src: "/c8.jpg", alt: "Grilled salmon with herbs and lemon" },
+  { src: "/c9.jpg", alt: "Signature salmon course for restaurants" },
 ]
 
 const CulinaryOpportunity = () => {
@@ -66,7 +43,7 @@ const CulinaryOpportunity = () => {
         >
           <div className="absolute inset-0 z-0">
             <img
-              src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1600&q=80"
+              src="/culinary.jpg"
               alt="Fine dining restaurant with salmon dishes"
               className="h-full w-full object-cover"
             />
