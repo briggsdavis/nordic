@@ -13,6 +13,11 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -33,6 +38,7 @@ import { extractFilePath, getSignedUrl } from "@/lib/storage"
 import {
   Award,
   Building2,
+  ChevronDown,
   FileCheck,
   FileText,
   Package,
@@ -57,6 +63,7 @@ const Portal = () => {
   const { toast } = useToast()
 
   const [isAccountDialogOpen, setIsAccountDialogOpen] = useState(false)
+  const [isCertsOpen, setIsCertsOpen] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [loadingFile, setLoadingFile] = useState<string | null>(null)
   const [editedProfile, setEditedProfile] = useState({
@@ -156,76 +163,90 @@ const Portal = () => {
         </div>
 
         {/* Company Documents Section */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <ShieldCheck className="h-5 w-5 text-primary" />
-              Certifications & Documents
-            </CardTitle>
-            <CardDescription>
-              View our official certificates and compliance documents
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-4 md:grid-cols-3">
-              {/* Management System Certificate */}
-              <button
-                onClick={() =>
-                  window.open(managementSystemCertificate, "_blank")
-                }
-                className="group flex items-start gap-4 rounded-2xl border p-4 text-left transition-all hover:border-primary hover:bg-muted/50"
-              >
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 transition-colors group-hover:bg-primary/20">
-                  <Award className="h-5 w-5 text-primary" />
+        <Collapsible open={isCertsOpen} onOpenChange={setIsCertsOpen}>
+          <Card className="mb-8">
+            <CollapsibleTrigger asChild>
+              <CardHeader className="cursor-pointer select-none">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="h-5 w-5 text-primary" />
+                    <CardTitle>Certifications & Documents</CardTitle>
+                  </div>
+                  <ChevronDown
+                    className={`h-4 w-4 text-muted-foreground transition-transform ${isCertsOpen ? "rotate-180" : ""}`}
+                  />
                 </div>
-                <div className="flex-1">
-                  <h3 className="mb-1 font-medium text-foreground">
-                    Management System Certificate
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    ISO certification for quality management
-                  </p>
-                </div>
-              </button>
+                <CardDescription>
+                  View our official certificates and compliance documents
+                </CardDescription>
+              </CardHeader>
+            </CollapsibleTrigger>
 
-              {/* Free Sale Certificate */}
-              <button
-                onClick={() => window.open(freeSaleCertificate, "_blank")}
-                className="group flex items-start gap-4 rounded-2xl border p-4 text-left transition-all hover:border-primary hover:bg-muted/50"
-              >
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 transition-colors group-hover:bg-primary/20">
-                  <FileCheck className="h-5 w-5 text-primary" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="mb-1 font-medium text-foreground">
-                    Free Sale Certificate
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    Export authorization and compliance
-                  </p>
-                </div>
-              </button>
+            <CollapsibleContent>
+              <CardContent>
+                <div className="grid gap-4 md:grid-cols-3">
+                  {/* Management System Certificate */}
+                  <button
+                    onClick={() =>
+                      window.open(managementSystemCertificate, "_blank")
+                    }
+                    className="group flex items-start gap-4 rounded-2xl border p-4 text-left transition-all hover:border-primary hover:bg-muted/50"
+                  >
+                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 transition-colors group-hover:bg-primary/20">
+                      <Award className="h-5 w-5 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="mb-1 font-medium text-foreground">
+                        Management System Certificate
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        ISO certification for quality management
+                      </p>
+                    </div>
+                  </button>
 
-              {/* Certificate of Competence */}
-              <button
-                onClick={() => window.open(certificateOfCompetence, "_blank")}
-                className="group flex items-start gap-4 rounded-2xl border p-4 text-left transition-all hover:border-primary hover:bg-muted/50"
-              >
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 transition-colors group-hover:bg-primary/20">
-                  <FileText className="h-5 w-5 text-primary" />
+                  {/* Free Sale Certificate */}
+                  <button
+                    onClick={() => window.open(freeSaleCertificate, "_blank")}
+                    className="group flex items-start gap-4 rounded-2xl border p-4 text-left transition-all hover:border-primary hover:bg-muted/50"
+                  >
+                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 transition-colors group-hover:bg-primary/20">
+                      <FileCheck className="h-5 w-5 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="mb-1 font-medium text-foreground">
+                        Free Sale Certificate
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Export authorization and compliance
+                      </p>
+                    </div>
+                  </button>
+
+                  {/* Certificate of Competence */}
+                  <button
+                    onClick={() =>
+                      window.open(certificateOfCompetence, "_blank")
+                    }
+                    className="group flex items-start gap-4 rounded-2xl border p-4 text-left transition-all hover:border-primary hover:bg-muted/50"
+                  >
+                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 transition-colors group-hover:bg-primary/20">
+                      <FileText className="h-5 w-5 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="mb-1 font-medium text-foreground">
+                        Certificate of Competence
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Professional qualification verification
+                      </p>
+                    </div>
+                  </button>
                 </div>
-                <div className="flex-1">
-                  <h3 className="mb-1 font-medium text-foreground">
-                    Certificate of Competence
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    Professional qualification verification
-                  </p>
-                </div>
-              </button>
-            </div>
-          </CardContent>
-        </Card>
+              </CardContent>
+            </CollapsibleContent>
+          </Card>
+        </Collapsible>
 
         {/* Orders Section */}
         <div className="space-y-6">

@@ -99,22 +99,22 @@ export const OrderCard = ({ order }: OrderCardProps) => {
 
             {/* Delivery Info */}
             <div>
-              <h4 className="text-sm font-medium">Delivery Details</h4>
-              <div className="mt-2 space-y-1 text-sm">
-                <div className="flex items-start gap-2">
-                  <User className="mt-0.5 h-4 w-4 text-muted-foreground" />
+              <h4 className="mb-2 text-sm font-medium">Delivery Details</h4>
+              <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+                <div className="flex items-center gap-2">
+                  <User className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
                   <span>{order.contact_name}</span>
                 </div>
-                <div className="flex items-start gap-2">
-                  <Phone className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                <div className="flex items-center gap-2">
+                  <Phone className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
                   <span>{order.contact_phone}</span>
                 </div>
-                <div className="flex items-start gap-2">
-                  <MapPin className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                <div className="flex items-center gap-2">
+                  <MapPin className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
                   <span>{order.delivery_address}</span>
                 </div>
-                <div className="flex items-start gap-2">
-                  <Calendar className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
                   <span>
                     Expected: {formatDate(order.expected_delivery_date)}
                   </span>
