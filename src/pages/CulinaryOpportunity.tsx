@@ -7,19 +7,15 @@ import { Link } from "react-router-dom"
 
 const galleryImages = [
   { src: "/c1.jpg", alt: "Premium Norwegian salmon preparation" },
-  { src: "/c2.jpg", alt: "Elegant salmon culinary presentation" },
-  { src: "/c3.jpg", alt: "Fresh salmon fillet ready for cooking" },
   { src: "/c4.jpg", alt: "Salmon dish with fine dining plating" },
-  { src: "/c5.jpg", alt: "Norwegian salmon in professional kitchen" },
   { src: "/c6.jpg", alt: "Artisan salmon creation with garnishes" },
   { src: "/c7.jpg", alt: "Salmon tartare with seasonal ingredients" },
   { src: "/c8.jpg", alt: "Grilled salmon with herbs and lemon" },
-  { src: "/c9.jpg", alt: "Signature salmon course for restaurants" },
 ]
 
 const CulinaryOpportunity = () => {
   useEffect(() => {
-    document.title = "Nordic Seafood | Culinary Opportunity"
+    document.title = "Nordic Seafood | For Chefs"
     const description =
       "Discover how premium Norwegian salmon can transform your menu, elevate your restaurant, and attract discerning customers."
     let meta = document.querySelector('meta[name="description"]')
@@ -56,7 +52,7 @@ const CulinaryOpportunity = () => {
                 className="mb-4 animate-fade-in-up text-xs uppercase tracking-[0.3em] text-card/80 opacity-0 md:text-sm"
                 style={{ animationDelay: "0.2s" }}
               >
-                Culinary Opportunity
+                For Chefs
               </p>
               <h1
                 id="culinary-hero-title"
@@ -74,9 +70,9 @@ const CulinaryOpportunity = () => {
                   size="lg"
                   className="w-full bg-primary px-8 py-6 text-sm font-medium uppercase tracking-wide text-primary-foreground hover:bg-primary/90 sm:w-auto"
                 >
-                  <Link to="/collection">
+                  <Link to="/order">
                     <ShoppingBag className="mr-2 h-4 w-4" />
-                    Browse Our Selection
+                    Order Now
                   </Link>
                 </Button>
                 <Button
@@ -191,8 +187,8 @@ const CulinaryOpportunity = () => {
                   size="lg"
                   className="gap-2 px-8 py-6 text-sm font-medium uppercase tracking-wide"
                 >
-                  <Link to="/collection">
-                    View Our Collection
+                  <Link to="/order">
+                    Order Now
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </Button>
@@ -268,7 +264,7 @@ const CulinaryOpportunity = () => {
                 size="lg"
                 className="w-full gap-2 bg-primary px-8 py-6 text-sm font-medium uppercase tracking-wide text-primary-foreground hover:bg-primary/90 sm:w-auto"
               >
-                <Link to="/collection">
+                <Link to="/order">
                   <ShoppingBag className="h-4 w-4" />
                   Order Now
                 </Link>

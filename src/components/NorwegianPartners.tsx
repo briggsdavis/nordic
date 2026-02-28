@@ -123,8 +123,8 @@ const NorwegianPartners = () => {
             size="lg"
             className="gap-2 text-sm font-medium uppercase tracking-wide"
           >
-            <Link to="/culinary-opportunity">
-              Explore Culinary Opportunity
+            <Link to="/for-chefs">
+              For Chefs
               <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>

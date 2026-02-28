@@ -96,9 +96,9 @@ const ServiceHighlight = () => {
                 size="lg"
                 className="gap-2 px-8 py-6 text-sm font-medium uppercase tracking-wide"
               >
-                <Link to="/collection">
+                <Link to="/order">
                   <ShoppingBag className="h-4 w-4" />
-                  Start Shopping
+                  Order Now
                 </Link>
               </Button>
             </div>

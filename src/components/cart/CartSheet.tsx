@@ -78,8 +78,8 @@ export const CartSheet = () => {
             <ShoppingCart className="mb-4 h-12 w-12 text-muted-foreground/50" />
             <p className="text-muted-foreground">Your cart is empty</p>
             <Button variant="outline" className="mt-4" asChild>
-              <Link to="/collection" onClick={() => setOpen(false)}>
-                Browse Products
+              <Link to="/order" onClick={() => setOpen(false)}>
+                Order Now
               </Link>
             </Button>
           </div>

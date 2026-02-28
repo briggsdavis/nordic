@@ -161,7 +161,7 @@ const FullTransparency = () => {
                 size="lg"
                 className="w-full gap-2 text-sm font-medium uppercase tracking-wide sm:w-auto"
               >
-                <Link to="/collection">Explore Our Collection</Link>
+                <Link to="/order">Order Now</Link>
               </Button>
             </div>
           </div>
