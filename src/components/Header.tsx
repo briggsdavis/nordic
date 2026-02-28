@@ -46,8 +46,8 @@ const Header = () => {
   const navLinks = [
     { href: "/", label: "Home", isRoute: true },
     { href: "/origin", label: "Origin", isRoute: true },
-    { href: "/for-chefs", label: "For Chefs", isRoute: true },
     { href: "/order", label: "Order", isRoute: true },
+    { href: "/for-chefs", label: "For Chefs", isRoute: true },
     { href: "/contact", label: "Contact", isRoute: true },
   ]
 
@@ -137,9 +137,7 @@ const Header = () => {
                     className={`gap-2 ${!isScrolled && hasHeroImage && "border-card/30 bg-card/10 text-card hover:bg-card/20"}`}
                   >
                     <User className="h-4 w-4" />
-                    <span className="max-w-[100px] truncate text-sm font-medium">
-                      {profile?.full_name?.split(" ")[0] || "Account"}
-                    </span>
+                    <span className="text-sm font-medium">My Orders</span>
                     <ChevronDown className="h-3 w-3" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -177,7 +175,7 @@ const Header = () => {
                 onClick={handlePortalClick}
               >
                 <User className="h-4 w-4" />
-                <span className="text-sm font-medium">Portal</span>
+                <span className="text-sm font-medium">Create Account</span>
               </Button>
             )}
           </div>
