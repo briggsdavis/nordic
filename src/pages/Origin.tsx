@@ -160,8 +160,8 @@ const Origin = () => {
                   size="lg"
                   className="gap-2 px-8 py-6 text-sm font-medium uppercase tracking-wide"
                 >
-                  <Link to="/culinary-opportunity">
-                    Discover the Culinary Opportunity
+                  <Link to="/for-chefs">
+                    For Chefs
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </Button>
@@ -206,8 +206,8 @@ const Origin = () => {
                   size="lg"
                   className="gap-2 px-8 py-6 text-sm font-medium uppercase tracking-wide"
                 >
-                  <Link to="/culinary-opportunity">
-                    Culinary Opportunity
+                  <Link to="/for-chefs">
+                    For Chefs
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </Button>
@@ -217,8 +217,8 @@ const Origin = () => {
                   size="lg"
                   className="gap-2 px-8 py-6 text-sm font-medium uppercase tracking-wide"
                 >
-                  <Link to="/collection">
-                    Browse Collection
+                  <Link to="/order">
+                    Order Now
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </Button>

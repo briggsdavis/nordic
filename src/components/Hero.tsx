@@ -46,8 +46,8 @@ const Hero = () => {
             className="mx-auto mb-10 max-w-2xl animate-fade-in-up text-lg font-light leading-relaxed text-card/90 opacity-0 md:text-xl"
             style={{ animationDelay: "0.6s" }}
           >
-            Premium Norwegian Atlantic salmon delivered directly to Ethiopia.
-            Temperature-controlled, fully traceable, and chef-ready.
+            Norwegian salmon, delivered directly to Ethiopia.
+            Temperature-controlled, traceable, and chef-ready.
           </p>
 
           {/* CTA Buttons */}
@@ -60,7 +60,7 @@ const Hero = () => {
               size="lg"
               className="w-full bg-primary px-8 py-6 text-sm font-medium uppercase tracking-wide text-primary-foreground hover:bg-primary/90 sm:w-auto"
             >
-              <Link to="/collection">Explore Selection</Link>
+              <Link to="/order">Order Now</Link>
             </Button>
             <Button
               asChild
@@ -68,7 +68,7 @@ const Hero = () => {
               size="lg"
               className="w-full border-white/40 bg-transparent px-8 py-6 text-sm font-medium uppercase tracking-wide text-white hover:bg-white/10 hover:text-white sm:w-auto"
             >
-              <Link to="/culinary-opportunity">Culinary Opportunity</Link>
+              <Link to="/for-chefs">For Chefs</Link>
             </Button>
           </div>
         </div>

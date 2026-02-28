@@ -16,7 +16,7 @@ const CatalogTeaser = () => {
         <div className="animate-fade-in mb-16 flex flex-col opacity-0 md:flex-row md:items-end md:justify-between" style={{ animationDelay: "0.1s" }}>
           <div>
             <p className="mb-4 text-xs uppercase tracking-[0.3em] text-primary">
-              The Collection
+              Order
             </p>
             <h2 className="font-serif text-4xl text-foreground md:text-5xl">
               Premium Selection
@@ -25,10 +25,10 @@ const CatalogTeaser = () => {
           <Button
             variant="ghost"
             className="group mt-6 gap-2 md:mt-0"
-            onClick={() => navigate("/collection")}
+            onClick={() => navigate("/order")}
           >
             <span className="text-sm uppercase tracking-wide">
-              View Full Catalog
+              Order Now
             </span>
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Button>

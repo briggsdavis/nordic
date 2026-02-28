@@ -35,7 +35,7 @@ const Collection = () => {
                 className="mb-4 animate-fade-in-up text-xs uppercase tracking-[0.3em] text-card/80 opacity-0 md:text-sm"
                 style={{ animationDelay: "0.2s" }}
               >
-                The Collection
+                Order
               </p>
               <h1
                 className="mb-6 animate-fade-in-up font-serif text-4xl text-card opacity-0 md:text-5xl lg:text-6xl"

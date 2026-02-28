@@ -16,8 +16,7 @@ const NorwegianPartners = () => {
             Trusted Norwegian Origins
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-            Our partnerships with century-old Norwegian exporters guarantee the highest quality Atlantic salmon,
-            backed by generations of expertise and tradition.
+            Direct partnerships with two certified Norwegian exporters, guaranteeing consistent quality and full traceability.
           </p>
         </div>
 
@@ -115,7 +114,7 @@ const NorwegianPartners = () => {
         {/* Culinary Opportunity CTA */}
         <div className="animate-fade-in mt-16 text-center opacity-0" style={{ animationDelay: "0.7s" }}>
           <p className="mb-4 text-lg text-muted-foreground">
-            See how this quality translates to culinary excellence
+            See how our suppliers' quality shows up on your plate.
           </p>
           <Button
             asChild
@@ -123,8 +122,8 @@ const NorwegianPartners = () => {
             size="lg"
             className="gap-2 text-sm font-medium uppercase tracking-wide"
           >
-            <Link to="/culinary-opportunity">
-              Explore Culinary Opportunity
+            <Link to="/for-chefs">
+              For Chefs
               <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>

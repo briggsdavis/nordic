@@ -55,19 +55,18 @@ const TrimmingGuide = () => {
         {/* Culinary Opportunity CTA */}
         <div className="animate-fade-in mb-16 rounded-2xl border border-border bg-card p-8 text-center opacity-0 lg:p-10" style={{ animationDelay: "0.2s" }}>
           <h3 className="mb-3 font-serif text-2xl text-foreground">
-            Discover What Salmon Can Do for Your Menu
+            Norwegian Salmon for Your Menu
           </h3>
           <p className="mx-auto mb-6 max-w-xl text-muted-foreground">
-            Explore how chefs and businesses across Ethiopia are using premium
-            Norwegian salmon to create unforgettable dining experiences.
+            Chefs and restaurants across Ethiopia are building menus around premium Norwegian salmon.
           </p>
           <Button
             asChild
             size="lg"
             className="gap-2 px-8 py-6 text-sm font-medium uppercase tracking-wide"
           >
-            <Link to="/culinary-opportunity">
-              Culinary Opportunity
+            <Link to="/for-chefs">
+              For Chefs
               <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>

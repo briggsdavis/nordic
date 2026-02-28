@@ -120,10 +120,10 @@ const ProductDetail = () => {
         <Button
           variant="ghost"
           className="mb-8 gap-2"
-          onClick={() => navigate("/collection")}
+          onClick={() => navigate("/order")}
         >
           <ArrowLeft className="h-4 w-4" />
-          Back to Collection
+          Back to Order
         </Button>
 
         <div className="grid gap-12 md:grid-cols-2">
