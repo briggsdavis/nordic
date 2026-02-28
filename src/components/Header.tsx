@@ -31,7 +31,7 @@ const Header = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const isHomePage = location.pathname === "/"
-  const hasHeroImage = ["/", "/collection", "/contact", "/origin", "/culinary-opportunity"].includes(
+  const hasHeroImage = ["/", "/order", "/contact", "/origin", "/culinary-opportunity"].includes(
     location.pathname,
   )
 
@@ -46,7 +46,7 @@ const Header = () => {
   const navLinks = [
     { href: "/origin", label: "Origin", isRoute: true },
     { href: "/culinary-opportunity", label: "Culinary", isRoute: true },
-    { href: "/collection", label: "Collection", isRoute: true },
+    { href: "/order", label: "Order", isRoute: true },
     { href: "/contact", label: "Contact", isRoute: true },
   ]
 

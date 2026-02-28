@@ -25,10 +25,10 @@ const CatalogTeaser = () => {
           <Button
             variant="ghost"
             className="group mt-6 gap-2 md:mt-0"
-            onClick={() => navigate("/collection")}
+            onClick={() => navigate("/order")}
           >
             <span className="text-sm uppercase tracking-wide">
-              View Full Catalog
+              Order Now
             </span>
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Button>

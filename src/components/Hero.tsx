@@ -60,7 +60,7 @@ const Hero = () => {
               size="lg"
               className="w-full bg-primary px-8 py-6 text-sm font-medium uppercase tracking-wide text-primary-foreground hover:bg-primary/90 sm:w-auto"
             >
-              <Link to="/collection">Explore Selection</Link>
+              <Link to="/order">Order Now</Link>
             </Button>
             <Button
               asChild
