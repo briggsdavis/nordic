@@ -46,10 +46,7 @@ const signUpSchema = z
     account_type: z.enum(["business", "individual"], {
       required_error: "Please select an account type",
     }),
-    password: z
-      .string()
-      .min(8, { message: "Password must be at least 8 characters" })
-      .max(100),
+    password: z.string(),
     confirm_password: z.string(),
   })
   .refine((data) => data.password === data.confirm_password, {
