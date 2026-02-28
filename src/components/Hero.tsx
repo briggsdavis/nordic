@@ -46,8 +46,8 @@ const Hero = () => {
             className="mx-auto mb-10 max-w-2xl animate-fade-in-up text-lg font-light leading-relaxed text-card/90 opacity-0 md:text-xl"
             style={{ animationDelay: "0.6s" }}
           >
-            Premium Norwegian Atlantic salmon delivered directly to Ethiopia.
-            Temperature-controlled, fully traceable, and chef-ready.
+            Norwegian salmon, delivered directly to Ethiopia.
+            Temperature-controlled, traceable, and chef-ready.
           </p>
 
           {/* CTA Buttons */}

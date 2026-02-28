@@ -45,9 +45,7 @@ const FullTransparency = () => {
                     Live 7-Stage Tracking
                   </h4>
                   <p className="text-sm text-muted-foreground">
-                    All seven delivery stages are updated live in real-time.
-                    Track your order from Norwegian fjords to your doorstep with
-                    complete visibility.
+                    Seven delivery stages tracked live, from Norwegian fjords to your door.
                   </p>
                 </div>
               </div>
@@ -62,9 +60,7 @@ const FullTransparency = () => {
                     Order-Specific Certificates
                   </h4>
                   <p className="text-sm text-muted-foreground">
-                    Every purchase includes updated health and quality
-                    certificates. View your order's specific documentation for
-                    full transparency on quality standards.
+                    Every order includes health and quality certificates, viewable in your account.
                   </p>
                 </div>
               </div>
@@ -79,9 +75,7 @@ const FullTransparency = () => {
                     Verified & Up-to-Date
                   </h4>
                   <p className="text-sm text-muted-foreground">
-                    All processes are handled properly and kept current. Our
-                    commitment to transparency means you always know the status
-                    and quality of your salmon.
+                    All certifications and delivery data are current and independently verifiable.
                   </p>
                 </div>
               </div>
@@ -98,7 +92,7 @@ const FullTransparency = () => {
                 </span>
               </div>
               <h3 className="mb-6 font-serif text-3xl text-foreground">
-                Norwegian Excellence
+                Direct from Source
               </h3>
             </div>
 
@@ -114,8 +108,7 @@ const FullTransparency = () => {
                     Under 2 Days
                   </h4>
                   <p className="text-sm text-muted-foreground">
-                    Rapid cold-chain delivery from Norway to Ethiopia in less
-                    than 48 hours.
+                    Cold-chain delivery from Norway to Addis Ababa in under 48 hours.
                   </p>
                 </div>
               </div>
@@ -130,8 +123,7 @@ const FullTransparency = () => {
                     Direct from Norway
                   </h4>
                   <p className="text-sm text-muted-foreground">
-                    Sourced exclusively from Norwegian Atlantic waters—no
-                    intermediaries, just premium quality.
+                    Sourced exclusively from Norwegian Atlantic waters. No intermediaries.
                   </p>
                 </div>
               </div>

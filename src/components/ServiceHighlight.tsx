@@ -18,8 +18,7 @@ const ServiceHighlight = () => {
                 Norway to Your Door in 48 Hours
               </h2>
               <p className="text-lg leading-relaxed text-muted-foreground">
-                Premium Norwegian salmon delivered fresh to your doorstep in
-                under two days.
+                Fresh, certified salmon direct from Norwegian fjords to Addis Ababa.
               </p>
             </div>
 
@@ -35,7 +34,7 @@ const ServiceHighlight = () => {
                     Order Online Anytime
                   </h3>
                   <p className="text-muted-foreground">
-                    Browse and order 24/7 through our secure platform.
+                    Place orders any time on our secure platform.
                   </p>
                 </div>
               </div>

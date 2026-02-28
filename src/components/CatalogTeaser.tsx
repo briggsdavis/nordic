@@ -16,7 +16,7 @@ const CatalogTeaser = () => {
         <div className="animate-fade-in mb-16 flex flex-col opacity-0 md:flex-row md:items-end md:justify-between" style={{ animationDelay: "0.1s" }}>
           <div>
             <p className="mb-4 text-xs uppercase tracking-[0.3em] text-primary">
-              The Collection
+              Order
             </p>
             <h2 className="font-serif text-4xl text-foreground md:text-5xl">
               Premium Selection
