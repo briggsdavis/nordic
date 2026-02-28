@@ -28,9 +28,9 @@ const Index = () => {
       <main aria-label="Nordic Seafood landing">
         <Hero />
         <ServiceHighlight />
+        <CatalogTeaser />
         <FullTransparency />
         <NorwegianPartners />
-        <CatalogTeaser />
         <TrimmingGuide />
       </main>
       <Footer />
