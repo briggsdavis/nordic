@@ -1,6 +1,7 @@
 import { useShipmentStages } from "@/hooks/useShipmentTracking"
 import { cn } from "@/lib/utils"
 import { Check } from "lucide-react"
+import { Fragment } from "react"
 
 interface ShipmentTimelineProps {
   orderId: string
@@ -33,66 +34,81 @@ export const ShipmentTimeline = ({
     )
 
   return (
-    <div className="relative">
-      {/* Vertical connecting line */}
-      <div className="absolute left-4 top-0 bottom-0 w-px bg-border" />
+    <div className="overflow-x-auto">
+      <div className="flex items-start pb-2">
+        {/* Payment Verified — synthetic first step, always completed (blue) */}
+        <div className="flex flex-col items-center">
+          <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-blue-500 text-white">
+            <Check className="h-4 w-4" />
+          </div>
+          <div className="mt-2 w-24 text-center">
+            <p className="text-xs font-medium leading-tight text-blue-600">
+              Payment Verified
+            </p>
+          </div>
+        </div>
 
-      {/* Stage items */}
-      <div className="space-y-6">
-        {stages.map((stage) => {
+        {stages.map((stage, index) => {
           const isCompleted = stage.status === "completed"
           const isInProgress = stage.status === "in_progress"
           const isPending = stage.status === "pending"
 
+          // Line before this stage is active if the preceding step is completed.
+          // Index 0 connects from Payment Verified, which is always completed.
+          const lineIsActive =
+            index === 0 ? true : stages[index - 1].status === "completed"
+
           return (
-            <div key={stage.id} className="relative flex gap-4">
-              {/* Icon circle */}
+            <Fragment key={stage.id}>
+              {/* Connecting line */}
               <div
                 className={cn(
-                  "relative z-10 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-xs font-medium",
-                  isCompleted && "bg-primary text-primary-foreground",
-                  isInProgress && "bg-primary/50 text-primary-foreground",
-                  isPending && "bg-muted text-muted-foreground",
+                  "mt-4 h-0.5 w-12 flex-shrink-0",
+                  lineIsActive ? "bg-blue-500" : "bg-border",
                 )}
-              >
-                {isCompleted ? (
-                  <Check className="h-4 w-4" />
-                ) : (
-                  stage.stage_number
-                )}
-              </div>
+              />
 
-              {/* Content */}
-              <div className="flex-1 pb-6">
-                <h4
+              {/* Stage node */}
+              <div className="flex flex-col items-center">
+                <div
                   className={cn(
-                    "font-medium",
-                    isCompleted && "text-foreground",
-                    !isCompleted && "text-muted-foreground",
+                    "flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-xs font-medium",
+                    isCompleted && "bg-blue-500 text-white",
+                    isInProgress && "bg-orange-300 text-orange-900",
+                    isPending && "bg-muted text-muted-foreground",
                   )}
                 >
-                  {stage.shipment_stage_definitions.stage_name}
-                </h4>
-                <p className="text-sm text-muted-foreground">
-                  {stage.shipment_stage_definitions.location}
-                </p>
-                {!compact && (
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {stage.shipment_stage_definitions.description}
+                  {isCompleted ? (
+                    <Check className="h-4 w-4" />
+                  ) : (
+                    stage.stage_number
+                  )}
+                </div>
+
+                <div className="mt-2 w-24 text-center">
+                  <p
+                    className={cn(
+                      "text-xs font-medium leading-tight",
+                      isCompleted && "text-blue-600",
+                      isInProgress && "text-orange-600",
+                      isPending && "text-muted-foreground",
+                    )}
+                  >
+                    {stage.shipment_stage_definitions.stage_name}
                   </p>
-                )}
-                {isCompleted && stage.completed_at && (
-                  <p className="mt-2 text-xs text-muted-foreground">
-                    Completed: {formatDate(stage.completed_at)}
-                  </p>
-                )}
-                {stage.admin_notes && (
-                  <p className="mt-2 text-sm italic">
-                    Note: {stage.admin_notes}
-                  </p>
-                )}
+                  {isCompleted && stage.completed_at && (
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {formatDate(stage.completed_at)}
+                    </p>
+                  )}
+                  {stage.admin_notes && !compact && (
+                    <p className="mt-1 text-xs italic text-muted-foreground">
+                      {stage.admin_notes}
+                    </p>
+                  )}
+                </div>
               </div>
-            </div>
+            </Fragment>
           )
         })}
       </div>
