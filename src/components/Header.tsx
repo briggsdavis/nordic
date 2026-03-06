@@ -83,7 +83,7 @@ const Header = () => {
               <img
                 src={isScrolled || !hasHeroImage ? "/revisedsecond.png" : "/revisedinitial.png"}
                 alt="Nordic Seafood"
-                className="relative h-[120px] w-[120px] object-contain"
+                className="relative h-[180px] w-[180px] object-contain"
               />
             </div>
           </Link>
