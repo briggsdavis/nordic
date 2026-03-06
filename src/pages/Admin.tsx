@@ -3,7 +3,13 @@ import { ProductsTab } from "@/components/admin/ProductsTab"
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useAuth } from "@/contexts/AuthContext"
 import { useAdminOrders } from "@/hooks/useAdminOrders"
@@ -24,7 +30,8 @@ type Profile = Database["public"]["Tables"]["profiles"]["Row"]
 
 const Admin = () => {
   const { profile } = useAuth()
-  const { orders, pendingReviewOrders, inTransitOrders, totalRevenue } = useAdminOrders()
+  const { orders, pendingReviewOrders, inTransitOrders, totalRevenue } =
+    useAdminOrders()
   const [users, setUsers] = useState<Profile[]>([])
   const [loadingUsers, setLoadingUsers] = useState(true)
 
@@ -50,7 +57,8 @@ const Admin = () => {
     )
 
     // Filter out admin users
-    const customers = profiles?.filter((profile) => !adminUserIds.has(profile.id)) || []
+    const customers =
+      profiles?.filter((profile) => !adminUserIds.has(profile.id)) || []
 
     setUsers(customers)
     setLoadingUsers(false)
@@ -63,8 +71,12 @@ const Admin = () => {
       {/* Main Content */}
       <main className="container mx-auto px-6 py-8 pt-12">
         <div className="mb-8">
-          <h1 className="font-serif text-3xl font-semibold text-foreground">Admin Dashboard</h1>
-          <p className="mt-1 text-muted-foreground">Manage orders, customers, and products.</p>
+          <h1 className="font-serif text-3xl font-semibold text-foreground">
+            Admin Dashboard
+          </h1>
+          <p className="mt-1 text-muted-foreground">
+            Manage orders, customers, and products.
+          </p>
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
@@ -98,7 +110,9 @@ const Admin = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">Verified payments</p>
+                  <p className="text-xs text-muted-foreground">
+                    Verified payments
+                  </p>
                 </CardContent>
               </Card>
               <Card>
@@ -107,7 +121,9 @@ const Admin = () => {
                   <CardTitle className="text-3xl">{orders.length}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">All time orders</p>
+                  <p className="text-xs text-muted-foreground">
+                    All time orders
+                  </p>
                 </CardContent>
               </Card>
               <Card>
@@ -118,13 +134,17 @@ const Admin = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">Awaiting payment verification</p>
+                  <p className="text-xs text-muted-foreground">
+                    Awaiting payment verification
+                  </p>
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader className="pb-2">
                   <CardDescription>Active Shipments</CardDescription>
-                  <CardTitle className="text-3xl text-blue-600">{inTransitOrders.length}</CardTitle>
+                  <CardTitle className="text-3xl text-blue-600">
+                    {inTransitOrders.length}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-xs text-muted-foreground">In transit</p>
@@ -139,15 +159,24 @@ const Admin = () => {
                   <CardDescription>Common administrative tasks</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <Button variant="outline" className="w-full justify-start gap-2">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start gap-2"
+                  >
                     <CheckCircle2 className="h-4 w-4 text-green-600" />
                     Approve Pending Payments ({pendingReviewOrders.length})
                   </Button>
-                  <Button variant="outline" className="w-full justify-start gap-2">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start gap-2"
+                  >
                     <Clock className="h-4 w-4 text-amber-600" />
                     View Shipped Orders ({inTransitOrders.length})
                   </Button>
-                  <Button variant="outline" className="w-full justify-start gap-2">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start gap-2"
+                  >
                     <DollarSign className="h-4 w-4 text-green-600" />
                     View Revenue Analytics
                   </Button>
@@ -161,17 +190,27 @@ const Admin = () => {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Registered Customers</span>
+                    <span className="text-sm text-muted-foreground">
+                      Registered Customers
+                    </span>
                     <span className="font-medium">{users.length}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Active Orders</span>
+                    <span className="text-sm text-muted-foreground">
+                      Active Orders
+                    </span>
                     <span className="font-medium">
-                      {orders.filter((o) => !["completed", "cancelled"].includes(o.status)).length}
+                      {
+                        orders.filter(
+                          (o) => !["completed", "cancelled"].includes(o.status),
+                        ).length
+                      }
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Completed Orders</span>
+                    <span className="text-sm text-muted-foreground">
+                      Completed Orders
+                    </span>
                     <span className="font-medium">
                       {orders.filter((o) => o.status === "completed").length}
                     </span>
@@ -196,7 +235,9 @@ const Admin = () => {
             <Card>
               <CardHeader>
                 <CardTitle>Customer Management</CardTitle>
-                <CardDescription>View and manage registered customers</CardDescription>
+                <CardDescription>
+                  View and manage registered customers
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 {loadingUsers ? (
@@ -232,11 +273,20 @@ const Admin = () => {
                       </thead>
                       <tbody>
                         {users.map((user) => (
-                          <tr key={user.id} className="border-b hover:bg-muted/50">
-                            <td className="px-4 py-3 text-sm">{user.full_name}</td>
+                          <tr
+                            key={user.id}
+                            className="border-b hover:bg-muted/50"
+                          >
+                            <td className="px-4 py-3 text-sm">
+                              {user.full_name}
+                            </td>
                             <td className="px-4 py-3 text-sm">{user.email}</td>
-                            <td className="px-4 py-3 text-sm">{user.phone_number || "-"}</td>
-                            <td className="px-4 py-3 text-sm capitalize">{user.account_type}</td>
+                            <td className="px-4 py-3 text-sm">
+                              {user.phone_number || "-"}
+                            </td>
+                            <td className="px-4 py-3 text-sm capitalize">
+                              {user.account_type}
+                            </td>
                             <td className="px-4 py-3 text-sm text-muted-foreground">
                               {new Date(user.created_at).toLocaleDateString()}
                             </td>

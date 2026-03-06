@@ -6,9 +6,9 @@ import { cn } from "@/lib/utils"
 
 export type BreadcrumbProps = React.ComponentPropsWithoutRef<"nav">
 
-const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(({ ...props }, ref) => (
-  <nav ref={ref} aria-label="breadcrumb" {...props} />
-))
+const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
+  ({ ...props }, ref) => <nav ref={ref} aria-label="breadcrumb" {...props} />,
+)
 Breadcrumb.displayName = "Breadcrumb"
 
 export type BreadcrumbListProps = React.ComponentPropsWithoutRef<"ol">
@@ -31,7 +31,11 @@ export type BreadcrumbItemProps = React.ComponentPropsWithoutRef<"li">
 
 const BreadcrumbItem = React.forwardRef<HTMLLIElement, BreadcrumbItemProps>(
   ({ className, ...props }, ref) => (
-    <li ref={ref} className={cn("inline-flex items-center gap-1.5", className)} {...props} />
+    <li
+      ref={ref}
+      className={cn("inline-flex items-center gap-1.5", className)}
+      {...props}
+    />
   ),
 )
 BreadcrumbItem.displayName = "BreadcrumbItem"
@@ -73,7 +77,11 @@ BreadcrumbPage.displayName = "BreadcrumbPage"
 
 export type BreadcrumbSeparatorProps = React.ComponentPropsWithoutRef<"li">
 
-const BreadcrumbSeparator = ({ children, className, ...props }: BreadcrumbSeparatorProps) => (
+const BreadcrumbSeparator = ({
+  children,
+  className,
+  ...props
+}: BreadcrumbSeparatorProps) => (
   <li
     role="presentation"
     aria-hidden="true"
@@ -87,7 +95,10 @@ BreadcrumbSeparator.displayName = "BreadcrumbSeparator"
 
 export type BreadcrumbEllipsisProps = React.ComponentPropsWithoutRef<"span">
 
-const BreadcrumbEllipsis = ({ className, ...props }: BreadcrumbEllipsisProps) => (
+const BreadcrumbEllipsis = ({
+  className,
+  ...props
+}: BreadcrumbEllipsisProps) => (
   <span
     role="presentation"
     aria-hidden="true"

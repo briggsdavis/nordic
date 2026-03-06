@@ -1,9 +1,15 @@
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible"
 import type * as React from "react"
 
-type CollapsibleProps = React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.Root>
-type CollapsibleTriggerProps = React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.Trigger>
-type CollapsibleContentProps = React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.Content>
+type CollapsibleProps = React.ComponentPropsWithoutRef<
+  typeof CollapsiblePrimitive.Root
+>
+type CollapsibleTriggerProps = React.ComponentPropsWithoutRef<
+  typeof CollapsiblePrimitive.Trigger
+>
+type CollapsibleContentProps = React.ComponentPropsWithoutRef<
+  typeof CollapsiblePrimitive.Content
+>
 
 const Collapsible = CollapsiblePrimitive.Root
 

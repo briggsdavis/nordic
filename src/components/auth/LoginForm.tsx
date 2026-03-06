@@ -60,7 +60,10 @@ const getLoginErrorMessage = (error: AuthError) => {
   return error.message
 }
 
-const runAuthRequest = async (request: () => Promise<{ error: AuthError | null }>, retries = 1) => {
+const runAuthRequest = async (
+  request: () => Promise<{ error: AuthError | null }>,
+  retries = 1,
+) => {
   let lastError: AuthError | null = null
 
   for (let attempt = 0; attempt <= retries; attempt += 1) {
@@ -129,8 +132,12 @@ const LoginForm = ({ onSwitchToSignUp }: LoginFormProps) => {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="font-serif text-2xl font-semibold text-foreground">Welcome Back</h2>
-        <p className="mt-2 text-sm text-muted-foreground">Sign in to access your portal</p>
+        <h2 className="font-serif text-2xl font-semibold text-foreground">
+          Welcome Back
+        </h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Sign in to access your portal
+        </p>
       </div>
 
       <Form {...form}>

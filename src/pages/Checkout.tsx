@@ -19,7 +19,14 @@ import { useToast } from "@/hooks/use-toast"
 import { useCart } from "@/hooks/useCart"
 import { useOrders } from "@/hooks/useOrders"
 import { supabase } from "@/integrations/supabase/client"
-import { AlertTriangle, ArrowLeft, Check, Copy, Loader2, Upload } from "lucide-react"
+import {
+  AlertTriangle,
+  ArrowLeft,
+  Check,
+  Copy,
+  Loader2,
+  Upload,
+} from "lucide-react"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -78,7 +85,11 @@ const Checkout = () => {
   }
 
   const handleSubmitClick = () => {
-    if (!formData.contactName || !formData.contactPhone || !formData.deliveryAddress) {
+    if (
+      !formData.contactName ||
+      !formData.contactPhone ||
+      !formData.deliveryAddress
+    ) {
       return
     }
     setShowWarning(true)
@@ -109,7 +120,11 @@ const Checkout = () => {
         variant: item.variant,
         quantity: item.quantity,
         unitPrice: item.product
-          ? getVariantPrice(item.variant, item.product.price_per_kg, item.option?.price_per_kg)
+          ? getVariantPrice(
+              item.variant,
+              item.product.price_per_kg,
+              item.option?.price_per_kg,
+            )
           : 0,
         optionId: item.option_id,
         optionName: item.option?.name || null,
@@ -163,7 +178,11 @@ const Checkout = () => {
       <Header />
 
       <main className="container mx-auto px-6 py-12">
-        <Button variant="ghost" className="mb-8 gap-2" onClick={() => navigate(-1)}>
+        <Button
+          variant="ghost"
+          className="mb-8 gap-2"
+          onClick={() => navigate(-1)}
+        >
           <ArrowLeft className="h-4 w-4" />
           Back
         </Button>
@@ -179,8 +198,9 @@ const Checkout = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-sm text-muted-foreground">
-              To complete your order, transfer the amount below to our bank account. Then upload
-              your proof of payment in the form below before submitting.
+              To complete your order, transfer the amount below to our bank
+              account. Then upload your proof of payment in the form below
+              before submitting.
             </p>
 
             {/* Highlighted Total */}
@@ -212,10 +232,15 @@ const Checkout = () => {
                   field: "bank",
                 },
               ].map(({ label, value, field }) => (
-                <div key={field} className="flex items-center justify-between gap-4">
+                <div
+                  key={field}
+                  className="flex items-center justify-between gap-4"
+                >
                   <div className="min-w-0">
                     <p className="text-xs text-muted-foreground">{label}</p>
-                    <p className="font-mono font-medium text-foreground">{value}</p>
+                    <p className="font-mono font-medium text-foreground">
+                      {value}
+                    </p>
                   </div>
                   <button
                     type="button"
@@ -245,7 +270,9 @@ const Checkout = () => {
               <CardContent className="space-y-4">
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">Contact Name *</label>
+                    <label className="text-sm font-medium">
+                      Contact Name *
+                    </label>
                     <Input
                       value={formData.contactName}
                       onChange={(e) =>
@@ -258,7 +285,9 @@ const Checkout = () => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">Phone Number *</label>
+                    <label className="text-sm font-medium">
+                      Phone Number *
+                    </label>
                     <Input
                       value={formData.contactPhone}
                       onChange={(e) =>
@@ -273,7 +302,9 @@ const Checkout = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Delivery Address *</label>
+                  <label className="text-sm font-medium">
+                    Delivery Address *
+                  </label>
                   <Textarea
                     value={formData.deliveryAddress}
                     onChange={(e) =>
@@ -288,7 +319,9 @@ const Checkout = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Location Description</label>
+                  <label className="text-sm font-medium">
+                    Location Description
+                  </label>
                   <Textarea
                     value={formData.locationDescription}
                     onChange={(e) =>
@@ -303,7 +336,9 @@ const Checkout = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Preferred Delivery Time</label>
+                  <label className="text-sm font-medium">
+                    Preferred Delivery Time
+                  </label>
                   <Input
                     value={formData.preferredDeliveryTime}
                     onChange={(e) =>
@@ -317,7 +352,9 @@ const Checkout = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Additional Comments</label>
+                  <label className="text-sm font-medium">
+                    Additional Comments
+                  </label>
                   <Textarea
                     value={formData.additionalComments}
                     onChange={(e) =>
@@ -363,10 +400,14 @@ const Checkout = () => {
                       className={`h-8 w-8 ${paymentFile ? "text-primary" : "text-muted-foreground"}`}
                     />
                     {paymentFile ? (
-                      <span className="text-sm font-medium text-primary">{paymentFile.name}</span>
+                      <span className="text-sm font-medium text-primary">
+                        {paymentFile.name}
+                      </span>
                     ) : (
                       <>
-                        <span className="text-sm font-medium">Upload Payment Receipt</span>
+                        <span className="text-sm font-medium">
+                          Upload Payment Receipt
+                        </span>
                         <span className="text-xs text-muted-foreground">
                           Required - Click to upload image or PDF
                         </span>
@@ -398,8 +439,8 @@ const Checkout = () => {
                     <div key={item.id} className="flex justify-between text-sm">
                       <span className="text-muted-foreground">
                         {item.product?.name}
-                        {item.option?.name ? ` - ${item.option.name}` : ""} ({item.variant}) ×{" "}
-                        {item.quantity}
+                        {item.option?.name ? ` - ${item.option.name}` : ""} (
+                        {item.variant}) × {item.quantity}
                       </span>
                       <span>{formatPrice(price * item.quantity)}</span>
                     </div>
@@ -458,8 +499,9 @@ const Checkout = () => {
               Confirm Your Information
             </AlertDialogTitle>
             <AlertDialogDescription>
-              Please note that your information has to be correct. Review your delivery address,
-              contact details, and order items before proceeding. Make sure everything is accurate.
+              Please note that your information has to be correct. Review your
+              delivery address, contact details, and order items before
+              proceeding. Make sure everything is accurate.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

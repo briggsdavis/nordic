@@ -1,5 +1,9 @@
 import { supabase } from "@/integrations/supabase/client"
-import type { Tables, TablesInsert, TablesUpdate } from "@/integrations/supabase/types"
+import type {
+  Tables,
+  TablesInsert,
+  TablesUpdate,
+} from "@/integrations/supabase/types"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
 type Product = Tables<"products">
@@ -35,7 +39,11 @@ export function useAdminProducts() {
 
   const createProduct = useMutation({
     mutationFn: async (product: ProductInsert) => {
-      const { data, error } = await supabase.from("products").insert(product).select().single()
+      const { data, error } = await supabase
+        .from("products")
+        .insert(product)
+        .select()
+        .single()
 
       if (error) throw error
       return data
@@ -76,7 +84,13 @@ export function useAdminProducts() {
   })
 
   const toggleAvailability = useMutation({
-    mutationFn: async ({ id, is_available }: { id: string; is_available: boolean }) => {
+    mutationFn: async ({
+      id,
+      is_available,
+    }: {
+      id: string
+      is_available: boolean
+    }) => {
       const { data, error } = await supabase
         .from("products")
         .update({ is_available })
@@ -111,7 +125,10 @@ export function useAdminProducts() {
   })
 
   const updateOption = useMutation({
-    mutationFn: async ({ id, ...updates }: ProductOptionUpdate & { id: string }) => {
+    mutationFn: async ({
+      id,
+      ...updates
+    }: ProductOptionUpdate & { id: string }) => {
       const { data, error } = await supabase
         .from("product_options")
         .update(updates)
@@ -130,7 +147,10 @@ export function useAdminProducts() {
 
   const deleteOption = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from("product_options").delete().eq("id", id)
+      const { error } = await supabase
+        .from("product_options")
+        .delete()
+        .eq("id", id)
       if (error) throw error
     },
     onSuccess: () => {

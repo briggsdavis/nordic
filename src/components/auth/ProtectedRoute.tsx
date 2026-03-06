@@ -8,7 +8,10 @@ interface ProtectedRouteProps {
   requireAdmin?: boolean
 }
 
-const ProtectedRoute = ({ children, requireAdmin = false }: ProtectedRouteProps) => {
+const ProtectedRoute = ({
+  children,
+  requireAdmin = false,
+}: ProtectedRouteProps) => {
   const { user, role, loading } = useAuth()
   const location = useLocation()
   const [showSkeleton, setShowSkeleton] = useState(false)

@@ -47,8 +47,8 @@ const Collection = () => {
                 className="mx-auto max-w-2xl animate-fade-in-up text-lg font-light leading-relaxed text-card/90 opacity-0"
                 style={{ animationDelay: "0.6s" }}
               >
-                Browse our selection of premium-grade Atlantic salmon, sourced directly from
-                Norwegian fjords and delivered with precision.
+                Browse our selection of premium-grade Atlantic salmon, sourced
+                directly from Norwegian fjords and delivered with precision.
               </p>
             </div>
           </div>
@@ -92,7 +92,9 @@ const Collection = () => {
                     <h3 className="mb-4 font-serif text-xl text-foreground transition-colors group-hover:text-primary">
                       {product.name}
                     </h3>
-                    <p className="mb-5 text-sm text-muted-foreground">{product.weight_range}</p>
+                    <p className="mb-5 text-sm text-muted-foreground">
+                      {product.weight_range}
+                    </p>
                     {product.description && (
                       <p className="mb-6 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
                         {product.description}
@@ -113,7 +115,9 @@ const Collection = () => {
           ) : (
             <div className="py-16 text-center">
               <Package className="mx-auto mb-4 h-16 w-16 text-muted-foreground opacity-50" />
-              <h3 className="mb-2 font-serif text-2xl text-foreground">No Products Available</h3>
+              <h3 className="mb-2 font-serif text-2xl text-foreground">
+                No Products Available
+              </h3>
               <p className="text-muted-foreground">
                 Check back soon for our premium salmon selection.
               </p>

@@ -1,6 +1,8 @@
 import { supabase } from "@/integrations/supabase/client"
 import { getErrorMessage } from "@/lib/utils"
 
+export const PRODUCT_IMAGES_BUCKET = "product-images"
+
 /**
  * Generate a signed URL for accessing files in private buckets
  * @param bucket - The storage bucket name
@@ -24,7 +26,9 @@ export const getSignedUrl = async (
     return null
   }
 
-  const { data, error } = await supabase.storage.from(bucket).createSignedUrl(path, expiresIn)
+  const { data, error } = await supabase.storage
+    .from(bucket)
+    .createSignedUrl(path, expiresIn)
 
   if (error) {
     logStorageError("Error creating signed URL", error)
@@ -50,7 +54,9 @@ export const extractFilePath = (urlOrPath: string): string => {
 
   // Extract path from full Supabase storage URL
   // Format: https://xxx.supabase.co/storage/v1/object/public/bucket-name/path/to/file
-  const match = urlOrPath.match(/\/storage\/v1\/object\/(?:public|sign)\/[^/]+\/(.+)/)
+  const match = urlOrPath.match(
+    /\/storage\/v1\/object\/(?:public|sign)\/[^/]+\/(.+)/,
+  )
   if (match) {
     return match[1]
   }
@@ -64,7 +70,10 @@ export const extractFilePath = (urlOrPath: string): string => {
  * @param bucket - The storage bucket name
  * @param filePathOrUrl - The file path or legacy full URL
  */
-export async function openStorageFile(bucket: string, filePathOrUrl: string): Promise<void> {
+export async function openStorageFile(
+  bucket: string,
+  filePathOrUrl: string,
+): Promise<void> {
   const filePath = extractFilePath(filePathOrUrl)
   if (!filePath) {
     logStorageError("Missing file path", filePathOrUrl)
@@ -74,5 +83,43 @@ export async function openStorageFile(bucket: string, filePathOrUrl: string): Pr
   const signedUrl = await getSignedUrl(bucket, filePath)
   if (signedUrl) {
     window.open(signedUrl, "_blank", "noopener,noreferrer")
+  }
+}
+
+export const isSupabaseStorageUrl = (url: string): boolean =>
+  url.includes("supabase.co/storage")
+
+export async function uploadProductImage(
+  file: File,
+  productSlug: string,
+): Promise<string> {
+  const ext = file.name.split(".").pop()
+  const filePath = `${productSlug}/${Date.now()}.${ext}`
+
+  const { error } = await supabase.storage
+    .from(PRODUCT_IMAGES_BUCKET)
+    .upload(filePath, file, { upsert: true })
+
+  if (error) throw error
+
+  const { data } = supabase.storage
+    .from(PRODUCT_IMAGES_BUCKET)
+    .getPublicUrl(filePath)
+
+  return data.publicUrl
+}
+
+export async function deleteProductImage(publicUrl: string): Promise<void> {
+  if (!isSupabaseStorageUrl(publicUrl)) return
+
+  const path = extractFilePath(publicUrl)
+  if (!path) return
+
+  const { error } = await supabase.storage
+    .from(PRODUCT_IMAGES_BUCKET)
+    .remove([path])
+
+  if (error) {
+    logStorageError("Error deleting product image", error)
   }
 }

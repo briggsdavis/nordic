@@ -1,6 +1,11 @@
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import {
   Form,
   FormControl,
@@ -12,9 +17,17 @@ import {
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import type { Tables } from "@/integrations/supabase/types"
+import { MAX_FILE_SIZE, formatFileSizeError } from "@/lib/format"
+import {
+  deleteProductImage,
+  isSupabaseStorageUrl,
+  uploadProductImage,
+} from "@/lib/storage"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useEffect } from "react"
+import { Upload, X } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 import { z } from "zod"
 
 type Product = Tables<"products">
@@ -54,6 +67,11 @@ export function ProductFormDialog({
   isSubmitting,
 }: ProductFormDialogProps) {
   const isEditing = !!product
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [isUploading, setIsUploading] = useState(false)
+  const [useUrlMode, setUseUrlMode] = useState(false)
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
@@ -79,6 +97,7 @@ export function ProductFormDialog({
         image_url: product.image_url || "",
         is_available: product.is_available,
       })
+      setImagePreview(product.image_url || null)
     } else {
       form.reset({
         name: "",
@@ -89,7 +108,10 @@ export function ProductFormDialog({
         image_url: "",
         is_available: true,
       })
+      setImagePreview(null)
     }
+    setImageFile(null)
+    setUseUrlMode(false)
   }, [product, form])
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -100,12 +122,61 @@ export function ProductFormDialog({
     }
   }
 
-  const handleSubmit = (values: ProductFormValues) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    if (file.size > MAX_FILE_SIZE) {
+      toast.error(formatFileSizeError(file.size))
+      return
+    }
+
+    setImageFile(file)
+    setImagePreview(URL.createObjectURL(file))
+    form.setValue("image_url", "")
+  }
+
+  const clearImage = () => {
+    setImageFile(null)
+    setImagePreview(null)
+    form.setValue("image_url", "")
+    if (fileInputRef.current) fileInputRef.current.value = ""
+  }
+
+  const handleSubmit = async (values: ProductFormValues) => {
+    let imageUrl = values.image_url || undefined
+
+    if (imageFile) {
+      const slug = values.slug
+      if (!slug) {
+        toast.error("Slug is required to upload an image")
+        return
+      }
+
+      setIsUploading(true)
+      try {
+        // Delete old Supabase image if replacing
+        const oldUrl = product?.image_url
+        if (oldUrl && isSupabaseStorageUrl(oldUrl)) {
+          await deleteProductImage(oldUrl)
+        }
+
+        imageUrl = await uploadProductImage(imageFile, slug)
+      } catch (err) {
+        toast.error(
+          `Image upload failed: ${err instanceof Error ? err.message : "Unknown error"}`,
+        )
+        setIsUploading(false)
+        return
+      }
+      setIsUploading(false)
+    }
+
     onSubmit({
       ...values,
       description: values.description || undefined,
       weight_range: values.weight_range || undefined,
-      image_url: values.image_url || undefined,
+      image_url: imageUrl,
     })
   }
 
@@ -113,10 +184,15 @@ export function ProductFormDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>{isEditing ? "Edit Product" : "Add New Product"}</DialogTitle>
+          <DialogTitle>
+            {isEditing ? "Edit Product" : "Add New Product"}
+          </DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-4"
+          >
             <FormField
               control={form.control}
               name="name"
@@ -124,7 +200,11 @@ export function ProductFormDialog({
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input {...field} onChange={handleNameChange} placeholder="e.g. Whole Salmon" />
+                    <Input
+                      {...field}
+                      onChange={handleNameChange}
+                      placeholder="e.g. Whole Salmon"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -152,7 +232,11 @@ export function ProductFormDialog({
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea {...field} placeholder="Product description..." rows={3} />
+                    <Textarea
+                      {...field}
+                      placeholder="Product description..."
+                      rows={3}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -181,7 +265,13 @@ export function ProductFormDialog({
                   <FormItem>
                     <FormLabel>Price per kg (NOK)</FormLabel>
                     <FormControl>
-                      <Input {...field} type="number" step="0.01" min="0" placeholder="0.00" />
+                      <Input
+                        {...field}
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        placeholder="0.00"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -189,19 +279,72 @@ export function ProductFormDialog({
               />
             </div>
 
-            <FormField
-              control={form.control}
-              name="image_url"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Image URL</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="https://..." />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Product Image</label>
+
+              {(imagePreview || form.watch("image_url")) && (
+                <div className="relative w-full h-40 rounded-md overflow-hidden border">
+                  <img
+                    src={imagePreview || form.watch("image_url")}
+                    alt="Preview"
+                    className="h-full w-full object-cover"
+                  />
+                  <button
+                    type="button"
+                    onClick={clearImage}
+                    className="absolute top-2 right-2 rounded-full bg-black/60 p-1 text-white hover:bg-black/80"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
               )}
-            />
+
+              {useUrlMode ? (
+                <FormField
+                  control={form.control}
+                  name="image_url"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input {...field} placeholder="https://..." />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ) : (
+                <>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <Upload className="mr-2 h-4 w-4" />
+                    {imageFile ? imageFile.name : "Choose image"}
+                  </Button>
+                </>
+              )}
+
+              <button
+                type="button"
+                onClick={() => {
+                  setUseUrlMode(!useUrlMode)
+                  setImageFile(null)
+                  if (fileInputRef.current) fileInputRef.current.value = ""
+                }}
+                className="text-xs text-muted-foreground underline"
+              >
+                {useUrlMode ? "Upload a file instead" : "Paste URL instead"}
+              </button>
+            </div>
 
             <FormField
               control={form.control}
@@ -209,25 +352,36 @@ export function ProductFormDialog({
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center space-x-3 space-y-0">
                   <FormControl>
-                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
                   </FormControl>
-                  <FormLabel className="font-normal">Available for purchase</FormLabel>
+                  <FormLabel className="font-normal">
+                    Available for purchase
+                  </FormLabel>
                 </FormItem>
               )}
             />
 
             <div className="flex justify-end gap-3 pt-4">
-              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+              >
                 Cancel
               </Button>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting
-                  ? isEditing
-                    ? "Saving..."
-                    : "Creating..."
-                  : isEditing
-                    ? "Save Changes"
-                    : "Create Product"}
+              <Button type="submit" disabled={isSubmitting || isUploading}>
+                {isUploading
+                  ? "Uploading..."
+                  : isSubmitting
+                    ? isEditing
+                      ? "Saving..."
+                      : "Creating..."
+                    : isEditing
+                      ? "Save Changes"
+                      : "Create Product"}
               </Button>
             </div>
           </form>

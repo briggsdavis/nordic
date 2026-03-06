@@ -1,5 +1,12 @@
 import { Button } from "@/components/ui/button"
-import { Building2, Clock, ExternalLink, FileText, Shield, Thermometer } from "lucide-react"
+import {
+  Building2,
+  Clock,
+  ExternalLink,
+  FileText,
+  Shield,
+  Thermometer,
+} from "lucide-react"
 
 const specs = [
   {
@@ -53,18 +60,25 @@ const partners = [
 
 const TechnicalDetails = () => {
   return (
-    <section className="bg-secondary py-24 lg:py-32" aria-labelledby="technical-title">
+    <section
+      className="bg-secondary py-24 lg:py-32"
+      aria-labelledby="technical-title"
+    >
       <div className="container mx-auto px-6 lg:px-8">
         {/* Section Header */}
         <div className="mb-16 text-center">
           <p className="mb-4 text-xs uppercase tracking-[0.3em] text-primary">
             Precision Logistics
           </p>
-          <h2 id="technical-title" className="mb-6 font-serif text-4xl text-foreground md:text-5xl">
+          <h2
+            id="technical-title"
+            className="mb-6 font-serif text-4xl text-foreground md:text-5xl"
+          >
             Shipment Integrity
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-            Every detail engineered to preserve quality from Arctic waters to your kitchen.
+            Every detail engineered to preserve quality from Arctic waters to
+            your kitchen.
           </p>
         </div>
 
@@ -83,8 +97,12 @@ const TechnicalDetails = () => {
                 <p className="mb-1 text-xs uppercase tracking-wide text-muted-foreground">
                   {spec.label}
                 </p>
-                <p className="mb-1 font-serif text-2xl text-foreground">{spec.value}</p>
-                <p className="text-sm text-muted-foreground">{spec.description}</p>
+                <p className="mb-1 font-serif text-2xl text-foreground">
+                  {spec.value}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {spec.description}
+                </p>
               </li>
             )
           })}
@@ -95,7 +113,9 @@ const TechnicalDetails = () => {
           <div className="mb-16 text-center">
             <div className="mb-4 inline-flex items-center gap-2 text-muted-foreground">
               <Building2 className="h-4 w-4" />
-              <span className="text-xs uppercase tracking-[0.2em]">Sourcing Partners</span>
+              <span className="text-xs uppercase tracking-[0.2em]">
+                Sourcing Partners
+              </span>
             </div>
             <h3 className="font-serif text-3xl text-foreground md:text-4xl">
               Trusted Norwegian Origins
@@ -132,15 +152,25 @@ const TechnicalDetails = () => {
                         <h4 className="mb-1 font-serif text-2xl text-foreground md:text-3xl">
                           {partner.name}
                         </h4>
-                        <p className="text-sm font-medium text-primary">{partner.established}</p>
+                        <p className="text-sm font-medium text-primary">
+                          {partner.established}
+                        </p>
                       </div>
                     </div>
                     <p className="mb-6 leading-relaxed text-muted-foreground">
                       {partner.description}
                     </p>
                     <div>
-                      <Button asChild variant="outline" className="gap-2 font-medium">
-                        <a href={partner.link} target="_blank" rel="noopener noreferrer">
+                      <Button
+                        asChild
+                        variant="outline"
+                        className="gap-2 font-medium"
+                      >
+                        <a
+                          href={partner.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           {partner.buttonText}
                           <ExternalLink className="h-4 w-4" />
                         </a>

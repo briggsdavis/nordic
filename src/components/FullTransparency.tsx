@@ -15,8 +15,8 @@ const FullTransparency = () => {
             Full Transparency
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-            Real-time tracking, verifiable certifications, and direct sourcing from Norway to
-            Ethiopia.
+            Real-time tracking, verifiable certifications, and direct sourcing
+            from Norway to Ethiopia.
           </p>
         </div>
 
@@ -30,9 +30,13 @@ const FullTransparency = () => {
             <div>
               <div className="mb-4 inline-flex items-center gap-2 text-primary">
                 <Shield className="h-5 w-5" />
-                <span className="text-xs uppercase tracking-[0.3em]">Quality Assurance</span>
+                <span className="text-xs uppercase tracking-[0.3em]">
+                  Quality Assurance
+                </span>
               </div>
-              <h3 className="mb-6 font-serif text-3xl text-foreground">Track Every Step</h3>
+              <h3 className="mb-6 font-serif text-3xl text-foreground">
+                Track Every Step
+              </h3>
             </div>
 
             {/* Live Tracking */}
@@ -42,9 +46,12 @@ const FullTransparency = () => {
                   <Package className="h-4 w-4 text-primary" />
                 </div>
                 <div>
-                  <h4 className="mb-1 font-semibold text-foreground">Live 7-Stage Tracking</h4>
+                  <h4 className="mb-1 font-semibold text-foreground">
+                    Live 7-Stage Tracking
+                  </h4>
                   <p className="text-sm text-muted-foreground">
-                    Seven delivery stages tracked live, from Norwegian fjords to your door.
+                    Seven delivery stages tracked live, from Norwegian fjords to
+                    your door.
                   </p>
                 </div>
               </div>
@@ -59,7 +66,8 @@ const FullTransparency = () => {
                     Order-Specific Certificates
                   </h4>
                   <p className="text-sm text-muted-foreground">
-                    Every order includes health and quality certificates, viewable in your account.
+                    Every order includes health and quality certificates,
+                    viewable in your account.
                   </p>
                 </div>
               </div>
@@ -70,9 +78,12 @@ const FullTransparency = () => {
                   <Shield className="h-4 w-4 text-primary" />
                 </div>
                 <div>
-                  <h4 className="mb-1 font-semibold text-foreground">Verified & Up-to-Date</h4>
+                  <h4 className="mb-1 font-semibold text-foreground">
+                    Verified & Up-to-Date
+                  </h4>
                   <p className="text-sm text-muted-foreground">
-                    All certifications and delivery data are current and independently verifiable.
+                    All certifications and delivery data are current and
+                    independently verifiable.
                   </p>
                 </div>
               </div>
@@ -87,9 +98,13 @@ const FullTransparency = () => {
             <div>
               <div className="mb-4 inline-flex items-center gap-2 text-primary">
                 <Globe className="h-5 w-5" />
-                <span className="text-xs uppercase tracking-[0.3em]">Direct from Source</span>
+                <span className="text-xs uppercase tracking-[0.3em]">
+                  Direct from Source
+                </span>
               </div>
-              <h3 className="mb-6 font-serif text-3xl text-foreground">Direct from Source</h3>
+              <h3 className="mb-6 font-serif text-3xl text-foreground">
+                Direct from Source
+              </h3>
             </div>
 
             {/* Features */}
@@ -100,9 +115,12 @@ const FullTransparency = () => {
                   <Clock className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <h4 className="mb-1 font-serif text-xl text-foreground">Under 2 Days</h4>
+                  <h4 className="mb-1 font-serif text-xl text-foreground">
+                    Under 2 Days
+                  </h4>
                   <p className="text-sm text-muted-foreground">
-                    Cold-chain delivery from Norway to Addis Ababa in under 48 hours.
+                    Cold-chain delivery from Norway to Addis Ababa in under 48
+                    hours.
                   </p>
                 </div>
               </div>
@@ -113,9 +131,12 @@ const FullTransparency = () => {
                   <Globe className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <h4 className="mb-1 font-serif text-xl text-foreground">Direct from Norway</h4>
+                  <h4 className="mb-1 font-serif text-xl text-foreground">
+                    Direct from Norway
+                  </h4>
                   <p className="text-sm text-muted-foreground">
-                    Sourced exclusively from Norwegian Atlantic waters. No intermediaries.
+                    Sourced exclusively from Norwegian Atlantic waters. No
+                    intermediaries.
                   </p>
                 </div>
               </div>
@@ -126,10 +147,12 @@ const FullTransparency = () => {
                   <Truck className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <h4 className="mb-1 font-serif text-xl text-foreground">Two Trusted Partners</h4>
+                  <h4 className="mb-1 font-serif text-xl text-foreground">
+                    Two Trusted Partners
+                  </h4>
                   <p className="text-sm text-muted-foreground">
-                    We work directly with two established Norwegian suppliers with decades of
-                    expertise.
+                    We work directly with two established Norwegian suppliers
+                    with decades of expertise.
                   </p>
                 </div>
               </div>

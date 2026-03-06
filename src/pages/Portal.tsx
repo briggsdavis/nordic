@@ -5,8 +5,18 @@ import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import { OrderCard } from "@/components/orders/OrderCard"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
 import {
   Dialog,
   DialogContent,
@@ -43,7 +53,12 @@ type AccountType = Database["public"]["Enums"]["account_type"]
 
 const Portal = () => {
   const { user, profile, refreshProfile } = useAuth()
-  const { orders, currentOrders, pastOrders, isLoading: ordersLoading } = useOrders()
+  const {
+    orders,
+    currentOrders,
+    pastOrders,
+    isLoading: ordersLoading,
+  } = useOrders()
   const navigate = useNavigate()
   const { toast } = useToast()
 
@@ -132,7 +147,8 @@ const Portal = () => {
               Welcome, {profile?.full_name || "User"}
             </h1>
             <p className="mt-1 text-muted-foreground">
-              Manage your orders, view certificates, and update your account information.
+              Manage your orders, view certificates, and update your account
+              information.
             </p>
           </div>
           <Button
@@ -171,7 +187,9 @@ const Portal = () => {
                 <div className="grid gap-4 md:grid-cols-3">
                   {/* Management System Certificate */}
                   <button
-                    onClick={() => window.open(managementSystemCertificate, "_blank")}
+                    onClick={() =>
+                      window.open(managementSystemCertificate, "_blank")
+                    }
                     className="group flex items-start gap-4 rounded-2xl border p-4 text-left transition-all hover:border-primary hover:bg-muted/50"
                   >
                     <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 transition-colors group-hover:bg-primary/20">
@@ -196,7 +214,9 @@ const Portal = () => {
                       <FileCheck className="h-5 w-5 text-primary" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="mb-1 font-medium text-foreground">Free Sale Certificate</h3>
+                      <h3 className="mb-1 font-medium text-foreground">
+                        Free Sale Certificate
+                      </h3>
                       <p className="text-sm text-muted-foreground">
                         Export authorization and compliance
                       </p>
@@ -205,7 +225,9 @@ const Portal = () => {
 
                   {/* Certificate of Competence */}
                   <button
-                    onClick={() => window.open(certificateOfCompetence, "_blank")}
+                    onClick={() =>
+                      window.open(certificateOfCompetence, "_blank")
+                    }
                     className="group flex items-start gap-4 rounded-2xl border p-4 text-left transition-all hover:border-primary hover:bg-muted/50"
                   >
                     <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 transition-colors group-hover:bg-primary/20">
@@ -230,19 +252,27 @@ const Portal = () => {
         <div className="space-y-6">
           <Tabs defaultValue="current">
             <TabsList>
-              <TabsTrigger value="current">Current Orders ({currentOrders.length})</TabsTrigger>
-              <TabsTrigger value="past">Past Orders ({pastOrders.length})</TabsTrigger>
+              <TabsTrigger value="current">
+                Current Orders ({currentOrders.length})
+              </TabsTrigger>
+              <TabsTrigger value="past">
+                Past Orders ({pastOrders.length})
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="current" className="mt-4">
               {ordersLoading ? (
-                <div className="py-8 text-center text-muted-foreground">Loading orders...</div>
+                <div className="py-8 text-center text-muted-foreground">
+                  Loading orders...
+                </div>
               ) : currentOrders.length === 0 ? (
                 <Card>
                   <CardContent className="py-12 text-center text-muted-foreground">
                     <Package className="mx-auto mb-4 h-12 w-12 opacity-50" />
                     <p>No current orders</p>
-                    <p className="mt-2 text-sm">Your active orders will appear here.</p>
+                    <p className="mt-2 text-sm">
+                      Your active orders will appear here.
+                    </p>
                   </CardContent>
                 </Card>
               ) : (
@@ -256,13 +286,17 @@ const Portal = () => {
 
             <TabsContent value="past" className="mt-4">
               {ordersLoading ? (
-                <div className="py-8 text-center text-muted-foreground">Loading orders...</div>
+                <div className="py-8 text-center text-muted-foreground">
+                  Loading orders...
+                </div>
               ) : pastOrders.length === 0 ? (
                 <Card>
                   <CardContent className="py-12 text-center text-muted-foreground">
                     <Package className="mx-auto mb-4 h-12 w-12 opacity-50" />
                     <p>No past orders</p>
-                    <p className="mt-2 text-sm">Your completed orders will appear here.</p>
+                    <p className="mt-2 text-sm">
+                      Your completed orders will appear here.
+                    </p>
                   </CardContent>
                 </Card>
               ) : (
@@ -284,13 +318,17 @@ const Portal = () => {
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
             <DialogTitle>Account Information</DialogTitle>
-            <DialogDescription>Update your personal details and preferences</DialogDescription>
+            <DialogDescription>
+              Update your personal details and preferences
+            </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-6">
             <div className="grid gap-6 md:grid-cols-2">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-muted-foreground">Full Name</label>
+                <label className="text-sm font-medium text-muted-foreground">
+                  Full Name
+                </label>
                 <Input
                   value={editedProfile.full_name}
                   onChange={(e) =>
@@ -303,13 +341,21 @@ const Portal = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-muted-foreground">Email</label>
-                <p className="text-foreground">{profile?.email || user?.email || "-"}</p>
-                <p className="text-xs text-muted-foreground">Email cannot be changed</p>
+                <label className="text-sm font-medium text-muted-foreground">
+                  Email
+                </label>
+                <p className="text-foreground">
+                  {profile?.email || user?.email || "-"}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Email cannot be changed
+                </p>
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-muted-foreground">Phone Number</label>
+                <label className="text-sm font-medium text-muted-foreground">
+                  Phone Number
+                </label>
                 <Input
                   type="tel"
                   value={editedProfile.phone_number}
@@ -325,7 +371,9 @@ const Portal = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-muted-foreground">WhatsApp Number</label>
+                <label className="text-sm font-medium text-muted-foreground">
+                  WhatsApp Number
+                </label>
                 <Input
                   type="tel"
                   value={editedProfile.whatsapp_number}
@@ -341,7 +389,9 @@ const Portal = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-muted-foreground">Primary Address</label>
+                <label className="text-sm font-medium text-muted-foreground">
+                  Primary Address
+                </label>
                 <Input
                   value={editedProfile.primary_address}
                   onChange={(e) =>
@@ -355,7 +405,9 @@ const Portal = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-muted-foreground">Account Type</label>
+              <label className="text-sm font-medium text-muted-foreground">
+                Account Type
+              </label>
               <RadioGroup
                 value={editedProfile.account_type}
                 onValueChange={(value) =>
@@ -368,14 +420,20 @@ const Portal = () => {
               >
                 <div className="flex cursor-pointer items-center space-x-2 rounded-2xl border px-4 py-3 transition-colors hover:bg-muted/50">
                   <RadioGroupItem value="business" id="business" />
-                  <label htmlFor="business" className="flex cursor-pointer items-center gap-2">
+                  <label
+                    htmlFor="business"
+                    className="flex cursor-pointer items-center gap-2"
+                  >
                     <Building2 className="h-4 w-4 text-muted-foreground" />
                     <span className="text-sm font-medium">Business</span>
                   </label>
                 </div>
                 <div className="flex cursor-pointer items-center space-x-2 rounded-2xl border px-4 py-3 transition-colors hover:bg-muted/50">
                   <RadioGroupItem value="individual" id="individual" />
-                  <label htmlFor="individual" className="flex cursor-pointer items-center gap-2">
+                  <label
+                    htmlFor="individual"
+                    className="flex cursor-pointer items-center gap-2"
+                  >
                     <User className="h-4 w-4 text-muted-foreground" />
                     <span className="text-sm font-medium">Individual</span>
                   </label>
@@ -385,10 +443,17 @@ const Portal = () => {
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsAccountDialogOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setIsAccountDialogOpen(false)}
+            >
               Cancel
             </Button>
-            <Button onClick={handleSaveProfile} disabled={isSaving} className="gap-2">
+            <Button
+              onClick={handleSaveProfile}
+              disabled={isSaving}
+              className="gap-2"
+            >
               <Save className="h-4 w-4" />
               {isSaving ? "Saving..." : "Save Changes"}
             </Button>

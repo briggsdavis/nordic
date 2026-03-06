@@ -5,7 +5,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function getErrorMessage(error: unknown, fallback = "Something went wrong"): string {
+export function getErrorMessage(
+  error: unknown,
+  fallback = "Something went wrong",
+): string {
   if (error instanceof Error) {
     return error.message
   }

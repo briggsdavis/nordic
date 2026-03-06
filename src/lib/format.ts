@@ -28,7 +28,12 @@ const getNumberFormatter = ({
   minimumFractionDigits,
   maximumFractionDigits,
 }: Required<PriceFormatOptions>): Intl.NumberFormat => {
-  const key = [locale, currency, minimumFractionDigits ?? "", maximumFractionDigits ?? ""].join("|")
+  const key = [
+    locale,
+    currency,
+    minimumFractionDigits ?? "",
+    maximumFractionDigits ?? "",
+  ].join("|")
 
   const cached = numberFormatters.get(key)
   if (cached) {
@@ -60,7 +65,10 @@ const getDateFormatter = (
   return formatter
 }
 
-export function formatPrice(price: number, options: PriceFormatOptions = {}): string {
+export function formatPrice(
+  price: number,
+  options: PriceFormatOptions = {},
+): string {
   if (!Number.isFinite(price)) {
     return "-"
   }
@@ -106,7 +114,10 @@ export function formatFileSize(bytes: number): string {
   }
 
   const units = ["B", "KB", "MB", "GB"]
-  const index = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1)
+  const index = Math.min(
+    Math.floor(Math.log(bytes) / Math.log(1024)),
+    units.length - 1,
+  )
   const value = bytes / Math.pow(1024, index)
   return `${value.toFixed(index === 0 ? 0 : 2)}${units[index]}`
 }

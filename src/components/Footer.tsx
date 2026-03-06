@@ -11,13 +11,17 @@ const Footer = () => {
           <div>
             <div className="mb-6 flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary">
-                <span className="font-serif text-lg font-bold text-primary-foreground">NS</span>
+                <span className="font-serif text-lg font-bold text-primary-foreground">
+                  NS
+                </span>
               </div>
-              <span className="font-serif text-xl text-foreground">Nordic Seafood</span>
+              <span className="font-serif text-xl text-foreground">
+                Nordic Seafood
+              </span>
             </div>
             <p className="mb-6 text-sm leading-relaxed text-muted-foreground">
-              Premium Norwegian Atlantic Salmon delivered directly to Ethiopia. Unbroken cold chain,
-              certified quality, from fjord to doorstep.
+              Premium Norwegian Atlantic Salmon delivered directly to Ethiopia.
+              Unbroken cold chain, certified quality, from fjord to doorstep.
             </p>
           </div>
 
@@ -28,8 +32,8 @@ const Footer = () => {
               <li className="flex items-start gap-3 text-sm text-muted-foreground">
                 <MapPin className="mt-1 h-4 w-4 flex-shrink-0" />
                 <span>
-                  South African Street, Shimekit Commercial Center 10/12, Woreda 08, Lideta Sub
-                  City, Addis Ababa, Ethiopia
+                  South African Street, Shimekit Commercial Center 10/12, Woreda
+                  08, Lideta Sub City, Addis Ababa, Ethiopia
                 </span>
               </li>
               <li className="flex items-center gap-3 text-sm text-muted-foreground">
@@ -43,7 +47,10 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Phone className="h-4 w-4 flex-shrink-0" />
-                <a href="tel:+251911000000" className="transition-colors hover:text-primary">
+                <a
+                  href="tel:+251911000000"
+                  className="transition-colors hover:text-primary"
+                >
                   +251 911 000 000
                 </a>
               </li>

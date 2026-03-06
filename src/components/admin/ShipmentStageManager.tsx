@@ -1,5 +1,13 @@
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { useAdminShipmentStages, useShipmentStages } from "@/hooks/useShipmentTracking"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import {
+  useAdminShipmentStages,
+  useShipmentStages,
+} from "@/hooks/useShipmentTracking"
 import { cn } from "@/lib/utils"
 
 interface ShipmentStageManagerProps {
@@ -20,7 +28,9 @@ export function ShipmentStageManager({
     const updates = stages
       .map((stage) => ({
         stageId: stage.id,
-        status: (stage.stage_number <= clickedStageNumber ? "completed" : "pending") as const,
+        status: (stage.stage_number <= clickedStageNumber
+          ? "completed"
+          : "pending") as const,
       }))
       .filter((update, idx) => stages[idx].status !== update.status)
 
@@ -38,7 +48,8 @@ export function ShipmentStageManager({
     }
   }
 
-  const completedCount = stages?.filter((s) => s.status === "completed").length ?? 0
+  const completedCount =
+    stages?.filter((s) => s.status === "completed").length ?? 0
   const totalCount = stages?.length ?? 0
 
   return (
@@ -59,7 +70,9 @@ export function ShipmentStageManager({
                 />
               </TooltipTrigger>
               <TooltipContent className="border bg-popover text-popover-foreground shadow-md">
-                <p className="text-sm font-medium">{stage.shipment_stage_definitions.stage_name}</p>
+                <p className="text-sm font-medium">
+                  {stage.shipment_stage_definitions.stage_name}
+                </p>
                 <p className="text-xs text-muted-foreground">
                   {stage.shipment_stage_definitions.location}
                 </p>

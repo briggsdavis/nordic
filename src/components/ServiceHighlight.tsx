@@ -8,15 +8,21 @@ const ServiceHighlight = () => {
       <div className="container mx-auto px-6 lg:px-8">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Left Content */}
-          <div className="animate-fade-in space-y-8 opacity-0" style={{ animationDelay: "0.2s" }}>
+          <div
+            className="animate-fade-in space-y-8 opacity-0"
+            style={{ animationDelay: "0.2s" }}
+          >
             {/* Header */}
             <div>
-              <p className="mb-4 text-xs uppercase tracking-[0.3em] text-primary">How It Works</p>
+              <p className="mb-4 text-xs uppercase tracking-[0.3em] text-primary">
+                How It Works
+              </p>
               <h2 className="mb-6 font-serif text-4xl text-foreground md:text-5xl">
                 Sushi Grade Norwegian Salmon in 48 Hours
               </h2>
               <p className="text-lg leading-relaxed text-muted-foreground">
-                Sushi grade, vacuum packed salmon direct from Norwegian fjords to Addis Ababa.
+                Sushi grade, vacuum packed salmon direct from Norwegian fjords
+                to Addis Ababa.
               </p>
             </div>
 
@@ -28,7 +34,9 @@ const ServiceHighlight = () => {
                   <ShoppingBag className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="mb-1 font-serif text-xl text-foreground">Order Online Anytime</h3>
+                  <h3 className="mb-1 font-serif text-xl text-foreground">
+                    Order Online Anytime
+                  </h3>
                   <p className="text-muted-foreground">
                     Place orders any time on our secure platform.
                   </p>
@@ -41,9 +49,12 @@ const ServiceHighlight = () => {
                   <Award className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="mb-1 font-serif text-xl text-foreground">Full Transparency</h3>
+                  <h3 className="mb-1 font-serif text-xl text-foreground">
+                    Full Transparency
+                  </h3>
                   <p className="text-muted-foreground">
-                    View all health and quality certificates directly on our site.
+                    View all health and quality certificates directly on our
+                    site.
                   </p>
                 </div>
               </div>
@@ -58,7 +69,8 @@ const ServiceHighlight = () => {
                     Live Delivery Tracking
                   </h3>
                   <p className="text-muted-foreground">
-                    Track your order through all 7 stages with real-time updates.
+                    Track your order through all 7 stages with real-time
+                    updates.
                   </p>
                 </div>
               </div>
@@ -69,9 +81,12 @@ const ServiceHighlight = () => {
                   <MapPin className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="mb-1 font-serif text-xl text-foreground">Direct Home Delivery</h3>
+                  <h3 className="mb-1 font-serif text-xl text-foreground">
+                    Direct Home Delivery
+                  </h3>
                   <p className="text-muted-foreground">
-                    Refrigerated delivery across Addis Ababa, no middlemen, no delays.
+                    Refrigerated delivery across Addis Ababa, no middlemen, no
+                    delays.
                   </p>
                 </div>
               </div>
@@ -108,7 +123,9 @@ const ServiceHighlight = () => {
                 <p className="mb-2 text-xs uppercase tracking-wide text-muted-foreground">
                   Premium Quality
                 </p>
-                <p className="font-serif text-xl text-foreground">Norwegian Atlantic Salmon</p>
+                <p className="font-serif text-xl text-foreground">
+                  Norwegian Atlantic Salmon
+                </p>
                 <p className="mt-2 text-sm text-muted-foreground">
                   Sushi grade · Vacuum packed · Cold-chain verified
                 </p>

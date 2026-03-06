@@ -1,11 +1,23 @@
 import { ShipmentTimeline } from "@/components/shipment/ShipmentTimeline"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
 import type { OrderWithItems } from "@/hooks/useOrders"
 import { formatDate, formatPrice } from "@/lib/format"
 import { openStorageFile } from "@/lib/storage"
-import { Calendar, ChevronDown, FileText, Loader2, MapPin, Phone, User } from "lucide-react"
+import {
+  Calendar,
+  ChevronDown,
+  FileText,
+  Loader2,
+  MapPin,
+  Phone,
+  User,
+} from "lucide-react"
 import { useState } from "react"
 import { OrderStatusBadge } from "./OrderStatusBadge"
 
@@ -41,7 +53,9 @@ export const OrderCard = ({ order }: OrderCardProps) => {
               <OrderStatusBadge status={order.status} />
             </div>
             <div className="flex items-center gap-4">
-              <span className="font-medium">{formatPrice(Number(order.total_amount))}</span>
+              <span className="font-medium">
+                {formatPrice(Number(order.total_amount))}
+              </span>
               <CollapsibleTrigger asChild>
                 <Button variant="ghost" size="sm">
                   <ChevronDown
@@ -76,8 +90,8 @@ export const OrderCard = ({ order }: OrderCardProps) => {
                   >
                     <span>
                       {item.product_name}
-                      {item.option_name ? ` - ${item.option_name}` : ""} ({item.variant}) ×{" "}
-                      {item.quantity}
+                      {item.option_name ? ` - ${item.option_name}` : ""} (
+                      {item.variant}) × {item.quantity}
                     </span>
                     <span>{formatPrice(Number(item.subtotal))}</span>
                   </div>
@@ -103,7 +117,9 @@ export const OrderCard = ({ order }: OrderCardProps) => {
                 </div>
                 <div className="flex items-center gap-2">
                   <Calendar className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
-                  <span>Expected: {formatDate(order.expected_delivery_date)}</span>
+                  <span>
+                    Expected: {formatDate(order.expected_delivery_date)}
+                  </span>
                 </div>
               </div>
             </div>
@@ -125,7 +141,9 @@ export const OrderCard = ({ order }: OrderCardProps) => {
                       ) : (
                         <FileText className="h-4 w-4 text-primary" />
                       )}
-                      <p className="truncate text-sm font-medium">{cert.certificate_type}</p>
+                      <p className="truncate text-sm font-medium">
+                        {cert.certificate_type}
+                      </p>
                     </button>
                   ))}
                 </div>

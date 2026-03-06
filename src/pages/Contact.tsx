@@ -60,8 +60,9 @@ const Contact = () => {
                 className="mx-auto max-w-2xl animate-fade-in-up text-lg font-light leading-relaxed text-card/90 opacity-0"
                 style={{ animationDelay: "0.6s" }}
               >
-                Whether you run a restaurant, hotel, or retail counter, we deliver chef-ready
-                Norwegian salmon backed by reliable cold chain. Let us know what you need.
+                Whether you run a restaurant, hotel, or retail counter, we
+                deliver chef-ready Norwegian salmon backed by reliable cold
+                chain. Let us know what you need.
               </p>
             </div>
           </div>
@@ -105,7 +106,10 @@ const Contact = () => {
                   <CardTitle className="font-serif text-xl">Email Us</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <a href="mailto:orders@nordicseafood.et" className="text-primary hover:underline">
+                  <a
+                    href="mailto:orders@nordicseafood.et"
+                    className="text-primary hover:underline"
+                  >
                     orders@nordicseafood.et
                   </a>
                   <p className="mt-2 text-sm text-muted-foreground">
@@ -123,7 +127,10 @@ const Contact = () => {
                   <CardTitle className="font-serif text-xl">Call Us</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <a href="tel:+251911000000" className="text-primary hover:underline">
+                  <a
+                    href="tel:+251911000000"
+                    className="text-primary hover:underline"
+                  >
                     +251 911 000 000
                   </a>
                   <p className="mt-2 text-sm text-muted-foreground">
@@ -136,7 +143,10 @@ const Contact = () => {
         </section>
 
         {/* B2B Section */}
-        <section className="bg-secondary py-16 lg:py-24" aria-labelledby="contact-b2b">
+        <section
+          className="bg-secondary py-16 lg:py-24"
+          aria-labelledby="contact-b2b"
+        >
           <div className="container mx-auto px-6 lg:px-8">
             <div className="mx-auto max-w-3xl">
               <div
@@ -150,8 +160,8 @@ const Contact = () => {
                   Business Inquiries
                 </h2>
                 <p className="text-lg text-muted-foreground">
-                  Looking to establish a reliable supply of premium Norwegian salmon for your
-                  business? We tailor weekly and monthly plans.
+                  Looking to establish a reliable supply of premium Norwegian
+                  salmon for your business? We tailor weekly and monthly plans.
                 </p>
               </div>
 
@@ -167,7 +177,9 @@ const Contact = () => {
                           <MessageSquare className="h-5 w-5 text-primary" />
                         </div>
                         <div>
-                          <h3 className="mb-1 font-medium text-foreground">WhatsApp Business</h3>
+                          <h3 className="mb-1 font-medium text-foreground">
+                            WhatsApp Business
+                          </h3>
                           <a
                             href="https://wa.me/251911000000"
                             className="text-primary hover:underline"
@@ -187,7 +199,9 @@ const Contact = () => {
                           <Clock className="h-5 w-5 text-primary" />
                         </div>
                         <div>
-                          <h3 className="mb-1 font-medium text-foreground">Business Hours</h3>
+                          <h3 className="mb-1 font-medium text-foreground">
+                            Business Hours
+                          </h3>
                           <p className="text-sm text-muted-foreground">
                             Monday - Friday: 8:00 AM - 6:00 PM
                             <br />
@@ -245,7 +259,10 @@ const Contact = () => {
         <section className="py-16 lg:py-24" aria-labelledby="contact-map">
           <div className="container mx-auto px-6 lg:px-8">
             <div className="mx-auto max-w-5xl">
-              <h2 id="contact-map" className="mb-8 text-center font-serif text-3xl text-foreground">
+              <h2
+                id="contact-map"
+                className="mb-8 text-center font-serif text-3xl text-foreground"
+              >
                 Find Us
               </h2>
               <div className="overflow-hidden rounded-2xl shadow-lg">
@@ -261,8 +278,8 @@ const Contact = () => {
                 />
               </div>
               <p className="mt-4 text-center text-sm text-muted-foreground">
-                South African Street, Shimekit Commercial Center 10/12, Woreda 08, Lideta Sub City,
-                Addis Ababa, Ethiopia
+                South African Street, Shimekit Commercial Center 10/12, Woreda
+                08, Lideta Sub City, Addis Ababa, Ethiopia
               </p>
             </div>
           </div>

@@ -120,12 +120,24 @@ export const useCart = () => {
   })
 
   const updateQuantity = useMutation({
-    mutationFn: async ({ itemId, quantity }: { itemId: string; quantity: number }) => {
+    mutationFn: async ({
+      itemId,
+      quantity,
+    }: {
+      itemId: string
+      quantity: number
+    }) => {
       if (quantity <= 0) {
-        const { error } = await supabase.from("cart_items").delete().eq("id", itemId)
+        const { error } = await supabase
+          .from("cart_items")
+          .delete()
+          .eq("id", itemId)
         if (error) throw error
       } else {
-        const { error } = await supabase.from("cart_items").update({ quantity }).eq("id", itemId)
+        const { error } = await supabase
+          .from("cart_items")
+          .update({ quantity })
+          .eq("id", itemId)
         if (error) throw error
       }
     },
@@ -136,7 +148,10 @@ export const useCart = () => {
 
   const removeFromCart = useMutation({
     mutationFn: async (itemId: string) => {
-      const { error } = await supabase.from("cart_items").delete().eq("id", itemId)
+      const { error } = await supabase
+        .from("cart_items")
+        .delete()
+        .eq("id", itemId)
       if (error) throw error
     },
     onSuccess: () => {
@@ -148,7 +163,10 @@ export const useCart = () => {
   const clearCart = useMutation({
     mutationFn: async () => {
       if (!user) throw new Error("Must be logged in")
-      const { error } = await supabase.from("cart_items").delete().eq("user_id", user.id)
+      const { error } = await supabase
+        .from("cart_items")
+        .delete()
+        .eq("user_id", user.id)
       if (error) throw error
     },
     onSuccess: () => {
@@ -172,7 +190,11 @@ export const useCart = () => {
 
   const cartTotal = cartItems.reduce((total, item) => {
     const price = item.product
-      ? getVariantPrice(item.variant, item.product.price_per_kg, item.option?.price_per_kg)
+      ? getVariantPrice(
+          item.variant,
+          item.product.price_per_kg,
+          item.option?.price_per_kg,
+        )
       : 0
     return total + price * item.quantity
   }, 0)

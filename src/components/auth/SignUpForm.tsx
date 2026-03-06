@@ -22,11 +22,27 @@ import { z } from "zod"
 
 const signUpSchema = z
   .object({
-    full_name: z.string().trim().min(2, { message: "Name must be at least 2 characters" }).max(100),
-    email: z.string().trim().email({ message: "Invalid email address" }).max(255),
-    phone_number: z.string().trim().min(1, { message: "Please enter a phone number" }).max(20),
+    full_name: z
+      .string()
+      .trim()
+      .min(2, { message: "Name must be at least 2 characters" })
+      .max(100),
+    email: z
+      .string()
+      .trim()
+      .email({ message: "Invalid email address" })
+      .max(255),
+    phone_number: z
+      .string()
+      .trim()
+      .min(1, { message: "Please enter a phone number" })
+      .max(20),
     whatsapp_number: z.string().trim().max(20).optional().or(z.literal("")),
-    primary_address: z.string().trim().min(1, { message: "Please enter an address" }).max(500),
+    primary_address: z
+      .string()
+      .trim()
+      .min(1, { message: "Please enter an address" })
+      .max(500),
     account_type: z.enum(["business", "individual"], {
       required_error: "Please select an account type",
     }),
@@ -167,7 +183,8 @@ const SignUpForm = ({ onSwitchToLogin }: SignUpFormProps) => {
 
       toast({
         title: "Check your email",
-        description: "We sent a confirmation link. Verify your email, then sign in.",
+        description:
+          "We sent a confirmation link. Verify your email, then sign in.",
       })
       onSwitchToLogin()
     } finally {
@@ -178,8 +195,12 @@ const SignUpForm = ({ onSwitchToLogin }: SignUpFormProps) => {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="font-serif text-2xl font-semibold text-foreground">Create Account</h2>
-        <p className="mt-2 text-sm text-muted-foreground">Join Nordic Seafood to place orders</p>
+        <h2 className="font-serif text-2xl font-semibold text-foreground">
+          Create Account
+        </h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Join Nordic Seafood to place orders
+        </p>
       </div>
 
       <Form {...form}>
@@ -241,7 +262,9 @@ const SignUpForm = ({ onSwitchToLogin }: SignUpFormProps) => {
               <FormItem>
                 <FormLabel>
                   WhatsApp Number{" "}
-                  <span className="font-normal text-muted-foreground">(optional)</span>
+                  <span className="font-normal text-muted-foreground">
+                    (optional)
+                  </span>
                 </FormLabel>
                 <FormControl>
                   <Input

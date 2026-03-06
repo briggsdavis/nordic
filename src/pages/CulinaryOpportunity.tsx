@@ -97,22 +97,26 @@ const CulinaryOpportunity = () => {
             <div className="mx-auto max-w-3xl text-center">
               <div className="mb-4 inline-flex items-center gap-2 text-muted-foreground">
                 <ChefHat className="h-4 w-4" />
-                <span className="text-xs uppercase tracking-[0.3em]">For Chefs & Businesses</span>
+                <span className="text-xs uppercase tracking-[0.3em]">
+                  For Chefs & Businesses
+                </span>
               </div>
               <h2 className="mb-6 font-serif text-3xl text-foreground md:text-4xl">
                 A Gateway to Culinary Excellence
               </h2>
               <p className="mb-6 text-lg leading-relaxed text-muted-foreground">
-                Salmon is more than an ingredient; it is a statement. For chefs, it opens a world of
-                preparations from delicate sashimi to hearty grills. For businesses, it signals
-                quality and sophistication that guests remember and return for. Our salmon is
-                certified sushi grade and arrives vacuum packed, ensuring every piece meets the
-                highest standards of freshness and food safety.
+                Salmon is more than an ingredient; it is a statement. For chefs,
+                it opens a world of preparations from delicate sashimi to hearty
+                grills. For businesses, it signals quality and sophistication
+                that guests remember and return for. Our salmon is certified
+                sushi grade and arrives vacuum packed, ensuring every piece
+                meets the highest standards of freshness and food safety.
               </p>
               <p className="text-lg leading-relaxed text-muted-foreground">
-                Hotels elevate their breakfast buffets, restaurants build signature dishes, and
-                retailers attract a premium clientele. Norwegian Atlantic salmon is the ingredient
-                that turns a good offer into an exceptional one.
+                Hotels elevate their breakfast buffets, restaurants build
+                signature dishes, and retailers attract a premium clientele.
+                Norwegian Atlantic salmon is the ingredient that turns a good
+                offer into an exceptional one.
               </p>
             </div>
           </div>
@@ -132,8 +136,8 @@ const CulinaryOpportunity = () => {
                 </h2>
                 <div className="mx-auto h-px w-16 bg-primary" />
                 <p className="mt-8 text-sm leading-relaxed text-card/70">
-                  Scroll to explore the versatility of premium Norwegian salmon from fine dining
-                  presentations to everyday elegance.
+                  Scroll to explore the versatility of premium Norwegian salmon
+                  from fine dining presentations to everyday elegance.
                 </p>
               </div>
             </div>
@@ -149,7 +153,9 @@ const CulinaryOpportunity = () => {
                     loading={index > 1 ? "lazy" : undefined}
                   />
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-foreground/60 to-transparent p-6">
-                    <p className="text-sm font-light text-card/90">{image.alt}</p>
+                    <p className="text-sm font-light text-card/90">
+                      {image.alt}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -162,20 +168,24 @@ const CulinaryOpportunity = () => {
           <div className="container mx-auto px-6 lg:px-8">
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
               <div>
-                <p className="mb-4 text-xs uppercase tracking-[0.3em] text-primary">For Chefs</p>
+                <p className="mb-4 text-xs uppercase tracking-[0.3em] text-primary">
+                  For Chefs
+                </p>
                 <h2 className="mb-6 font-serif text-3xl text-foreground md:text-4xl">
                   Transform Your Menu
                 </h2>
                 <p className="mb-6 leading-relaxed text-muted-foreground">
-                  Premium salmon adapts to every cuisine and technique. Build signature dishes that
-                  set your restaurant apart, from raw preparations that showcase purity to
-                  slow-cooked creations that highlight richness. Every piece is sushi grade, making
-                  it perfect for sashimi, tartare, and other raw preparations without compromise.
+                  Premium salmon adapts to every cuisine and technique. Build
+                  signature dishes that set your restaurant apart, from raw
+                  preparations that showcase purity to slow-cooked creations
+                  that highlight richness. Every piece is sushi grade, making it
+                  perfect for sashimi, tartare, and other raw preparations
+                  without compromise.
                 </p>
                 <p className="mb-8 leading-relaxed text-muted-foreground">
-                  Delivered vacuum packed for maximum freshness, with consistent supply and
-                  chef-ready portions, you can plan your menu with confidence and deliver excellence
-                  every service.
+                  Delivered vacuum packed for maximum freshness, with consistent
+                  supply and chef-ready portions, you can plan your menu with
+                  confidence and deliver excellence every service.
                 </p>
                 <Button
                   asChild
@@ -218,13 +228,15 @@ const CulinaryOpportunity = () => {
                   Strengthen Your Business
                 </h2>
                 <p className="mb-6 leading-relaxed text-muted-foreground">
-                  Premium Norwegian salmon signals quality to your customers before the first bite.
-                  Hotels attract international guests, restaurants build reputation, and retailers
-                  create a destination for discerning shoppers.
+                  Premium Norwegian salmon signals quality to your customers
+                  before the first bite. Hotels attract international guests,
+                  restaurants build reputation, and retailers create a
+                  destination for discerning shoppers.
                 </p>
                 <p className="mb-8 leading-relaxed text-muted-foreground">
-                  Our B2B partnership model provides reliable supply, competitive pricing, and full
-                  certification: everything you need to offer premium seafood with confidence.
+                  Our B2B partnership model provides reliable supply,
+                  competitive pricing, and full certification: everything you
+                  need to offer premium seafood with confidence.
                 </p>
                 <Button
                   asChild
@@ -248,8 +260,8 @@ const CulinaryOpportunity = () => {
               Ready to Get Started?
             </h2>
             <p className="mx-auto mb-10 max-w-2xl text-lg font-light text-card/80">
-              Whether you want to order directly or explore a B2B partnership, we are here to help
-              you bring Norwegian excellence to your table.
+              Whether you want to order directly or explore a B2B partnership,
+              we are here to help you bring Norwegian excellence to your table.
             </p>
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Button
