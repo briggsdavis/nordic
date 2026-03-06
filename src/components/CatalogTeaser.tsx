@@ -13,7 +13,10 @@ const CatalogTeaser = () => {
     <section id="collection" className="bg-background py-24 lg:py-32">
       <div className="container mx-auto px-6 lg:px-8">
         {/* Section Header */}
-        <div className="animate-fade-in mb-16 flex flex-col opacity-0 md:flex-row md:items-end md:justify-between" style={{ animationDelay: "0.1s" }}>
+        <div
+          className="animate-fade-in mb-16 flex flex-col opacity-0 md:flex-row md:items-end md:justify-between"
+          style={{ animationDelay: "0.1s" }}
+        >
           <div>
             <p className="mb-4 text-xs uppercase tracking-[0.3em] text-primary">
               Order
@@ -27,15 +30,16 @@ const CatalogTeaser = () => {
             className="group mt-6 gap-2 md:mt-0"
             onClick={() => navigate("/order")}
           >
-            <span className="text-sm uppercase tracking-wide">
-              Order Now
-            </span>
+            <span className="text-sm uppercase tracking-wide">Order Now</span>
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Button>
         </div>
 
         {/* Products Grid */}
-        <div className="animate-fade-in mb-16 grid gap-8 opacity-0 md:grid-cols-3" style={{ animationDelay: "0.3s" }}>
+        <div
+          className="animate-fade-in mb-16 grid gap-8 opacity-0 md:grid-cols-3"
+          style={{ animationDelay: "0.3s" }}
+        >
           {isLoading ? (
             <>
               {[1, 2, 3].map((i) => (

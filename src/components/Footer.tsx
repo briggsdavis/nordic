@@ -31,7 +31,10 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-start gap-3 text-sm text-muted-foreground">
                 <MapPin className="mt-1 h-4 w-4 flex-shrink-0" />
-                <span>South African Street, Shimekit Commercial Center 10/12, Woreda 08, Lideta Sub City, Addis Ababa, Ethiopia</span>
+                <span>
+                  South African Street, Shimekit Commercial Center 10/12, Woreda
+                  08, Lideta Sub City, Addis Ababa, Ethiopia
+                </span>
               </li>
               <li className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Mail className="h-4 w-4 flex-shrink-0" />

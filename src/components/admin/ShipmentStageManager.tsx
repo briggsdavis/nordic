@@ -12,10 +12,12 @@ import { cn } from "@/lib/utils"
 
 interface ShipmentStageManagerProps {
   orderId: string
+  onAllStagesComplete?: () => void
 }
 
 export function ShipmentStageManager({
   orderId,
+  onAllStagesComplete,
 }: ShipmentStageManagerProps): JSX.Element {
   const { data: stages } = useShipmentStages(orderId)
   const { batchUpdateStages } = useAdminShipmentStages(orderId)
@@ -23,7 +25,6 @@ export function ShipmentStageManager({
   function handleStageClick(clickedStageNumber: number): void {
     if (!stages) return
 
-    // Batch all stage updates into a single mutation
     const updates = stages
       .map((stage) => ({
         stageId: stage.id,
@@ -33,12 +34,19 @@ export function ShipmentStageManager({
       }))
       .filter((update, idx) => stages[idx].status !== update.status)
 
+    const allWillBeComplete = clickedStageNumber === stages.length
+
     if (updates.length > 0) {
-      batchUpdateStages.mutate({ updates })
+      batchUpdateStages.mutate({ updates }, {
+        onSuccess: () => {
+          if (allWillBeComplete) onAllStagesComplete?.()
+        },
+      })
     }
   }
 
-  const completedCount = stages?.filter((s) => s.status === "completed").length ?? 0
+  const completedCount =
+    stages?.filter((s) => s.status === "completed").length ?? 0
   const totalCount = stages?.length ?? 0
 
   return (

@@ -1,5 +1,12 @@
 import { Button } from "@/components/ui/button"
-import { Building2, Clock, ExternalLink, FileText, Shield, Thermometer } from "lucide-react"
+import {
+  Building2,
+  Clock,
+  ExternalLink,
+  FileText,
+  Shield,
+  Thermometer,
+} from "lucide-react"
 
 const specs = [
   {
@@ -43,7 +50,7 @@ const partners = [
     name: "Fishcorp of Norway",
     established: "Since 9th Century Tradition",
     description:
-      "Drawing from over a millennium of tradition, Fishcorp of Norway is a premier exporter dedicated to sharing nutrient-rich, sustainable seafood with the world. Specializing in delicacies like authentic Arctic stockfish and premium Atlantic salmon, they utilize strict quality controls that honor 9th-century Viking innovations. By partnering with Fishcorp, we provide \"Seafood for Healthy Generations,\" ensuring every product meets Norway's most rigorous food safety standards.",
+      'Drawing from over a millennium of tradition, Fishcorp of Norway is a premier exporter dedicated to sharing nutrient-rich, sustainable seafood with the world. Specializing in delicacies like authentic Arctic stockfish and premium Atlantic salmon, they utilize strict quality controls that honor 9th-century Viking innovations. By partnering with Fishcorp, we provide "Seafood for Healthy Generations," ensuring every product meets Norway\'s most rigorous food safety standards.',
     image: "/fishcorp.jpg",
     link: "https://www.fishcorp.no/#about_us",
     buttonText: "Visit Fishcorp",

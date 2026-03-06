@@ -38,6 +38,7 @@ export const OrdersTab = () => {
     approvePayment,
     rejectPayment,
     deleteOrder,
+    completeOrder,
   } = useAdminOrders()
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
@@ -97,6 +98,7 @@ export const OrdersTab = () => {
               onApprove={() => approvePayment.mutate(order.id)}
               onReject={() => rejectPayment.mutate(order.id)}
               onDelete={() => handleDeleteClick(order.id)}
+              onComplete={() => completeOrder.mutate(order.id)}
             />
           ))
         )}

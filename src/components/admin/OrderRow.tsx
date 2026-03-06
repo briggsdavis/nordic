@@ -24,6 +24,7 @@ interface OrderRowProps {
   onApprove: () => void
   onReject: () => void
   onDelete: () => void
+  onComplete: () => void
 }
 
 export const OrderRow = ({
@@ -33,6 +34,7 @@ export const OrderRow = ({
   onApprove,
   onReject,
   onDelete,
+  onComplete,
 }: OrderRowProps) => {
   const [loadingFile, setLoadingFile] = useState<string | null>(null)
 
@@ -201,7 +203,7 @@ export const OrderRow = ({
                   <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                     Shipment Tracking
                   </h4>
-                  <ShipmentStageManager orderId={order.id} />
+                  <ShipmentStageManager orderId={order.id} onAllStagesComplete={onComplete} />
                 </div>
               )}
 

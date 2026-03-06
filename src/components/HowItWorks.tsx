@@ -20,13 +20,16 @@ const steps = [
     step: "03",
     title: "Enjoy Your Salmon",
     description:
-      "Simple and easy — your sushi grade, vacuum packed Norwegian salmon arrives fresh and ready to enjoy.",
+      "Simple and easy: your sushi grade, vacuum packed Norwegian salmon arrives fresh and ready to enjoy.",
   },
 ]
 
 const HowItWorks = () => {
   return (
-    <section className="bg-secondary py-20 lg:py-28" aria-labelledby="how-it-works-title">
+    <section
+      className="bg-secondary py-20 lg:py-28"
+      aria-labelledby="how-it-works-title"
+    >
       <div className="container mx-auto px-6 lg:px-8">
         <div className="mb-12 text-center">
           <p className="mb-4 text-xs uppercase tracking-[0.3em] text-primary">
@@ -47,7 +50,10 @@ const HowItWorks = () => {
 
           <div className="grid gap-12 lg:grid-cols-3 lg:gap-8">
             {steps.map((step, index) => (
-              <div key={index} className="relative flex flex-col items-center text-center">
+              <div
+                key={index}
+                className="relative flex flex-col items-center text-center"
+              >
                 {/* Step circle */}
                 <div className="relative z-10 mb-6 flex h-16 w-16 items-center justify-center rounded-full border-2 border-border bg-background shadow-sm">
                   <step.icon className="h-7 w-7 text-primary" />

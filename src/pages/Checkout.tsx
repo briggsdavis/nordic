@@ -19,7 +19,14 @@ import { useToast } from "@/hooks/use-toast"
 import { useCart } from "@/hooks/useCart"
 import { useOrders } from "@/hooks/useOrders"
 import { supabase } from "@/integrations/supabase/client"
-import { AlertTriangle, ArrowLeft, Check, Copy, Loader2, Upload } from "lucide-react"
+import {
+  AlertTriangle,
+  ArrowLeft,
+  Check,
+  Copy,
+  Loader2,
+  Upload,
+} from "lucide-react"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -185,26 +192,49 @@ const Checkout = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-sm text-muted-foreground">
-              To complete your order, transfer the amount below to our bank account. Then upload your proof of payment in the form below before submitting.
+              To complete your order, transfer the amount below to our bank
+              account. Then upload your proof of payment in the form below
+              before submitting.
             </p>
 
             {/* Highlighted Total */}
             <div className="rounded-xl bg-primary/10 px-6 py-4 text-center">
-              <p className="mb-1 text-xs uppercase tracking-widest text-primary">Amount to Transfer</p>
-              <p className="font-serif text-4xl font-medium text-primary">{formatPrice(cartTotal)}</p>
+              <p className="mb-1 text-xs uppercase tracking-widest text-primary">
+                Amount to Transfer
+              </p>
+              <p className="font-serif text-4xl font-medium text-primary">
+                {formatPrice(cartTotal)}
+              </p>
             </div>
 
             {/* Bank Details */}
             <div className="space-y-3 rounded-xl border border-border bg-card p-4">
               {[
-                { label: "Account Holder", value: "Nordic Seafood Imports", field: "holder" },
-                { label: "Account Number", value: "1000693338623", field: "account" },
-                { label: "Bank Name", value: "Commercial Bank of Ethiopia", field: "bank" },
+                {
+                  label: "Account Holder",
+                  value: "Nordic Seafood Imports",
+                  field: "holder",
+                },
+                {
+                  label: "Account Number",
+                  value: "1000693338623",
+                  field: "account",
+                },
+                {
+                  label: "Bank Name",
+                  value: "Commercial Bank of Ethiopia",
+                  field: "bank",
+                },
               ].map(({ label, value, field }) => (
-                <div key={field} className="flex items-center justify-between gap-4">
+                <div
+                  key={field}
+                  className="flex items-center justify-between gap-4"
+                >
                   <div className="min-w-0">
                     <p className="text-xs text-muted-foreground">{label}</p>
-                    <p className="font-mono font-medium text-foreground">{value}</p>
+                    <p className="font-mono font-medium text-foreground">
+                      {value}
+                    </p>
                   </div>
                   <button
                     type="button"

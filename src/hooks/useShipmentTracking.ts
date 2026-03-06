@@ -3,8 +3,7 @@ import { supabase } from "@/integrations/supabase/client"
 import type { Database } from "@/integrations/supabase/types"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
-type ShipmentStageStatus =
-  Database["public"]["Enums"]["shipment_stage_status"]
+type ShipmentStageStatus = Database["public"]["Enums"]["shipment_stage_status"]
 
 export interface ShipmentStage {
   id: string
@@ -107,7 +106,9 @@ export const useAdminShipmentStages = (orderId?: string) => {
       if (!orderId) return
 
       // Cancel outgoing refetches
-      await queryClient.cancelQueries({ queryKey: ["shipment-stages", orderId] })
+      await queryClient.cancelQueries({
+        queryKey: ["shipment-stages", orderId],
+      })
 
       // Snapshot previous value
       const previousStages = queryClient.getQueryData<ShipmentStage[]>([
@@ -144,7 +145,9 @@ export const useAdminShipmentStages = (orderId?: string) => {
     onSettled: () => {
       // Single refetch to ensure sync with server
       if (orderId) {
-        queryClient.invalidateQueries({ queryKey: ["shipment-stages", orderId] })
+        queryClient.invalidateQueries({
+          queryKey: ["shipment-stages", orderId],
+        })
       }
     },
   })

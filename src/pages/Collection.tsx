@@ -56,68 +56,73 @@ const Collection = () => {
 
         {/* Products Section */}
         <div className="container mx-auto px-6 pb-24 pt-20">
-
           {isLoading ? (
-          <div className="animate-fade-in mx-auto grid max-w-5xl gap-8 opacity-0 md:grid-cols-2 lg:grid-cols-3" style={{ animationDelay: "0.2s" }}>
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="space-y-5">
-                <Skeleton className="aspect-[16/15] rounded-2xl" />
-                <Skeleton className="h-6 w-3/4" />
-                <Skeleton className="h-4 w-1/2" />
-                <Skeleton className="h-4 w-2/3" />
-              </div>
-            ))}
-          </div>
-        ) : products && products.length > 0 ? (
-          <div className="animate-fade-in mx-auto grid max-w-5xl gap-8 opacity-0 md:grid-cols-2 lg:grid-cols-3" style={{ animationDelay: "0.2s" }}>
-            {products.map((product) => (
-              <div
-                key={product.id}
-                className="group cursor-pointer overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:shadow-lg"
-                onClick={() => navigate(`/products/${product.slug}`)}
-              >
-                <div className="aspect-[16/15] overflow-hidden bg-muted">
-                  <img
-                    src={product.image_url || ""}
-                    alt={product.name}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
+            <div
+              className="animate-fade-in mx-auto grid max-w-5xl gap-8 opacity-0 md:grid-cols-2 lg:grid-cols-3"
+              style={{ animationDelay: "0.2s" }}
+            >
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} className="space-y-5">
+                  <Skeleton className="aspect-[16/15] rounded-2xl" />
+                  <Skeleton className="h-6 w-3/4" />
+                  <Skeleton className="h-4 w-1/2" />
+                  <Skeleton className="h-4 w-2/3" />
                 </div>
-                <div className="p-8">
-                  <h3 className="mb-4 font-serif text-xl text-foreground transition-colors group-hover:text-primary">
-                    {product.name}
-                  </h3>
-                  <p className="mb-5 text-sm text-muted-foreground">
-                    {product.weight_range}
-                  </p>
-                  {product.description && (
-                    <p className="mb-6 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
-                      {product.description}
+              ))}
+            </div>
+          ) : products && products.length > 0 ? (
+            <div
+              className="animate-fade-in mx-auto grid max-w-5xl gap-8 opacity-0 md:grid-cols-2 lg:grid-cols-3"
+              style={{ animationDelay: "0.2s" }}
+            >
+              {products.map((product) => (
+                <div
+                  key={product.id}
+                  className="group cursor-pointer overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:shadow-lg"
+                  onClick={() => navigate(`/products/${product.slug}`)}
+                >
+                  <div className="aspect-[16/15] overflow-hidden bg-muted">
+                    <img
+                      src={product.image_url || ""}
+                      alt={product.name}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="p-8">
+                    <h3 className="mb-4 font-serif text-xl text-foreground transition-colors group-hover:text-primary">
+                      {product.name}
+                    </h3>
+                    <p className="mb-5 text-sm text-muted-foreground">
+                      {product.weight_range}
                     </p>
-                  )}
-                  <div className="flex items-center justify-between border-t border-border pt-5">
-                    <span className="text-sm font-medium text-primary">
-                      {formatPrice(product.price_per_kg)}/kg
-                    </span>
-                    <span className="text-xs uppercase tracking-wide text-muted-foreground">
-                      View Details
-                    </span>
+                    {product.description && (
+                      <p className="mb-6 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+                        {product.description}
+                      </p>
+                    )}
+                    <div className="flex items-center justify-between border-t border-border pt-5">
+                      <span className="text-sm font-medium text-primary">
+                        {formatPrice(product.price_per_kg)}/kg
+                      </span>
+                      <span className="text-xs uppercase tracking-wide text-muted-foreground">
+                        View Details
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="py-16 text-center">
-            <Package className="mx-auto mb-4 h-16 w-16 text-muted-foreground opacity-50" />
-            <h3 className="mb-2 font-serif text-2xl text-foreground">
-              No Products Available
-            </h3>
-            <p className="text-muted-foreground">
-              Check back soon for our premium salmon selection.
-            </p>
-          </div>
-        )}
+              ))}
+            </div>
+          ) : (
+            <div className="py-16 text-center">
+              <Package className="mx-auto mb-4 h-16 w-16 text-muted-foreground opacity-50" />
+              <h3 className="mb-2 font-serif text-2xl text-foreground">
+                No Products Available
+              </h3>
+              <p className="text-muted-foreground">
+                Check back soon for our premium salmon selection.
+              </p>
+            </div>
+          )}
         </div>
       </main>
 

@@ -3,12 +3,14 @@ import { Award, Clock, Globe, Package, Shield, Truck } from "lucide-react"
 import { Link } from "react-router-dom"
 
 const FullTransparency = () => {
-
   return (
     <section className="bg-secondary py-20 lg:py-28">
       <div className="container mx-auto px-6 lg:px-8">
         {/* Section Header */}
-        <div className="animate-fade-in mb-16 text-center opacity-0" style={{ animationDelay: "0.1s" }}>
+        <div
+          className="animate-fade-in mb-16 text-center opacity-0"
+          style={{ animationDelay: "0.1s" }}
+        >
           <h2 className="mb-4 font-serif text-4xl text-foreground md:text-5xl">
             Full Transparency
           </h2>
@@ -21,7 +23,10 @@ const FullTransparency = () => {
         {/* Two Column Layout */}
         <div className="grid gap-8 lg:grid-cols-2">
           {/* Left Column: Quality & Real-Time Tracking */}
-          <div className="animate-fade-in space-y-8 rounded-2xl border border-border bg-card p-8 opacity-0 lg:p-10" style={{ animationDelay: "0.3s" }}>
+          <div
+            className="animate-fade-in space-y-8 rounded-2xl border border-border bg-card p-8 opacity-0 lg:p-10"
+            style={{ animationDelay: "0.3s" }}
+          >
             <div>
               <div className="mb-4 inline-flex items-center gap-2 text-primary">
                 <Shield className="h-5 w-5" />
@@ -45,7 +50,8 @@ const FullTransparency = () => {
                     Live 7-Stage Tracking
                   </h4>
                   <p className="text-sm text-muted-foreground">
-                    Seven delivery stages tracked live, from Norwegian fjords to your door.
+                    Seven delivery stages tracked live, from Norwegian fjords to
+                    your door.
                   </p>
                 </div>
               </div>
@@ -60,7 +66,8 @@ const FullTransparency = () => {
                     Order-Specific Certificates
                   </h4>
                   <p className="text-sm text-muted-foreground">
-                    Every order includes health and quality certificates, viewable in your account.
+                    Every order includes health and quality certificates,
+                    viewable in your account.
                   </p>
                 </div>
               </div>
@@ -75,7 +82,8 @@ const FullTransparency = () => {
                     Verified & Up-to-Date
                   </h4>
                   <p className="text-sm text-muted-foreground">
-                    All certifications and delivery data are current and independently verifiable.
+                    All certifications and delivery data are current and
+                    independently verifiable.
                   </p>
                 </div>
               </div>
@@ -83,7 +91,10 @@ const FullTransparency = () => {
           </div>
 
           {/* Right Column: Origin & Delivery Speed */}
-          <div className="animate-fade-in space-y-8 rounded-2xl border border-border bg-card p-8 opacity-0 lg:p-10" style={{ animationDelay: "0.5s" }}>
+          <div
+            className="animate-fade-in space-y-8 rounded-2xl border border-border bg-card p-8 opacity-0 lg:p-10"
+            style={{ animationDelay: "0.5s" }}
+          >
             <div>
               <div className="mb-4 inline-flex items-center gap-2 text-primary">
                 <Globe className="h-5 w-5" />
@@ -108,7 +119,8 @@ const FullTransparency = () => {
                     Under 2 Days
                   </h4>
                   <p className="text-sm text-muted-foreground">
-                    Cold-chain delivery from Norway to Addis Ababa in under 48 hours.
+                    Cold-chain delivery from Norway to Addis Ababa in under 48
+                    hours.
                   </p>
                 </div>
               </div>
@@ -123,7 +135,8 @@ const FullTransparency = () => {
                     Direct from Norway
                   </h4>
                   <p className="text-sm text-muted-foreground">
-                    Sourced exclusively from Norwegian Atlantic waters. No intermediaries.
+                    Sourced exclusively from Norwegian Atlantic waters. No
+                    intermediaries.
                   </p>
                 </div>
               </div>

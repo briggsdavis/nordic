@@ -66,7 +66,11 @@ const Auth = () => {
         {/* Logo */}
         <div className="mb-8 text-center">
           <a href="/" className="inline-flex items-center gap-3">
-            <img src={logo} alt="Nordic Seafood" className="h-10 w-10 object-contain" />
+            <img
+              src={logo}
+              alt="Nordic Seafood"
+              className="h-10 w-10 object-contain"
+            />
             <span className="font-serif text-2xl font-semibold text-foreground">
               Nordic Seafood
             </span>

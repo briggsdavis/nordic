@@ -31,9 +31,13 @@ const Header = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const isHomePage = location.pathname === "/"
-  const hasHeroImage = ["/", "/order", "/contact", "/origin", "/for-chefs"].includes(
-    location.pathname,
-  )
+  const hasHeroImage = [
+    "/",
+    "/order",
+    "/contact",
+    "/origin",
+    "/for-chefs",
+  ].includes(location.pathname)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -104,7 +108,9 @@ const Header = () => {
                   key={link.href}
                   to={link.href}
                   className={`text-sm font-medium uppercase tracking-wide transition-colors hover:text-primary ${
-                    isScrolled || !hasHeroImage ? "text-foreground" : "text-card"
+                    isScrolled || !hasHeroImage
+                      ? "text-foreground"
+                      : "text-card"
                   }`}
                 >
                   {link.label}
@@ -114,7 +120,9 @@ const Header = () => {
                   key={link.href}
                   href={link.href}
                   className={`text-sm font-medium uppercase tracking-wide transition-colors hover:text-primary ${
-                    isScrolled || !hasHeroImage ? "text-foreground" : "text-card"
+                    isScrolled || !hasHeroImage
+                      ? "text-foreground"
+                      : "text-card"
                   }`}
                 >
                   {link.label}

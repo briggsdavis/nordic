@@ -256,7 +256,7 @@ export const useAdminOrders = () => {
 
   // Filtered lists using unified status
   const pendingReviewOrders = orders.filter((o) => o.status === "verifying")
-  const inTransitOrders = orders.filter((o) => o.status === "shipped")
+  const inTransitOrders = orders.filter((o) => o.status === "confirmed" || o.status === "shipped")
   const completedOrders = orders.filter((o) => o.status === "completed")
 
   // Analytics - count orders that have been paid (confirmed or later)

@@ -105,13 +105,12 @@ const CulinaryOpportunity = () => {
                 A Gateway to Culinary Excellence
               </h2>
               <p className="mb-6 text-lg leading-relaxed text-muted-foreground">
-                Salmon is more than an ingredient — it is a statement. For
-                chefs, it opens a world of preparations from delicate sashimi to
-                hearty grills. For businesses, it signals quality and
-                sophistication that guests remember and return for. Our salmon
-                is certified sushi grade and arrives vacuum packed, ensuring
-                every piece meets the highest standards of freshness and food
-                safety.
+                Salmon is more than an ingredient; it is a statement. For chefs,
+                it opens a world of preparations from delicate sashimi to hearty
+                grills. For businesses, it signals quality and sophistication
+                that guests remember and return for. Our salmon is certified
+                sushi grade and arrives vacuum packed, ensuring every piece
+                meets the highest standards of freshness and food safety.
               </p>
               <p className="text-lg leading-relaxed text-muted-foreground">
                 Hotels elevate their breakfast buffets, restaurants build
@@ -138,7 +137,7 @@ const CulinaryOpportunity = () => {
                 <div className="mx-auto h-px w-16 bg-primary" />
                 <p className="mt-8 text-sm leading-relaxed text-card/70">
                   Scroll to explore the versatility of premium Norwegian salmon
-                  — from fine dining presentations to everyday elegance.
+                  from fine dining presentations to everyday elegance.
                 </p>
               </div>
             </div>
@@ -177,9 +176,9 @@ const CulinaryOpportunity = () => {
                 </h2>
                 <p className="mb-6 leading-relaxed text-muted-foreground">
                   Premium salmon adapts to every cuisine and technique. Build
-                  signature dishes that set your restaurant apart — from raw
-                  preparations that showcase purity to slow-cooked creations that
-                  highlight richness. Every piece is sushi grade, making it
+                  signature dishes that set your restaurant apart, from raw
+                  preparations that showcase purity to slow-cooked creations
+                  that highlight richness. Every piece is sushi grade, making it
                   perfect for sashimi, tartare, and other raw preparations
                   without compromise.
                 </p>
@@ -236,7 +235,7 @@ const CulinaryOpportunity = () => {
                 </p>
                 <p className="mb-8 leading-relaxed text-muted-foreground">
                   Our B2B partnership model provides reliable supply,
-                  competitive pricing, and full certification — everything you
+                  competitive pricing, and full certification: everything you
                   need to offer premium seafood with confidence.
                 </p>
                 <Button

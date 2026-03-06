@@ -239,7 +239,9 @@ const ProductDetail = () => {
             <div className="flex gap-3 rounded-lg border border-border bg-muted/50 p-4 text-sm text-muted-foreground">
               <Info className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
               <p>
-                Orders are confirmed via bank transfer. At checkout you'll receive our bank details and the exact amount to send — then upload your proof of payment to complete your order.
+                Orders are confirmed via bank transfer screenshot proof. At
+                checkout you'll receive our bank details and the amount to send,
+                then upload your proof of payment to complete your order.
               </p>
             </div>
           </div>

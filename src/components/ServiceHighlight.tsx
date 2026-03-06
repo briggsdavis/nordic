@@ -8,7 +8,10 @@ const ServiceHighlight = () => {
       <div className="container mx-auto px-6 lg:px-8">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Left Content */}
-          <div className="animate-fade-in space-y-8 opacity-0" style={{ animationDelay: "0.2s" }}>
+          <div
+            className="animate-fade-in space-y-8 opacity-0"
+            style={{ animationDelay: "0.2s" }}
+          >
             {/* Header */}
             <div>
               <p className="mb-4 text-xs uppercase tracking-[0.3em] text-primary">
@@ -18,7 +21,8 @@ const ServiceHighlight = () => {
                 Sushi Grade Norwegian Salmon in 48 Hours
               </h2>
               <p className="text-lg leading-relaxed text-muted-foreground">
-                Sushi grade, vacuum packed salmon direct from Norwegian fjords to Addis Ababa.
+                Sushi grade, vacuum packed salmon direct from Norwegian fjords
+                to Addis Ababa.
               </p>
             </div>
 
@@ -81,7 +85,7 @@ const ServiceHighlight = () => {
                     Direct Home Delivery
                   </h3>
                   <p className="text-muted-foreground">
-                    Refrigerated delivery across Addis Ababa—no middlemen, no
+                    Refrigerated delivery across Addis Ababa, no middlemen, no
                     delays.
                   </p>
                 </div>
@@ -104,7 +108,10 @@ const ServiceHighlight = () => {
           </div>
 
           {/* Right Image */}
-          <div className="animate-fade-in relative opacity-0 lg:order-last" style={{ animationDelay: "0.4s" }}>
+          <div
+            className="animate-fade-in relative opacity-0 lg:order-last"
+            style={{ animationDelay: "0.4s" }}
+          >
             <div className="relative overflow-hidden rounded-2xl shadow-2xl">
               <img
                 src="/replacer.jpg"

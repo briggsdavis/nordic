@@ -25,7 +25,9 @@ export const ShipmentTimeline = ({
   const { data: stages, isLoading } = useShipmentStages(orderId)
 
   if (isLoading)
-    return <div className="text-sm text-muted-foreground">Loading stages...</div>
+    return (
+      <div className="text-sm text-muted-foreground">Loading stages...</div>
+    )
   if (!stages?.length)
     return (
       <div className="text-sm text-muted-foreground">
