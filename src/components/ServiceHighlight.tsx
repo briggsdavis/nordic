@@ -15,7 +15,7 @@ const ServiceHighlight = () => {
                 How It Works
               </p>
               <h2 className="mb-6 font-serif text-4xl text-foreground md:text-5xl">
-                Norway to Your Door in 48 Hours
+                Sushi Grade Norwegian Salmon in 48 Hours
               </h2>
               <p className="text-lg leading-relaxed text-muted-foreground">
                 Sushi grade, vacuum packed salmon direct from Norwegian fjords to Addis Ababa.
