@@ -3,6 +3,7 @@ import Footer from "@/components/Footer"
 import FullTransparency from "@/components/FullTransparency"
 import Header from "@/components/Header"
 import Hero from "@/components/Hero"
+import HowItWorks from "@/components/HowItWorks"
 import NorwegianPartners from "@/components/NorwegianPartners"
 import ServiceHighlight from "@/components/ServiceHighlight"
 import TrimmingGuide from "@/components/TrimmingGuide"
@@ -28,6 +29,7 @@ const Index = () => {
       <main aria-label="Nordic Seafood landing">
         <Hero />
         <ServiceHighlight />
+        <HowItWorks />
         <CatalogTeaser />
         <FullTransparency />
         <NorwegianPartners />

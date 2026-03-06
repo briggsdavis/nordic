@@ -18,7 +18,7 @@ const ServiceHighlight = () => {
                 Norway to Your Door in 48 Hours
               </h2>
               <p className="text-lg leading-relaxed text-muted-foreground">
-                Fresh, certified salmon direct from Norwegian fjords to Addis Ababa.
+                Sushi grade, vacuum packed salmon direct from Norwegian fjords to Addis Ababa.
               </p>
             </div>
 
@@ -120,7 +120,7 @@ const ServiceHighlight = () => {
                   Norwegian Atlantic Salmon
                 </p>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  Sustainably harvested, cold-chain verified, delivered fresh
+                  Sushi grade · Vacuum packed · Cold-chain verified
                 </p>
               </div>
             </div>
