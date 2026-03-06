@@ -85,7 +85,9 @@ const Contact = () => {
                 </CardHeader>
                 <CardContent>
                   <address className="not-italic text-muted-foreground">
-                    Bole Road, Atlas District
+                    South African Street, Shimekit Commercial Center 10/12
+                    <br />
+                    Woreda 08, Lideta Sub City
                     <br />
                     Addis Ababa, Ethiopia
                   </address>
@@ -241,6 +243,34 @@ const Contact = () => {
                   </div>
                 </CardContent>
               </Card>
+            </div>
+          </div>
+        </section>
+        {/* Map Section */}
+        <section className="py-16 lg:py-24" aria-labelledby="contact-map">
+          <div className="container mx-auto px-6 lg:px-8">
+            <div className="mx-auto max-w-5xl">
+              <h2
+                id="contact-map"
+                className="mb-8 text-center font-serif text-3xl text-foreground"
+              >
+                Find Us
+              </h2>
+              <div className="overflow-hidden rounded-2xl shadow-lg">
+                <iframe
+                  title="Nordic Seafood Location"
+                  src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d4094.715744127292!2d38.72559007501836!3d8.992466991067381!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zOMKwNTknMzIuOSJOIDM4wrA0Myc0MS40IkU!5e1!3m2!1sen!2ses!4v1772783705154!5m2!1sen!2ses"
+                  width="100%"
+                  height="450"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+              </div>
+              <p className="mt-4 text-center text-sm text-muted-foreground">
+                South African Street, Shimekit Commercial Center 10/12, Woreda 08, Lideta Sub City, Addis Ababa, Ethiopia
+              </p>
             </div>
           </div>
         </section>

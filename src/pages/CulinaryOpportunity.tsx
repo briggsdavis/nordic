@@ -108,7 +108,10 @@ const CulinaryOpportunity = () => {
                 Salmon is more than an ingredient — it is a statement. For
                 chefs, it opens a world of preparations from delicate sashimi to
                 hearty grills. For businesses, it signals quality and
-                sophistication that guests remember and return for.
+                sophistication that guests remember and return for. Our salmon
+                is certified sushi grade and arrives vacuum packed, ensuring
+                every piece meets the highest standards of freshness and food
+                safety.
               </p>
               <p className="text-lg leading-relaxed text-muted-foreground">
                 Hotels elevate their breakfast buffets, restaurants build
@@ -176,11 +179,14 @@ const CulinaryOpportunity = () => {
                   Premium salmon adapts to every cuisine and technique. Build
                   signature dishes that set your restaurant apart — from raw
                   preparations that showcase purity to slow-cooked creations that
-                  highlight richness.
+                  highlight richness. Every piece is sushi grade, making it
+                  perfect for sashimi, tartare, and other raw preparations
+                  without compromise.
                 </p>
                 <p className="mb-8 leading-relaxed text-muted-foreground">
-                  With consistent supply and chef-ready portions, you can plan
-                  your menu with confidence and deliver excellence every service.
+                  Delivered vacuum packed for maximum freshness, with consistent
+                  supply and chef-ready portions, you can plan your menu with
+                  confidence and deliver excellence every service.
                 </p>
                 <Button
                   asChild

@@ -145,7 +145,8 @@ const Origin = () => {
                   Through direct partnerships with Norwegian producers and
                   controlled cold-chain logistics, we keep salmon fresh from
                   harvest to Addis Ababa, with temperature monitoring at every
-                  stage.
+                  stage. Every piece is sushi grade and vacuum packed to
+                  preserve peak freshness and quality on arrival.
                 </p>
                 <p>
                   Today, Nordic Seafood supports hotels, restaurants, retailers,
@@ -198,6 +199,12 @@ const Origin = () => {
                 </span>
                 <span className="rounded-full bg-primary/10 px-4 py-2">
                   Quality Certified
+                </span>
+                <span className="rounded-full bg-primary/10 px-4 py-2">
+                  Sushi Grade
+                </span>
+                <span className="rounded-full bg-primary/10 px-4 py-2">
+                  Vacuum Packed
                 </span>
               </div>
               <div className="animate-fade-in mt-10 flex flex-col items-center justify-center gap-4 opacity-0 sm:flex-row" style={{ animationDelay: "0.7s" }}>
