@@ -1,4 +1,3 @@
-import logo from "@/assets/logo.png"
 import { CartSheet } from "@/components/cart/CartSheet"
 import { Button } from "@/components/ui/button"
 import {
@@ -81,12 +80,8 @@ const Header = () => {
           {/* Logo */}
           <Link to="/" className="group flex w-fit items-center gap-3">
             <div className="relative flex items-center justify-center">
-              {hasHeroImage && !isScrolled && (
-                <div className="absolute h-12 w-12 rounded-full bg-[#f7fafc]" />
-              )}
-
               <img
-                src={logo}
+                src={isScrolled || !hasHeroImage ? "/primarylogo.png" : "/invertedlogo.png"}
                 alt="Nordic Seafood"
                 className="relative h-10 w-10 object-contain"
               />
