@@ -58,13 +58,9 @@ export const useAdminOrders = () => {
   useEffect(() => {
     const channel = supabase
       .channel("admin-orders")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "orders" },
-        () => {
-          queryClient.invalidateQueries({ queryKey: ["admin-orders"] })
-        },
-      )
+      .on("postgres_changes", { event: "*", schema: "public", table: "orders" }, () => {
+        queryClient.invalidateQueries({ queryKey: ["admin-orders"] })
+      })
       .subscribe()
 
     return () => {
@@ -74,17 +70,8 @@ export const useAdminOrders = () => {
 
   // Update order status
   const updateOrderStatus = useMutation({
-    mutationFn: async ({
-      orderId,
-      status,
-    }: {
-      orderId: string
-      status: OrderStatus
-    }) => {
-      const { error } = await supabase
-        .from("orders")
-        .update({ status })
-        .eq("id", orderId)
+    mutationFn: async ({ orderId, status }: { orderId: string; status: OrderStatus }) => {
+      const { error } = await supabase.from("orders").update({ status }).eq("id", orderId)
       if (error) throw error
     },
     onSuccess: () => {
@@ -111,10 +98,9 @@ export const useAdminOrders = () => {
       if (error) throw error
 
       // 2. Initialize shipment stages (SQL function call)
-      const { error: initError } = await supabase.rpc(
-        "initialize_shipment_stages",
-        { p_order_id: orderId },
-      )
+      const { error: initError } = await supabase.rpc("initialize_shipment_stages", {
+        p_order_id: orderId,
+      })
 
       if (initError) throw initError
     },
@@ -171,9 +157,7 @@ export const useAdminOrders = () => {
       certificateType: string
     }) => {
       if (file.size > MAX_FILE_SIZE) {
-        throw new Error(
-          `File size must be less than ${MAX_FILE_SIZE / 1024 / 1024}MB`,
-        )
+        throw new Error(`File size must be less than ${MAX_FILE_SIZE / 1024 / 1024}MB`)
       }
 
       const filePath = `certificates/${orderId}/${Date.now()}-${file.name}`
@@ -189,14 +173,12 @@ export const useAdminOrders = () => {
       } = await supabase.auth.getUser()
 
       // Store file path instead of URL (private bucket)
-      const { error: insertError } = await supabase
-        .from("order_certificates")
-        .insert({
-          order_id: orderId,
-          certificate_type: certificateType,
-          file_url: filePath,
-          uploaded_by: user!.id,
-        })
+      const { error: insertError } = await supabase.from("order_certificates").insert({
+        order_id: orderId,
+        certificate_type: certificateType,
+        file_url: filePath,
+        uploaded_by: user!.id,
+      })
 
       if (insertError) throw insertError
     },
@@ -260,12 +242,7 @@ export const useAdminOrders = () => {
   const completedOrders = orders.filter((o) => o.status === "completed")
 
   // Analytics - count orders that have been paid (confirmed or later)
-  const paidStatuses: OrderStatus[] = [
-    "confirmed",
-    "shipped",
-    "delivered",
-    "completed",
-  ]
+  const paidStatuses: OrderStatus[] = ["confirmed", "shipped", "delivered", "completed"]
   const totalRevenue = orders
     .filter((o) => paidStatuses.includes(o.status))
     .reduce((sum, o) => sum + Number(o.total_amount), 0)

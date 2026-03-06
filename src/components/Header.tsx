@@ -30,13 +30,9 @@ const Header = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const isHomePage = location.pathname === "/"
-  const hasHeroImage = [
-    "/",
-    "/order",
-    "/contact",
-    "/origin",
-    "/for-chefs",
-  ].includes(location.pathname)
+  const hasHeroImage = ["/", "/order", "/contact", "/origin", "/for-chefs"].includes(
+    location.pathname,
+  )
 
   useEffect(() => {
     const handleScroll = () => {
@@ -70,9 +66,7 @@ const Header = () => {
   return (
     <header
       className={`sticky left-0 right-0 top-0 z-50 duration-300 ${
-        isScrolled || !hasHeroImage
-          ? "bg-card/95"
-          : "bg-gradient-to-b from-black/40 to-transparent"
+        isScrolled || !hasHeroImage ? "bg-card/95" : "bg-gradient-to-b from-black/40 to-transparent"
       }`}
     >
       <div className="container mx-auto px-6 lg:px-8">
@@ -83,7 +77,7 @@ const Header = () => {
               <img
                 src={isScrolled || !hasHeroImage ? "/revisedsecond.png" : "/revisedinitial.png"}
                 alt="Nordic Seafood"
-                className="relative h-[120px] w-[120px] object-contain"
+                className="relative w-[120px] object-contain"
               />
             </div>
           </Link>
@@ -96,9 +90,7 @@ const Header = () => {
                   key={link.href}
                   to={link.href}
                   className={`text-sm font-medium uppercase tracking-wide transition-colors hover:text-primary ${
-                    isScrolled || !hasHeroImage
-                      ? "text-foreground"
-                      : "text-card"
+                    isScrolled || !hasHeroImage ? "text-foreground" : "text-card"
                   }`}
                 >
                   {link.label}
@@ -108,9 +100,7 @@ const Header = () => {
                   key={link.href}
                   href={link.href}
                   className={`text-sm font-medium uppercase tracking-wide transition-colors hover:text-primary ${
-                    isScrolled || !hasHeroImage
-                      ? "text-foreground"
-                      : "text-card"
+                    isScrolled || !hasHeroImage ? "text-foreground" : "text-card"
                   }`}
                 >
                   {link.label}
@@ -181,11 +171,7 @@ const Header = () => {
             className={`justify-self-end p-2 md:hidden ${isScrolled || !hasHeroImage ? "text-foreground" : "text-card"}`}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            {isMobileMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
+            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
 
@@ -201,9 +187,7 @@ const Header = () => {
                   className="group flex items-center justify-between rounded-lg px-4 py-3 transition-colors hover:bg-muted"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <span className="font-medium text-foreground">
-                    {link.label}
-                  </span>
+                  <span className="font-medium text-foreground">{link.label}</span>
                   <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
                 </Link>
               ))}

@@ -26,19 +26,11 @@ const steps = [
 
 const HowItWorks = () => {
   return (
-    <section
-      className="bg-secondary py-20 lg:py-28"
-      aria-labelledby="how-it-works-title"
-    >
+    <section className="bg-secondary py-20 lg:py-28" aria-labelledby="how-it-works-title">
       <div className="container mx-auto px-6 lg:px-8">
         <div className="mb-12 text-center">
-          <p className="mb-4 text-xs uppercase tracking-[0.3em] text-primary">
-            Simple Process
-          </p>
-          <h2
-            id="how-it-works-title"
-            className="font-serif text-4xl text-foreground md:text-5xl"
-          >
+          <p className="mb-4 text-xs uppercase tracking-[0.3em] text-primary">Simple Process</p>
+          <h2 id="how-it-works-title" className="font-serif text-4xl text-foreground md:text-5xl">
             How It Works
           </h2>
         </div>
@@ -50,10 +42,7 @@ const HowItWorks = () => {
 
           <div className="grid gap-12 lg:grid-cols-3 lg:gap-8">
             {steps.map((step, index) => (
-              <div
-                key={index}
-                className="relative flex flex-col items-center text-center"
-              >
+              <div key={index} className="relative flex flex-col items-center text-center">
                 {/* Step circle */}
                 <div className="relative z-10 mb-6 flex h-16 w-16 items-center justify-center rounded-full border-2 border-border bg-background shadow-sm">
                   <step.icon className="h-7 w-7 text-primary" />
@@ -65,14 +54,10 @@ const HowItWorks = () => {
                 </p>
 
                 {/* Title */}
-                <h3 className="mb-3 font-serif text-xl text-foreground">
-                  {step.title}
-                </h3>
+                <h3 className="mb-3 font-serif text-xl text-foreground">{step.title}</h3>
 
                 {/* Description */}
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {step.description}
-                </p>
+                <p className="text-sm leading-relaxed text-muted-foreground">{step.description}</p>
               </div>
             ))}
           </div>

@@ -1,11 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import {
   Form,
   FormControl,
@@ -118,15 +113,10 @@ export function ProductFormDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>
-            {isEditing ? "Edit Product" : "Add New Product"}
-          </DialogTitle>
+          <DialogTitle>{isEditing ? "Edit Product" : "Add New Product"}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-4"
-          >
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="name"
@@ -134,11 +124,7 @@ export function ProductFormDialog({
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      onChange={handleNameChange}
-                      placeholder="e.g. Whole Salmon"
-                    />
+                    <Input {...field} onChange={handleNameChange} placeholder="e.g. Whole Salmon" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -166,11 +152,7 @@ export function ProductFormDialog({
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea
-                      {...field}
-                      placeholder="Product description..."
-                      rows={3}
-                    />
+                    <Textarea {...field} placeholder="Product description..." rows={3} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -199,13 +181,7 @@ export function ProductFormDialog({
                   <FormItem>
                     <FormLabel>Price per kg (NOK)</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        type="number"
-                        step="0.01"
-                        min="0"
-                        placeholder="0.00"
-                      />
+                      <Input {...field} type="number" step="0.01" min="0" placeholder="0.00" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -233,24 +209,15 @@ export function ProductFormDialog({
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center space-x-3 space-y-0">
                   <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
+                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
-                  <FormLabel className="font-normal">
-                    Available for purchase
-                  </FormLabel>
+                  <FormLabel className="font-normal">Available for purchase</FormLabel>
                 </FormItem>
               )}
             />
 
             <div className="flex justify-end gap-3 pt-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => onOpenChange(false)}
-              >
+              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
                 Cancel
               </Button>
               <Button type="submit" disabled={isSubmitting}>

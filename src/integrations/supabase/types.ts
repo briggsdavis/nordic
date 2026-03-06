@@ -1,10 +1,4 @@
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json | undefined }
-  | Json[]
+export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
 
 export type Database = {
   // Allows to automatically instantiate createClient with right options
@@ -18,6 +12,7 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          option_id: string | null
           product_id: string
           quantity: number
           updated_at: string
@@ -27,6 +22,7 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
+          option_id?: string | null
           product_id: string
           quantity?: number
           updated_at?: string
@@ -36,6 +32,7 @@ export type Database = {
         Update: {
           created_at?: string
           id?: string
+          option_id?: string | null
           product_id?: string
           quantity?: number
           updated_at?: string
@@ -91,6 +88,8 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          option_id: string | null
+          option_name: string | null
           order_id: string
           product_id: string
           product_name: string
@@ -102,6 +101,8 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
+          option_id?: string | null
+          option_name?: string | null
           order_id: string
           product_id: string
           product_name: string
@@ -113,6 +114,8 @@ export type Database = {
         Update: {
           created_at?: string
           id?: string
+          option_id?: string | null
+          option_name?: string | null
           order_id?: string
           product_id?: string
           product_name?: string
@@ -194,6 +197,47 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      product_options: {
+        Row: {
+          created_at: string
+          id: string
+          is_available: boolean
+          name: string
+          price_per_kg: number | null
+          product_id: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_available?: boolean
+          name: string
+          price_per_kg?: number | null
+          product_id: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_available?: boolean
+          name?: string
+          price_per_kg?: number | null
+          product_id?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_options_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       products: {
         Row: {
@@ -427,10 +471,8 @@ export type Tables<
     }
     ? R
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
-        DefaultSchema["Views"])
-    ? (DefaultSchema["Tables"] &
-        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] & DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
         Row: infer R
       }
       ? R

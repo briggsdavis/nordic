@@ -4,10 +4,7 @@ import { Link } from "react-router-dom"
 
 const NorwegianPartners = () => {
   return (
-    <section
-      className="bg-background py-24 lg:py-32"
-      aria-labelledby="norwegian-partners-title"
-    >
+    <section className="bg-background py-24 lg:py-32" aria-labelledby="norwegian-partners-title">
       <div className="container mx-auto px-6 lg:px-8">
         {/* Section Header */}
         <div
@@ -16,9 +13,7 @@ const NorwegianPartners = () => {
         >
           <div className="mb-4 inline-flex items-center gap-2 text-muted-foreground">
             <Building2 className="h-4 w-4" />
-            <span className="text-xs uppercase tracking-[0.2em]">
-              Sourcing Partners
-            </span>
+            <span className="text-xs uppercase tracking-[0.2em]">Sourcing Partners</span>
           </div>
           <h2
             id="norwegian-partners-title"
@@ -27,8 +22,8 @@ const NorwegianPartners = () => {
             Trusted Norwegian Origins
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-            Direct partnerships with two certified Norwegian exporters,
-            guaranteeing consistent quality and full traceability.
+            Direct partnerships with two certified Norwegian exporters, guaranteeing consistent
+            quality and full traceability.
           </p>
         </div>
 
@@ -49,27 +44,17 @@ const NorwegianPartners = () => {
                   <p className="text-sm font-medium text-primary">Est. 1918</p>
                 </div>
                 <p className="mb-6 leading-relaxed text-muted-foreground">
-                  With a heritage spanning over a century since 1918, Brødrene
-                  Remø has evolved from a coastal family shop on the Sunnmøre
-                  coast into a global leader in sustainable seafood. They
-                  combine time-honored seafaring wisdom with cutting-edge
-                  technology to produce world-recognized Atlantic salmon and
-                  traditional smoked delicacies. Our partnership brings over 100
-                  years of passion and sustainable craftsmanship to you,
-                  guaranteeing a level of quality and authenticity that only a
-                  century of experience can provide.
+                  With a heritage spanning over a century since 1918, Brødrene Remø has evolved from
+                  a coastal family shop on the Sunnmøre coast into a global leader in sustainable
+                  seafood. They combine time-honored seafaring wisdom with cutting-edge technology
+                  to produce world-recognized Atlantic salmon and traditional smoked delicacies. Our
+                  partnership brings over 100 years of passion and sustainable craftsmanship to you,
+                  guaranteeing a level of quality and authenticity that only a century of experience
+                  can provide.
                 </p>
                 <div>
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="gap-2 font-medium"
-                  >
-                    <a
-                      href="https://www.goldfish.no/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                  <Button asChild variant="outline" className="gap-2 font-medium">
+                    <a href="https://www.goldfish.no/" target="_blank" rel="noopener noreferrer">
                       Visit Brødrene Remø
                       <ExternalLink className="h-4 w-4" />
                     </a>
@@ -111,27 +96,19 @@ const NorwegianPartners = () => {
                   <h3 className="mb-1 font-serif text-2xl text-foreground md:text-3xl">
                     Fishcorp of Norway
                   </h3>
-                  <p className="text-sm font-medium text-primary">
-                    Since 9th Century Tradition
-                  </p>
+                  <p className="text-sm font-medium text-primary">Since 9th Century Tradition</p>
                 </div>
                 <p className="mb-6 leading-relaxed text-muted-foreground">
-                  Drawing from over a millennium of tradition, Fishcorp of
-                  Norway is a premier exporter dedicated to sharing
-                  nutrient-rich, sustainable seafood with the world.
-                  Specializing in delicacies like authentic Arctic stockfish and
-                  premium Atlantic salmon, they utilize strict quality controls
-                  that honor 9th-century Viking innovations. By partnering with
-                  Fishcorp, we provide "Seafood for Healthy Generations,"
-                  ensuring every product meets Norway's most rigorous food
-                  safety standards.
+                  Drawing from over a millennium of tradition, Fishcorp of Norway is a premier
+                  exporter dedicated to sharing nutrient-rich, sustainable seafood with the world.
+                  Specializing in delicacies like authentic Arctic stockfish and premium Atlantic
+                  salmon, they utilize strict quality controls that honor 9th-century Viking
+                  innovations. By partnering with Fishcorp, we provide "Seafood for Healthy
+                  Generations," ensuring every product meets Norway's most rigorous food safety
+                  standards.
                 </p>
                 <div>
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="gap-2 font-medium"
-                  >
+                  <Button asChild variant="outline" className="gap-2 font-medium">
                     <a
                       href="https://www.fishcorp.no/#about_us"
                       target="_blank"

@@ -85,8 +85,7 @@ export const useAdminShipmentStages = (orderId?: string) => {
       // Update all stages in parallel
       await Promise.all(
         updates.map(({ stageId, status }) => {
-          const updateData: Database["public"]["Tables"]["shipment_stages"]["Update"] =
-            { status }
+          const updateData: Database["public"]["Tables"]["shipment_stages"]["Update"] = { status }
 
           if (status === "completed") {
             updateData.completed_at = new Date().toISOString()
@@ -95,10 +94,7 @@ export const useAdminShipmentStages = (orderId?: string) => {
             updateData.started_at = null
           }
 
-          return supabase
-            .from("shipment_stages")
-            .update(updateData)
-            .eq("id", stageId)
+          return supabase.from("shipment_stages").update(updateData).eq("id", stageId)
         }),
       )
     },
@@ -111,19 +107,14 @@ export const useAdminShipmentStages = (orderId?: string) => {
       })
 
       // Snapshot previous value
-      const previousStages = queryClient.getQueryData<ShipmentStage[]>([
-        "shipment-stages",
-        orderId,
-      ])
+      const previousStages = queryClient.getQueryData<ShipmentStage[]>(["shipment-stages", orderId])
 
       // Single optimistic update for all stages
-      queryClient.setQueryData<ShipmentStage[]>(
-        ["shipment-stages", orderId],
-        (old) =>
-          old?.map((stage) => {
-            const update = updates.find((u) => u.stageId === stage.id)
-            return update ? { ...stage, status: update.status } : stage
-          }),
+      queryClient.setQueryData<ShipmentStage[]>(["shipment-stages", orderId], (old) =>
+        old?.map((stage) => {
+          const update = updates.find((u) => u.stageId === stage.id)
+          return update ? { ...stage, status: update.status } : stage
+        }),
       )
 
       return { previousStages }
@@ -131,10 +122,7 @@ export const useAdminShipmentStages = (orderId?: string) => {
     onError: (error: Error, _variables, context) => {
       // Rollback on error
       if (orderId && context?.previousStages) {
-        queryClient.setQueryData(
-          ["shipment-stages", orderId],
-          context.previousStages,
-        )
+        queryClient.setQueryData(["shipment-stages", orderId], context.previousStages)
       }
       toast({
         variant: "destructive",

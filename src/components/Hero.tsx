@@ -46,8 +46,8 @@ const Hero = () => {
             className="mx-auto mb-10 max-w-2xl animate-fade-in-up text-lg font-light leading-relaxed text-card/90 opacity-0 md:text-xl"
             style={{ animationDelay: "0.6s" }}
           >
-            Norwegian salmon, delivered directly to Ethiopia.
-            Temperature-controlled, traceable, and chef-ready.
+            Norwegian salmon, delivered directly to Ethiopia. Temperature-controlled, traceable, and
+            chef-ready.
           </p>
 
           {/* CTA Buttons */}
@@ -79,9 +79,7 @@ const Hero = () => {
         className="absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 animate-fade-in flex-col items-center gap-2 opacity-0"
         style={{ animationDelay: "1.2s" }}
       >
-        <span className="text-xs uppercase tracking-[0.2em] text-card/60">
-          Scroll to discover
-        </span>
+        <span className="text-xs uppercase tracking-[0.2em] text-card/60">Scroll to discover</span>
         <ChevronDown className="h-5 w-5 animate-bounce-subtle text-card/60" />
       </div>
     </section>

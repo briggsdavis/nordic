@@ -1,6 +1,15 @@
 import { supabase } from "@/integrations/supabase/client"
 import { useQuery } from "@tanstack/react-query"
 
+export interface ProductOption {
+  id: string
+  product_id: string
+  name: string
+  price_per_kg: number | null
+  is_available: boolean
+  sort_order: number
+}
+
 export interface Product {
   id: string
   name: string
@@ -12,6 +21,7 @@ export interface Product {
   is_available: boolean
   created_at: string
   updated_at: string
+  product_options?: ProductOption[]
 }
 
 export const useProducts = () => {
@@ -20,7 +30,7 @@ export const useProducts = () => {
     queryFn: async (): Promise<Product[]> => {
       const { data, error } = await supabase
         .from("products")
-        .select("*")
+        .select("*, product_options(*)")
         .order("created_at", { ascending: true })
 
       if (error) {

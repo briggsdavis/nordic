@@ -7,6 +7,7 @@ export interface CartItem {
   id: string
   user_id: string
   product_id: string
+  option_id: string | null
   variant: string
   quantity: number
   created_at: string
@@ -18,6 +19,11 @@ export interface CartItem {
     image_url: string | null
     weight_range: string | null
   }
+  option?: {
+    id: string
+    name: string
+    price_per_kg: number | null
+  } | null
 }
 
 export const useCart = () => {
@@ -35,7 +41,8 @@ export const useCart = () => {
         .select(
           `
           *,
-          product:products(id, name, price_per_kg, image_url, weight_range)
+          product:products(id, name, price_per_kg, image_url, weight_range),
+          option:product_options(id, name, price_per_kg)
         `,
         )
         .eq("user_id", user.id)
@@ -52,21 +59,30 @@ export const useCart = () => {
       productId,
       variant,
       quantity = 1,
+      optionId,
     }: {
       productId: string
       variant: string
       quantity?: number
+      optionId?: string | null
     }) => {
       if (!user) throw new Error("Must be logged in")
 
       // Check if item already exists in cart
-      const { data: existing } = await supabase
+      let query = supabase
         .from("cart_items")
         .select("id, quantity")
         .eq("user_id", user.id)
         .eq("product_id", productId)
         .eq("variant", variant)
-        .single()
+
+      if (optionId) {
+        query = query.eq("option_id", optionId)
+      } else {
+        query = query.is("option_id", null)
+      }
+
+      const { data: existing } = await query.single()
 
       if (existing) {
         // Update quantity
@@ -82,6 +98,7 @@ export const useCart = () => {
           product_id: productId,
           variant,
           quantity,
+          option_id: optionId || null,
         })
         if (error) throw error
       }
@@ -103,24 +120,12 @@ export const useCart = () => {
   })
 
   const updateQuantity = useMutation({
-    mutationFn: async ({
-      itemId,
-      quantity,
-    }: {
-      itemId: string
-      quantity: number
-    }) => {
+    mutationFn: async ({ itemId, quantity }: { itemId: string; quantity: number }) => {
       if (quantity <= 0) {
-        const { error } = await supabase
-          .from("cart_items")
-          .delete()
-          .eq("id", itemId)
+        const { error } = await supabase.from("cart_items").delete().eq("id", itemId)
         if (error) throw error
       } else {
-        const { error } = await supabase
-          .from("cart_items")
-          .update({ quantity })
-          .eq("id", itemId)
+        const { error } = await supabase.from("cart_items").update({ quantity }).eq("id", itemId)
         if (error) throw error
       }
     },
@@ -131,10 +136,7 @@ export const useCart = () => {
 
   const removeFromCart = useMutation({
     mutationFn: async (itemId: string) => {
-      const { error } = await supabase
-        .from("cart_items")
-        .delete()
-        .eq("id", itemId)
+      const { error } = await supabase.from("cart_items").delete().eq("id", itemId)
       if (error) throw error
     },
     onSuccess: () => {
@@ -146,10 +148,7 @@ export const useCart = () => {
   const clearCart = useMutation({
     mutationFn: async () => {
       if (!user) throw new Error("Must be logged in")
-      const { error } = await supabase
-        .from("cart_items")
-        .delete()
-        .eq("user_id", user.id)
+      const { error } = await supabase.from("cart_items").delete().eq("user_id", user.id)
       if (error) throw error
     },
     onSuccess: () => {
@@ -157,18 +156,23 @@ export const useCart = () => {
     },
   })
 
-  const getVariantPrice = (variant: string, pricePerKg: number): number => {
+  const getVariantPrice = (
+    variant: string,
+    pricePerKg: number,
+    optionPricePerKg?: number | null,
+  ): number => {
     const weightMap: Record<string, number> = {
       "100g": 0.1,
       "200g": 0.2,
       "300g": 0.3,
     }
-    return pricePerKg * (weightMap[variant] || 0.1)
+    const effectivePrice = optionPricePerKg ?? pricePerKg
+    return effectivePrice * (weightMap[variant] || 0.1)
   }
 
   const cartTotal = cartItems.reduce((total, item) => {
     const price = item.product
-      ? getVariantPrice(item.variant, item.product.price_per_kg)
+      ? getVariantPrice(item.variant, item.product.price_per_kg, item.option?.price_per_kg)
       : 0
     return total + price * item.quantity
   }, 0)

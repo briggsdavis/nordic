@@ -1,20 +1,11 @@
-import {
-  Award,
-  FileCheck,
-  Plane,
-  Search,
-  Snowflake,
-  Truck,
-  Waves,
-} from "lucide-react"
+import { Award, FileCheck, Plane, Search, Snowflake, Truck, Waves } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 
 const steps = [
   {
     icon: Waves,
     title: "Fjord Harvest",
-    description:
-      "Sustainably harvested from Norwegian fjords at optimal maturity.",
+    description: "Sustainably harvested from Norwegian fjords at optimal maturity.",
     location: "Norway",
   },
   {
@@ -26,8 +17,7 @@ const steps = [
   {
     icon: Award,
     title: "Certified Processing",
-    description:
-      "EU-certified processing for international food safety compliance.",
+    description: "EU-certified processing for international food safety compliance.",
     location: "Bergen, Norway",
   },
   {
@@ -65,9 +55,7 @@ const QualityPromise = () => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const stepIndex = parseInt(
-              entry.target.getAttribute("data-step") || "0",
-            )
+            const stepIndex = parseInt(entry.target.getAttribute("data-step") || "0")
             setVisibleSteps((prev) => [...new Set([...prev, stepIndex])])
           }
         })
@@ -82,11 +70,7 @@ const QualityPromise = () => {
   }, [])
 
   return (
-    <section
-      id="origin"
-      ref={sectionRef}
-      className="bg-background py-24 lg:py-32"
-    >
+    <section id="origin" ref={sectionRef} className="bg-background py-24 lg:py-32">
       <div className="container mx-auto px-6 lg:px-8">
         {/* Section Header */}
         <div className="mb-20 text-center">
@@ -97,8 +81,8 @@ const QualityPromise = () => {
             Our Quality Promise
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-            Seven documented steps from Norwegian fjords to Ethiopian kitchens.
-            Each shipment is tracked, verified, and certified.
+            Seven documented steps from Norwegian fjords to Ethiopian kitchens. Each shipment is
+            tracked, verified, and certified.
           </p>
         </div>
 
@@ -108,10 +92,7 @@ const QualityPromise = () => {
           <div className="absolute bottom-0 left-6 top-0 w-px bg-border md:left-1/2 md:-translate-x-px" />
 
           {/* Steps */}
-          <ol
-            className="space-y-12 md:space-y-16"
-            aria-label="Cold chain steps"
-          >
+          <ol className="space-y-12 md:space-y-16" aria-label="Cold chain steps">
             {steps.map((step, index) => {
               const isVisible = visibleSteps.includes(index)
               const isEven = index % 2 === 0
@@ -141,18 +122,12 @@ const QualityPromise = () => {
                     className={`hidden w-full items-center md:flex ${isEven ? "flex-row" : "flex-row-reverse"}`}
                   >
                     {/* Content */}
-                    <div
-                      className={`w-1/2 ${isEven ? "pr-12 text-right" : "pl-12 text-left"}`}
-                    >
+                    <div className={`w-1/2 ${isEven ? "pr-12 text-right" : "pl-12 text-left"}`}>
                       <span className="mb-2 block text-xs uppercase tracking-wide text-muted-foreground">
                         {step.location}
                       </span>
-                      <h3 className="mb-2 font-serif text-2xl text-foreground">
-                        {step.title}
-                      </h3>
-                      <p className="text-muted-foreground">
-                        {step.description}
-                      </p>
+                      <h3 className="mb-2 font-serif text-2xl text-foreground">{step.title}</h3>
+                      <p className="text-muted-foreground">{step.description}</p>
                     </div>
 
                     {/* Icon */}
@@ -169,12 +144,8 @@ const QualityPromise = () => {
                     <span className="mb-1 block text-xs uppercase tracking-wide text-muted-foreground">
                       {step.location}
                     </span>
-                    <h3 className="mb-1 font-serif text-xl text-foreground">
-                      {step.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      {step.description}
-                    </p>
+                    <h3 className="mb-1 font-serif text-xl text-foreground">{step.title}</h3>
+                    <p className="text-sm text-muted-foreground">{step.description}</p>
                   </div>
                 </li>
               )

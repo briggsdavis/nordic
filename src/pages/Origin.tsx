@@ -87,9 +87,8 @@ const Origin = () => {
                 className="mx-auto max-w-2xl animate-fade-in-up text-lg font-light leading-relaxed text-card/90 opacity-0"
                 style={{ animationDelay: "0.6s" }}
               >
-                Nordic Seafood bridges two worlds, moving pristine Norwegian
-                salmon into Ethiopia with verified cold-chain handling and
-                trusted local distribution.
+                Nordic Seafood bridges two worlds, moving pristine Norwegian salmon into Ethiopia
+                with verified cold-chain handling and trusted local distribution.
               </p>
             </div>
           </div>
@@ -115,12 +114,8 @@ const Origin = () => {
                   className="rounded-2xl border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
                 >
                   <value.icon className="mb-4 h-10 w-10 text-primary" />
-                  <h3 className="mb-3 font-serif text-xl text-foreground">
-                    {value.title}
-                  </h3>
-                  <p className="leading-relaxed text-muted-foreground">
-                    {value.description}
-                  </p>
+                  <h3 className="mb-3 font-serif text-xl text-foreground">{value.title}</h3>
+                  <p className="leading-relaxed text-muted-foreground">{value.description}</p>
                 </div>
               ))}
             </div>
@@ -143,22 +138,19 @@ const Origin = () => {
                 style={{ animationDelay: "0.3s" }}
               >
                 <p>
-                  Nordic Seafood was founded to bridge a clear market gap:
-                  Ethiopia's growing demand for premium seafood and the lack of
-                  a reliable, quality-first supply chain.
+                  Nordic Seafood was founded to bridge a clear market gap: Ethiopia's growing demand
+                  for premium seafood and the lack of a reliable, quality-first supply chain.
                 </p>
                 <p>
-                  Through direct partnerships with Norwegian producers and
-                  controlled cold-chain logistics, we keep salmon fresh from
-                  harvest to Addis Ababa, with temperature monitoring at every
-                  stage. Every piece is sushi grade and vacuum packed to
+                  Through direct partnerships with Norwegian producers and controlled cold-chain
+                  logistics, we keep salmon fresh from harvest to Addis Ababa, with temperature
+                  monitoring at every stage. Every piece is sushi grade and vacuum packed to
                   preserve peak freshness and quality on arrival.
                 </p>
                 <p>
-                  Today, Nordic Seafood supports hotels, restaurants, retailers,
-                  and home chefs who refuse to compromise on quality. Every
-                  delivery carries our promise: authentic Norwegian salmon,
-                  handled with care and delivered with integrity.
+                  Today, Nordic Seafood supports hotels, restaurants, retailers, and home chefs who
+                  refuse to compromise on quality. Every delivery carries our promise: authentic
+                  Norwegian salmon, handled with care and delivered with integrity.
                 </p>
               </div>
               <div
@@ -195,32 +187,19 @@ const Origin = () => {
                 className="animate-fade-in mb-8 text-lg text-muted-foreground opacity-0"
                 style={{ animationDelay: "0.3s" }}
               >
-                When you choose Nordic Seafood, you choose a partner committed
-                to consistent supply, transparent sourcing, and dependable
-                logistics.
+                When you choose Nordic Seafood, you choose a partner committed to consistent supply,
+                transparent sourcing, and dependable logistics.
               </p>
               <div
                 className="animate-fade-in flex flex-wrap justify-center gap-4 text-sm text-foreground opacity-0"
                 style={{ animationDelay: "0.5s" }}
               >
-                <span className="rounded-full bg-primary/10 px-4 py-2">
-                  100% Norwegian Origin
-                </span>
-                <span className="rounded-full bg-primary/10 px-4 py-2">
-                  Unbroken Cold Chain
-                </span>
-                <span className="rounded-full bg-primary/10 px-4 py-2">
-                  Full Traceability
-                </span>
-                <span className="rounded-full bg-primary/10 px-4 py-2">
-                  Quality Certified
-                </span>
-                <span className="rounded-full bg-primary/10 px-4 py-2">
-                  Sushi Grade
-                </span>
-                <span className="rounded-full bg-primary/10 px-4 py-2">
-                  Vacuum Packed
-                </span>
+                <span className="rounded-full bg-primary/10 px-4 py-2">100% Norwegian Origin</span>
+                <span className="rounded-full bg-primary/10 px-4 py-2">Unbroken Cold Chain</span>
+                <span className="rounded-full bg-primary/10 px-4 py-2">Full Traceability</span>
+                <span className="rounded-full bg-primary/10 px-4 py-2">Quality Certified</span>
+                <span className="rounded-full bg-primary/10 px-4 py-2">Sushi Grade</span>
+                <span className="rounded-full bg-primary/10 px-4 py-2">Vacuum Packed</span>
               </div>
               <div
                 className="animate-fade-in mt-10 flex flex-col items-center justify-center gap-4 opacity-0 sm:flex-row"

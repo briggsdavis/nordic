@@ -1,14 +1,17 @@
 import { supabase } from "@/integrations/supabase/client"
-import type {
-  Tables,
-  TablesInsert,
-  TablesUpdate,
-} from "@/integrations/supabase/types"
+import type { Tables, TablesInsert, TablesUpdate } from "@/integrations/supabase/types"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
 type Product = Tables<"products">
 type ProductInsert = TablesInsert<"products">
 type ProductUpdate = TablesUpdate<"products">
+type ProductOption = Tables<"product_options">
+type ProductOptionInsert = TablesInsert<"product_options">
+type ProductOptionUpdate = TablesUpdate<"product_options">
+
+export interface ProductWithOptions extends Product {
+  product_options: ProductOption[]
+}
 
 export function useAdminProducts() {
   const queryClient = useQueryClient()
@@ -22,21 +25,17 @@ export function useAdminProducts() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("products")
-        .select("*")
+        .select("*, product_options(*)")
         .order("created_at", { ascending: false })
 
       if (error) throw error
-      return data as Product[]
+      return data as ProductWithOptions[]
     },
   })
 
   const createProduct = useMutation({
     mutationFn: async (product: ProductInsert) => {
-      const { data, error } = await supabase
-        .from("products")
-        .insert(product)
-        .select()
-        .single()
+      const { data, error } = await supabase.from("products").insert(product).select().single()
 
       if (error) throw error
       return data
@@ -77,13 +76,7 @@ export function useAdminProducts() {
   })
 
   const toggleAvailability = useMutation({
-    mutationFn: async ({
-      id,
-      is_available,
-    }: {
-      id: string
-      is_available: boolean
-    }) => {
+    mutationFn: async ({ id, is_available }: { id: string; is_available: boolean }) => {
       const { data, error } = await supabase
         .from("products")
         .update({ is_available })
@@ -100,6 +93,52 @@ export function useAdminProducts() {
     },
   })
 
+  const createOption = useMutation({
+    mutationFn: async (option: ProductOptionInsert) => {
+      const { data, error } = await supabase
+        .from("product_options")
+        .insert(option)
+        .select()
+        .single()
+
+      if (error) throw error
+      return data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-products"] })
+      queryClient.invalidateQueries({ queryKey: ["products"] })
+    },
+  })
+
+  const updateOption = useMutation({
+    mutationFn: async ({ id, ...updates }: ProductOptionUpdate & { id: string }) => {
+      const { data, error } = await supabase
+        .from("product_options")
+        .update(updates)
+        .eq("id", id)
+        .select()
+        .single()
+
+      if (error) throw error
+      return data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-products"] })
+      queryClient.invalidateQueries({ queryKey: ["products"] })
+    },
+  })
+
+  const deleteOption = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("product_options").delete().eq("id", id)
+      if (error) throw error
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-products"] })
+      queryClient.invalidateQueries({ queryKey: ["products"] })
+    },
+  })
+
   return {
     products,
     isLoading,
@@ -108,5 +147,8 @@ export function useAdminProducts() {
     updateProduct,
     deleteProduct,
     toggleAvailability,
+    createOption,
+    updateOption,
+    deleteOption,
   }
 }

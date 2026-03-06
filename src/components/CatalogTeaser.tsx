@@ -18,12 +18,8 @@ const CatalogTeaser = () => {
           style={{ animationDelay: "0.1s" }}
         >
           <div>
-            <p className="mb-4 text-xs uppercase tracking-[0.3em] text-primary">
-              Order
-            </p>
-            <h2 className="font-serif text-4xl text-foreground md:text-5xl">
-              Premium Selection
-            </h2>
+            <p className="mb-4 text-xs uppercase tracking-[0.3em] text-primary">Order</p>
+            <h2 className="font-serif text-4xl text-foreground md:text-5xl">Premium Selection</h2>
           </div>
           <Button
             variant="ghost"
@@ -69,9 +65,7 @@ const CatalogTeaser = () => {
                     <h3 className="font-serif text-xl text-foreground transition-colors group-hover:text-primary">
                       {product.name}
                     </h3>
-                    <p className="text-sm text-muted-foreground">
-                      {product.weight_range}
-                    </p>
+                    <p className="text-sm text-muted-foreground">{product.weight_range}</p>
                   </div>
                   <span className="text-xs font-medium tracking-wide text-primary">
                     {formatPrice(product.price_per_kg)}/kg

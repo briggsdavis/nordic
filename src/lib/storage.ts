@@ -24,9 +24,7 @@ export const getSignedUrl = async (
     return null
   }
 
-  const { data, error } = await supabase.storage
-    .from(bucket)
-    .createSignedUrl(path, expiresIn)
+  const { data, error } = await supabase.storage.from(bucket).createSignedUrl(path, expiresIn)
 
   if (error) {
     logStorageError("Error creating signed URL", error)
@@ -52,9 +50,7 @@ export const extractFilePath = (urlOrPath: string): string => {
 
   // Extract path from full Supabase storage URL
   // Format: https://xxx.supabase.co/storage/v1/object/public/bucket-name/path/to/file
-  const match = urlOrPath.match(
-    /\/storage\/v1\/object\/(?:public|sign)\/[^/]+\/(.+)/,
-  )
+  const match = urlOrPath.match(/\/storage\/v1\/object\/(?:public|sign)\/[^/]+\/(.+)/)
   if (match) {
     return match[1]
   }
@@ -68,10 +64,7 @@ export const extractFilePath = (urlOrPath: string): string => {
  * @param bucket - The storage bucket name
  * @param filePathOrUrl - The file path or legacy full URL
  */
-export async function openStorageFile(
-  bucket: string,
-  filePathOrUrl: string,
-): Promise<void> {
+export async function openStorageFile(bucket: string, filePathOrUrl: string): Promise<void> {
   const filePath = extractFilePath(filePathOrUrl)
   if (!filePath) {
     logStorageError("Missing file path", filePathOrUrl)

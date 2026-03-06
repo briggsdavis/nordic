@@ -31,6 +31,8 @@ export interface OrderItem {
   product_id: string
   product_name: string
   variant: string
+  option_id: string | null
+  option_name: string | null
   quantity: number
   unit_price: number
   subtotal: number
@@ -132,6 +134,8 @@ export const useOrders = () => {
         variant: string
         quantity: number
         unitPrice: number
+        optionId?: string | null
+        optionName?: string | null
       }[]
       deliveryAddress: string
       contactName: string
@@ -168,9 +172,7 @@ export const useOrders = () => {
             additional_comments: orderData.additionalComments || null,
             location_description: orderData.locationDescription || null,
             preferred_delivery_time: orderData.preferredDeliveryTime || null,
-            expected_delivery_date: expectedDeliveryDate
-              .toISOString()
-              .split("T")[0],
+            expected_delivery_date: expectedDeliveryDate.toISOString().split("T")[0],
             payment_receipt_url: orderData.paymentReceiptUrl || null,
             status: initialStatus,
           },
@@ -189,11 +191,11 @@ export const useOrders = () => {
         quantity: item.quantity,
         unit_price: item.unitPrice,
         subtotal: item.unitPrice * item.quantity,
+        option_id: item.optionId || null,
+        option_name: item.optionName || null,
       }))
 
-      const { error: itemsError } = await supabase
-        .from("order_items")
-        .insert(orderItems)
+      const { error: itemsError } = await supabase.from("order_items").insert(orderItems)
 
       if (itemsError) throw itemsError
 
@@ -222,9 +224,7 @@ export const useOrders = () => {
       if (!user) throw new Error("Must be logged in")
 
       if (file.size > MAX_FILE_SIZE) {
-        throw new Error(
-          `File size must be less than ${MAX_FILE_SIZE / 1024 / 1024}MB`,
-        )
+        throw new Error(`File size must be less than ${MAX_FILE_SIZE / 1024 / 1024}MB`)
       }
 
       const filePath = `${user.id}/receipts/${orderId}-${Date.now()}-${file.name}`
@@ -264,12 +264,8 @@ export const useOrders = () => {
     },
   })
 
-  const currentOrders = orders.filter(
-    (o) => !["completed", "cancelled"].includes(o.status),
-  )
-  const pastOrders = orders.filter((o) =>
-    ["completed", "cancelled"].includes(o.status),
-  )
+  const currentOrders = orders.filter((o) => !["completed", "cancelled"].includes(o.status))
+  const pastOrders = orders.filter((o) => ["completed", "cancelled"].includes(o.status))
 
   return {
     orders,

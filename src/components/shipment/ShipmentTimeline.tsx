@@ -18,22 +18,12 @@ const formatDate = (dateString: string) => {
   })
 }
 
-export const ShipmentTimeline = ({
-  orderId,
-  compact = false,
-}: ShipmentTimelineProps) => {
+export const ShipmentTimeline = ({ orderId, compact = false }: ShipmentTimelineProps) => {
   const { data: stages, isLoading } = useShipmentStages(orderId)
 
-  if (isLoading)
-    return (
-      <div className="text-sm text-muted-foreground">Loading stages...</div>
-    )
+  if (isLoading) return <div className="text-sm text-muted-foreground">Loading stages...</div>
   if (!stages?.length)
-    return (
-      <div className="text-sm text-muted-foreground">
-        No tracking data available
-      </div>
-    )
+    return <div className="text-sm text-muted-foreground">No tracking data available</div>
 
   return (
     <div className="overflow-x-auto">
@@ -44,9 +34,7 @@ export const ShipmentTimeline = ({
             <Check className="h-4 w-4" />
           </div>
           <div className="mt-2 w-24 text-center">
-            <p className="text-xs font-medium leading-tight text-blue-600">
-              Payment Verified
-            </p>
+            <p className="text-xs font-medium leading-tight text-blue-600">Payment Verified</p>
           </div>
         </div>
 
@@ -57,8 +45,7 @@ export const ShipmentTimeline = ({
 
           // Line before this stage is active if the preceding step is completed.
           // Index 0 connects from Payment Verified, which is always completed.
-          const lineIsActive =
-            index === 0 ? true : stages[index - 1].status === "completed"
+          const lineIsActive = index === 0 ? true : stages[index - 1].status === "completed"
 
           return (
             <Fragment key={stage.id}>
@@ -80,11 +67,7 @@ export const ShipmentTimeline = ({
                     isPending && "bg-muted text-muted-foreground",
                   )}
                 >
-                  {isCompleted ? (
-                    <Check className="h-4 w-4" />
-                  ) : (
-                    stage.stage_number
-                  )}
+                  {isCompleted ? <Check className="h-4 w-4" /> : stage.stage_number}
                 </div>
 
                 <div className="mt-2 w-24 text-center">
@@ -104,9 +87,7 @@ export const ShipmentTimeline = ({
                     </p>
                   )}
                   {stage.admin_notes && !compact && (
-                    <p className="mt-1 text-xs italic text-muted-foreground">
-                      {stage.admin_notes}
-                    </p>
+                    <p className="mt-1 text-xs italic text-muted-foreground">{stage.admin_notes}</p>
                   )}
                 </div>
               </div>

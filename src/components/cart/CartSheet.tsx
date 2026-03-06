@@ -1,11 +1,5 @@
 import { Button } from "@/components/ui/button"
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { useAuth } from "@/contexts/AuthContext"
 import { useCart } from "@/hooks/useCart"
 import { Minus, Plus, ShoppingCart, Trash2 } from "lucide-react"
@@ -40,11 +34,7 @@ export const CartSheet = () => {
 
   if (!user) {
     return (
-      <Button
-        variant="outline"
-        onClick={() => navigate("/auth")}
-        className="gap-2"
-      >
+      <Button variant="outline" onClick={() => navigate("/auth")} className="gap-2">
         <ShoppingCart className="h-4 w-4" />
         Cart
       </Button>
@@ -88,14 +78,15 @@ export const CartSheet = () => {
             <div className="flex-1 space-y-4 overflow-y-auto py-4">
               {cartItems.map((item) => {
                 const price = item.product
-                  ? getVariantPrice(item.variant, item.product.price_per_kg)
+                  ? getVariantPrice(
+                      item.variant,
+                      item.product.price_per_kg,
+                      item.option?.price_per_kg,
+                    )
                   : 0
 
                 return (
-                  <div
-                    key={item.id}
-                    className="flex gap-4 rounded-2xl border p-4"
-                  >
+                  <div key={item.id} className="flex gap-4 rounded-2xl border p-4">
                     {item.product?.image_url && (
                       <img
                         src={item.product.image_url}
@@ -104,15 +95,12 @@ export const CartSheet = () => {
                       />
                     )}
                     <div className="min-w-0 flex-1">
-                      <h4 className="truncate font-medium">
-                        {item.product?.name}
-                      </h4>
+                      <h4 className="truncate font-medium">{item.product?.name}</h4>
                       <p className="text-sm text-muted-foreground">
+                        {item.option?.name ? `${item.option.name} - ` : ""}
                         {item.variant}
                       </p>
-                      <p className="text-sm font-medium">
-                        {formatPrice(price)}
-                      </p>
+                      <p className="text-sm font-medium">{formatPrice(price)}</p>
                     </div>
                     <div className="flex flex-col items-end gap-2">
                       <Button
@@ -137,9 +125,7 @@ export const CartSheet = () => {
                         >
                           <Minus className="h-3 w-3" />
                         </Button>
-                        <span className="w-8 text-center text-sm">
-                          {item.quantity}
-                        </span>
+                        <span className="w-8 text-center text-sm">{item.quantity}</span>
                         <Button
                           variant="outline"
                           size="icon"

@@ -49,32 +49,20 @@ export const OrderRow = ({
 
   return (
     <>
-      <TableRow
-        className="cursor-pointer transition-colors hover:bg-muted/50"
-        onClick={onToggle}
-      >
+      <TableRow className="cursor-pointer transition-colors hover:bg-muted/50" onClick={onToggle}>
         <TableCell className="w-12">
           <ChevronDown
-            className={cn(
-              "h-4 w-4 transition-transform duration-200",
-              isExpanded && "rotate-180",
-            )}
+            className={cn("h-4 w-4 transition-transform duration-200", isExpanded && "rotate-180")}
           />
         </TableCell>
         <TableCell className="font-medium">{order.reference_number}</TableCell>
         <TableCell>
           <div>
-            <p className="font-medium">
-              {order.profile?.full_name || order.contact_name}
-            </p>
-            <p className="text-xs text-muted-foreground">
-              {order.profile?.email}
-            </p>
+            <p className="font-medium">{order.profile?.full_name || order.contact_name}</p>
+            <p className="text-xs text-muted-foreground">{order.profile?.email}</p>
           </div>
         </TableCell>
-        <TableCell className="capitalize">
-          {order.profile?.account_type || "-"}
-        </TableCell>
+        <TableCell className="capitalize">{order.profile?.account_type || "-"}</TableCell>
         <TableCell>{formatPrice(Number(order.total_amount))}</TableCell>
         <TableCell>
           <OrderStatusBadge status={order.status} />
@@ -95,12 +83,8 @@ export const OrderRow = ({
                     <p className="font-medium text-foreground">
                       {order.profile?.full_name || order.contact_name}
                     </p>
-                    <p className="text-sm text-muted-foreground">
-                      {order.profile?.email}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      {order.contact_phone}
-                    </p>
+                    <p className="text-sm text-muted-foreground">{order.profile?.email}</p>
+                    <p className="text-sm text-muted-foreground">{order.contact_phone}</p>
                   </div>
                 </div>
                 <div>
@@ -108,9 +92,7 @@ export const OrderRow = ({
                     Delivery
                   </h4>
                   <div className="space-y-1.5">
-                    <p className="font-medium text-foreground">
-                      {order.delivery_address}
-                    </p>
+                    <p className="font-medium text-foreground">{order.delivery_address}</p>
                     <p className="text-sm text-muted-foreground">
                       Expected: {formatDate(order.expected_delivery_date)}
                     </p>
@@ -124,16 +106,13 @@ export const OrderRow = ({
                 </h4>
                 <div className="space-y-2">
                   {order.order_items.map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex items-center justify-between text-sm"
-                    >
+                    <div key={item.id} className="flex items-center justify-between text-sm">
                       <span className="text-foreground">
-                        {item.product_name} × {item.quantity}
+                        {item.product_name}
+                        {item.option_name ? ` - ${item.option_name}` : ""} ({item.variant}) ×{" "}
+                        {item.quantity}
                       </span>
-                      <span className="font-medium">
-                        {formatPrice(Number(item.subtotal))}
-                      </span>
+                      <span className="font-medium">{formatPrice(Number(item.subtotal))}</span>
                     </div>
                   ))}
                   <div className="flex items-center justify-between border-t pt-2 font-semibold">
@@ -165,9 +144,7 @@ export const OrderRow = ({
                     Receipt
                   </Button>
                 ) : (
-                  <span className="text-sm text-muted-foreground">
-                    No receipt
-                  </span>
+                  <span className="text-sm text-muted-foreground">No receipt</span>
                 )}
                 {order.order_certificates.length > 0 ? (
                   order.order_certificates.map((cert) => (
@@ -190,9 +167,7 @@ export const OrderRow = ({
                     </Button>
                   ))
                 ) : (
-                  <span className="text-sm text-muted-foreground">
-                    No certificates
-                  </span>
+                  <span className="text-sm text-muted-foreground">No certificates</span>
                 )}
               </div>
 

@@ -5,10 +5,7 @@ import { Link } from "react-router-dom"
 
 const TrimmingGuide = () => {
   return (
-    <section
-      className="bg-secondary py-24 lg:py-32"
-      aria-labelledby="trimming-guide-title"
-    >
+    <section className="bg-secondary py-24 lg:py-32" aria-labelledby="trimming-guide-title">
       <div className="container mx-auto px-6 lg:px-8">
         {/* Section Header */}
         <div
@@ -18,9 +15,7 @@ const TrimmingGuide = () => {
           <div className="lg:max-w-xl">
             <div className="mb-4 inline-flex items-center gap-2 text-muted-foreground">
               <ChefHat className="h-4 w-4" />
-              <span className="text-xs uppercase tracking-[0.3em]">
-                For Professionals
-              </span>
+              <span className="text-xs uppercase tracking-[0.3em]">For Professionals</span>
             </div>
             <h2
               id="trimming-guide-title"
@@ -29,19 +24,14 @@ const TrimmingGuide = () => {
               Trimming Guide
             </h2>
             <p className="text-lg leading-relaxed text-muted-foreground">
-              Maximize yield and minimize waste with our professional breakdown
-              guide. Each salmon delivers multiple menu-ready cuts.
+              Maximize yield and minimize waste with our professional breakdown guide. Each salmon
+              delivers multiple menu-ready cuts.
             </p>
           </div>
 
           {/* Chef Brochure Link */}
           <div className="mt-8 lg:mt-0">
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="w-full gap-2 sm:w-auto"
-            >
+            <Button asChild variant="outline" size="lg" className="w-full gap-2 sm:w-auto">
               <a
                 href={chefBrochure}
                 target="_blank"
@@ -64,8 +54,8 @@ const TrimmingGuide = () => {
             Norwegian Salmon for Your Menu
           </h3>
           <p className="mx-auto mb-6 max-w-xl text-muted-foreground">
-            Chefs and restaurants across Ethiopia are building menus around
-            premium Norwegian salmon.
+            Chefs and restaurants across Ethiopia are building menus around premium Norwegian
+            salmon.
           </p>
           <Button
             asChild
@@ -95,12 +85,10 @@ const TrimmingGuide = () => {
               <p className="mb-2 text-xs uppercase tracking-[0.2em] text-card/80">
                 Professional Breakdown
               </p>
-              <h3 className="mb-3 font-serif text-3xl text-card">
-                Every Cut Has Purpose
-              </h3>
+              <h3 className="mb-3 font-serif text-3xl text-card">Every Cut Has Purpose</h3>
               <p className="text-sm text-card/90">
-                From premium loin portions to rich belly strips, we help you
-                utilize every section efficiently.
+                From premium loin portions to rich belly strips, we help you utilize every section
+                efficiently.
               </p>
             </div>
           </div>

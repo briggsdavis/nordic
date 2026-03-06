@@ -13,6 +13,7 @@ import { useAuth } from "@/contexts/AuthContext"
 import { useCart } from "@/hooks/useCart"
 import { supabase } from "@/integrations/supabase/client"
 import { useQuery } from "@tanstack/react-query"
+import type { ProductOption } from "@/hooks/useProducts"
 import { ArrowLeft, Info, Minus, Plus, ShoppingCart } from "lucide-react"
 import { useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
@@ -23,6 +24,18 @@ const variants = [
   { value: "300g", label: "300g", weight: 0.3 },
 ]
 
+interface ProductWithOptions {
+  id: string
+  name: string
+  slug: string
+  description: string | null
+  weight_range: string | null
+  price_per_kg: number
+  image_url: string | null
+  is_available: boolean
+  product_options: ProductOption[]
+}
+
 const ProductDetail = () => {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
@@ -30,6 +43,7 @@ const ProductDetail = () => {
   const { addToCart } = useCart()
 
   const [selectedVariant, setSelectedVariant] = useState("100g")
+  const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null)
   const [quantity, setQuantity] = useState(1)
 
   const { data: product, isLoading } = useQuery({
@@ -37,21 +51,23 @@ const ProductDetail = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("products")
-        .select("*")
+        .select("*, product_options(*)")
         .eq("slug", slug)
         .eq("is_available", true)
         .single()
 
       if (error) throw error
-      return data
+      return data as ProductWithOptions
     },
     enabled: !!slug,
   })
 
+  const availableOptions = product?.product_options?.filter((o) => o.is_available) || []
+  const selectedOption = availableOptions.find((o) => o.id === selectedOptionId) || null
+  const effectivePricePerKg = selectedOption?.price_per_kg ?? product?.price_per_kg ?? 0
+
   const selectedVariantData = variants.find((v) => v.value === selectedVariant)
-  const unitPrice = product
-    ? product.price_per_kg * (selectedVariantData?.weight || 0.1)
-    : 0
+  const unitPrice = effectivePricePerKg * (selectedVariantData?.weight || 0.1)
   const totalPrice = unitPrice * quantity
 
   const formatPrice = (price: number) => {
@@ -71,6 +87,7 @@ const ProductDetail = () => {
       productId: product!.id,
       variant: selectedVariant,
       quantity,
+      optionId: selectedOptionId,
     })
   }
 
@@ -117,11 +134,7 @@ const ProductDetail = () => {
 
       <main className="container mx-auto px-6 pb-32 pt-8">
         {/* Back Button */}
-        <Button
-          variant="ghost"
-          className="mb-8 gap-2"
-          onClick={() => navigate("/order")}
-        >
+        <Button variant="ghost" className="mb-8 gap-2" onClick={() => navigate("/order")}>
           <ArrowLeft className="h-4 w-4" />
           Back to Order
         </Button>
@@ -145,40 +158,56 @@ const ProductDetail = () => {
           {/* Product Info */}
           <div className="space-y-6">
             <div>
-              <h1 className="mb-2 font-serif text-4xl text-foreground">
-                {product.name}
-              </h1>
+              <h1 className="mb-2 font-serif text-4xl text-foreground">{product.name}</h1>
               <p className="text-lg font-medium text-primary">
-                {formatPrice(product.price_per_kg)}/kg
+                {formatPrice(effectivePricePerKg)}/kg
               </p>
               {product.weight_range && (
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {product.weight_range}
-                </p>
+                <p className="mt-1 text-sm text-muted-foreground">{product.weight_range}</p>
               )}
             </div>
 
             {product.description && (
-              <p className="leading-relaxed text-muted-foreground">
-                {product.description}
-              </p>
+              <p className="leading-relaxed text-muted-foreground">{product.description}</p>
+            )}
+
+            {/* Option Selection */}
+            {availableOptions.length > 0 && (
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Select Option</label>
+                <Select
+                  value={selectedOptionId || "__default__"}
+                  onValueChange={(v) => setSelectedOptionId(v === "__default__" ? null : v)}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__default__">
+                      Standard - {formatPrice(product.price_per_kg)}/kg
+                    </SelectItem>
+                    {availableOptions.map((option) => (
+                      <SelectItem key={option.id} value={option.id}>
+                        {option.name} - {formatPrice(option.price_per_kg ?? product.price_per_kg)}
+                        /kg
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             )}
 
             {/* Variant Selection */}
             <div className="space-y-2">
               <label className="text-sm font-medium">Select Size</label>
-              <Select
-                value={selectedVariant}
-                onValueChange={setSelectedVariant}
-              >
+              <Select value={selectedVariant} onValueChange={setSelectedVariant}>
                 <SelectTrigger className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   {variants.map((variant) => (
                     <SelectItem key={variant.value} value={variant.value}>
-                      {variant.label} -{" "}
-                      {formatPrice(product.price_per_kg * variant.weight)}
+                      {variant.label} - {formatPrice(effectivePricePerKg * variant.weight)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -197,14 +226,8 @@ const ProductDetail = () => {
                 >
                   <Minus className="h-4 w-4" />
                 </Button>
-                <span className="w-12 text-center text-lg font-medium">
-                  {quantity}
-                </span>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => setQuantity((q) => q + 1)}
-                >
+                <span className="w-12 text-center text-lg font-medium">{quantity}</span>
+                <Button variant="outline" size="icon" onClick={() => setQuantity((q) => q + 1)}>
                   <Plus className="h-4 w-4" />
                 </Button>
               </div>
@@ -239,9 +262,9 @@ const ProductDetail = () => {
             <div className="flex gap-3 rounded-lg border border-border bg-muted/50 p-4 text-sm text-muted-foreground">
               <Info className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
               <p>
-                Orders are confirmed via bank transfer screenshot proof. At
-                checkout you'll receive our bank details and the amount to send,
-                then upload your proof of payment to complete your order.
+                Orders are confirmed via bank transfer screenshot proof. At checkout you'll receive
+                our bank details and the amount to send, then upload your proof of payment to
+                complete your order.
               </p>
             </div>
           </div>

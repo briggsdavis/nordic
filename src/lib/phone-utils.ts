@@ -16,10 +16,7 @@ export const formatPhoneNumber = (value: string): string => {
   return `${limited.slice(0, 3)} ${limited.slice(3, 6)} ${limited.slice(6)}`
 }
 
-export const toE164PhoneNumber = (
-  value: string,
-  countryCode = DEFAULT_COUNTRY_CODE,
-): string => {
+export const toE164PhoneNumber = (value: string, countryCode = DEFAULT_COUNTRY_CODE): string => {
   const digits = normalizeDigits(value)
   if (!digits) {
     return ""

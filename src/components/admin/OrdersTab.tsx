@@ -8,13 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   Table,
   TableBody,
@@ -81,10 +75,7 @@ export const OrdersTab = () => {
       <TableBody>
         {orderList.length === 0 ? (
           <TableRow>
-            <TableCell
-              colSpan={7}
-              className="py-8 text-center text-muted-foreground"
-            >
+            <TableCell colSpan={7} className="py-8 text-center text-muted-foreground">
               No orders found
             </TableCell>
           </TableRow>
@@ -121,24 +112,16 @@ export const OrdersTab = () => {
       <Tabs defaultValue="all" className="space-y-4">
         <TabsList>
           <TabsTrigger value="all">All Orders ({orders.length})</TabsTrigger>
-          <TabsTrigger value="pending">
-            Needs Review ({pendingReviewOrders.length})
-          </TabsTrigger>
-          <TabsTrigger value="transit">
-            Shipped ({inTransitOrders.length})
-          </TabsTrigger>
-          <TabsTrigger value="completed">
-            Completed ({completedOrders.length})
-          </TabsTrigger>
+          <TabsTrigger value="pending">Needs Review ({pendingReviewOrders.length})</TabsTrigger>
+          <TabsTrigger value="transit">Shipped ({inTransitOrders.length})</TabsTrigger>
+          <TabsTrigger value="completed">Completed ({completedOrders.length})</TabsTrigger>
         </TabsList>
 
         <TabsContent value="all">
           <Card>
             <CardHeader>
               <CardTitle>All Orders</CardTitle>
-              <CardDescription>
-                View and manage all customer orders
-              </CardDescription>
+              <CardDescription>View and manage all customer orders</CardDescription>
             </CardHeader>
             <CardContent>
               <OrderTable orderList={orders} />
@@ -150,9 +133,7 @@ export const OrdersTab = () => {
           <Card>
             <CardHeader>
               <CardTitle>Needs Review</CardTitle>
-              <CardDescription>
-                Orders awaiting receipt verification
-              </CardDescription>
+              <CardDescription>Orders awaiting receipt verification</CardDescription>
             </CardHeader>
             <CardContent>
               <OrderTable orderList={pendingReviewOrders} />
@@ -191,8 +172,7 @@ export const OrdersTab = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Order</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete this order? This action cannot be
-              undone.
+              Are you sure you want to delete this order? This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

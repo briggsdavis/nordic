@@ -2,14 +2,7 @@ import { useToast } from "@/hooks/use-toast"
 import { supabase } from "@/integrations/supabase/client"
 import type { Database } from "@/integrations/supabase/types"
 import { Session, User } from "@supabase/supabase-js"
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react"
+import { createContext, ReactNode, useContext, useEffect, useRef, useState } from "react"
 
 type Profile = Database["public"]["Tables"]["profiles"]["Row"]
 type AppRole = Database["public"]["Enums"]["app_role"]
@@ -83,11 +76,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         supabase.from("profiles").select("*").eq("id", userId).maybeSingle(),
       ),
       runWithRetry(async () =>
-        supabase
-          .from("user_roles")
-          .select("role")
-          .eq("user_id", userId)
-          .maybeSingle(),
+        supabase.from("user_roles").select("role").eq("user_id", userId).maybeSingle(),
       ),
     ])
 
