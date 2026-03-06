@@ -13,7 +13,7 @@ import { useAuth } from "@/contexts/AuthContext"
 import { useCart } from "@/hooks/useCart"
 import { supabase } from "@/integrations/supabase/client"
 import { useQuery } from "@tanstack/react-query"
-import { ArrowLeft, Minus, Plus, ShoppingCart } from "lucide-react"
+import { ArrowLeft, Info, Minus, Plus, ShoppingCart } from "lucide-react"
 import { useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 
@@ -234,6 +234,14 @@ const ProductDetail = () => {
               <ShoppingCart className="mr-2 h-5 w-5" />
               {addToCart.isPending ? "Adding..." : "Add to Cart"}
             </Button>
+
+            {/* Payment Notice */}
+            <div className="flex gap-3 rounded-lg border border-border bg-muted/50 p-4 text-sm text-muted-foreground">
+              <Info className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
+              <p>
+                Orders are confirmed via bank transfer. At checkout you'll receive our bank details and the exact amount to send — then upload your proof of payment to complete your order.
+              </p>
+            </div>
           </div>
         </div>
       </main>

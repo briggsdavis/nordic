@@ -19,7 +19,7 @@ import { useToast } from "@/hooks/use-toast"
 import { useCart } from "@/hooks/useCart"
 import { useOrders } from "@/hooks/useOrders"
 import { supabase } from "@/integrations/supabase/client"
-import { AlertTriangle, ArrowLeft, Loader2, Upload } from "lucide-react"
+import { AlertTriangle, ArrowLeft, Check, Copy, Loader2, Upload } from "lucide-react"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -43,6 +43,7 @@ const Checkout = () => {
   const [paymentFile, setPaymentFile] = useState<File | null>(null)
   const [isUploading, setIsUploading] = useState(false)
   const [showWarning, setShowWarning] = useState(false)
+  const [copiedField, setCopiedField] = useState<string | null>(null)
 
   const expectedDeliveryDate = new Date()
   expectedDeliveryDate.setDate(expectedDeliveryDate.getDate() + 3)
@@ -52,6 +53,12 @@ const Checkout = () => {
       style: "currency",
       currency: "USD",
     }).format(price)
+  }
+
+  const copyToClipboard = (value: string, field: string) => {
+    navigator.clipboard.writeText(value)
+    setCopiedField(field)
+    setTimeout(() => setCopiedField(null), 2000)
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -168,6 +175,54 @@ const Checkout = () => {
         </Button>
 
         <h1 className="mb-8 font-serif text-3xl">Order Confirmation</h1>
+
+        {/* Bank Payment Instructions */}
+        <Card className="mb-8 border-primary/30 bg-primary/5">
+          <CardHeader className="pb-4">
+            <CardTitle className="flex items-center gap-2 text-primary">
+              Bank Transfer Instructions
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground">
+              To complete your order, transfer the amount below to our bank account. Then upload your proof of payment in the form below before submitting.
+            </p>
+
+            {/* Highlighted Total */}
+            <div className="rounded-xl bg-primary/10 px-6 py-4 text-center">
+              <p className="mb-1 text-xs uppercase tracking-widest text-primary">Amount to Transfer</p>
+              <p className="font-serif text-4xl font-medium text-primary">{formatPrice(cartTotal)}</p>
+            </div>
+
+            {/* Bank Details */}
+            <div className="space-y-3 rounded-xl border border-border bg-card p-4">
+              {[
+                { label: "Account Holder", value: "Nordic Seafood Imports", field: "holder" },
+                { label: "Account Number", value: "1000693338623", field: "account" },
+                { label: "Bank Name", value: "Commercial Bank of Ethiopia", field: "bank" },
+              ].map(({ label, value, field }) => (
+                <div key={field} className="flex items-center justify-between gap-4">
+                  <div className="min-w-0">
+                    <p className="text-xs text-muted-foreground">{label}</p>
+                    <p className="font-mono font-medium text-foreground">{value}</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => copyToClipboard(value, field)}
+                    className="flex-shrink-0 rounded-md p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    aria-label={`Copy ${label}`}
+                  >
+                    {copiedField === field ? (
+                      <Check className="h-4 w-4 text-primary" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
 
         <div className="grid gap-8 lg:grid-cols-3">
           {/* Delivery Information */}
