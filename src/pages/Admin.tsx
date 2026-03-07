@@ -35,6 +35,25 @@ const Admin = () => {
   const [users, setUsers] = useState<Profile[]>([])
   const [loadingUsers, setLoadingUsers] = useState(true)
 
+  // Persist active tab across browser-tab switches / component remounts
+  const [adminTab, setAdminTab] = useState(
+    () => sessionStorage.getItem("admin-tab") ?? "overview",
+  )
+  const handleAdminTabChange = (tab: string) => {
+    setAdminTab(tab)
+    sessionStorage.setItem("admin-tab", tab)
+  }
+
+  // Lifted here so it survives switching between Overview / Orders / etc. tabs
+  const [expandedOrderId, setExpandedOrderId] = useState<string | null>(
+    () => sessionStorage.getItem("admin-expanded-order") ?? null,
+  )
+  const handleExpandedOrderChange = (id: string | null) => {
+    setExpandedOrderId(id)
+    if (id) sessionStorage.setItem("admin-expanded-order", id)
+    else sessionStorage.removeItem("admin-expanded-order")
+  }
+
   useEffect(() => {
     fetchUsers()
   }, [])
@@ -79,7 +98,11 @@ const Admin = () => {
           </p>
         </div>
 
-        <Tabs defaultValue="overview" className="space-y-6">
+        <Tabs
+          value={adminTab}
+          onValueChange={handleAdminTabChange}
+          className="space-y-6"
+        >
           <TabsList className="border bg-card">
             <TabsTrigger value="overview" className="gap-2">
               <LayoutDashboard className="h-4 w-4" />
@@ -222,7 +245,10 @@ const Admin = () => {
 
           {/* Orders Tab */}
           <TabsContent value="orders">
-            <OrdersTab />
+            <OrdersTab
+              expandedOrderId={expandedOrderId}
+              onExpandedChange={handleExpandedOrderChange}
+            />
           </TabsContent>
 
           {/* Products Tab */}

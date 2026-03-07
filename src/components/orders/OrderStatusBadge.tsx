@@ -13,7 +13,7 @@ const statusConfig: Record<
   verifying: { label: "Verifying", variant: "secondary" },
   rejected: { label: "Rejected", variant: "destructive" },
   confirmed: { label: "Confirmed", variant: "default" },
-  shipped: { label: "Shipped", variant: "default" },
+  shipped: { label: "In Transit", variant: "default" },
   delivered: { label: "Delivered", variant: "default" },
   completed: { label: "Complete", variant: "default" },
   cancelled: { label: "Cancelled", variant: "destructive" },
