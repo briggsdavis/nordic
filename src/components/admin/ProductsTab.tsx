@@ -15,6 +15,7 @@ import {
   useAdminProducts,
   type ProductWithOptions,
 } from "@/hooks/useAdminProducts"
+import { formatPrice } from "@/lib/format"
 import { ChevronDown, Pencil, Plus, Trash2, X } from "lucide-react"
 import { useState } from "react"
 import { DeleteProductDialog } from "./DeleteProductDialog"
@@ -122,7 +123,7 @@ export function ProductsTab() {
       await createOption.mutateAsync({
         product_id: productId,
         name: newOptionName.trim(),
-        price_per_kg: newOptionPrice ? Number(newOptionPrice) : null,
+        price_per_unit: newOptionPrice ? Number(newOptionPrice) : null,
       })
       setNewOptionName("")
       setNewOptionPrice("")
@@ -149,13 +150,6 @@ export function ProductsTab() {
         variant: "destructive",
       })
     }
-  }
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("nb-NO", {
-      style: "currency",
-      currency: "NOK",
-    }).format(price)
   }
 
   if (isLoading) {
@@ -187,8 +181,7 @@ export function ProductsTab() {
                 <TableRow>
                   <TableHead>Name</TableHead>
                   <TableHead>Slug</TableHead>
-                  <TableHead>Weight</TableHead>
-                  <TableHead>Price/kg</TableHead>
+                  <TableHead>Price</TableHead>
                   <TableHead>Available</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
@@ -225,9 +218,8 @@ export function ProductsTab() {
                         <TableCell className="text-muted-foreground">
                           {product.slug}
                         </TableCell>
-                        <TableCell>{product.weight_range || "-"}</TableCell>
                         <TableCell>
-                          {formatPrice(product.price_per_kg)}
+                          {formatPrice(product.price_per_unit)}
                         </TableCell>
                         <TableCell>
                           <Switch
@@ -278,9 +270,10 @@ export function ProductsTab() {
                                           {option.name}
                                         </span>
                                         <span className="text-sm text-muted-foreground">
-                                          {option.price_per_kg != null
-                                            ? formatPrice(option.price_per_kg) +
-                                              "/kg"
+                                          {option.price_per_unit != null
+                                            ? formatPrice(
+                                                option.price_per_unit,
+                                              ) + ""
                                             : "Base price"}
                                         </span>
                                       </div>
@@ -308,7 +301,7 @@ export function ProductsTab() {
                                   className="max-w-[200px]"
                                 />
                                 <Input
-                                  placeholder="Price/kg (optional)"
+                                  placeholder="Price (optional)"
                                   type="number"
                                   step="0.01"
                                   value={newOptionPrice}

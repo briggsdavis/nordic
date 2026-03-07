@@ -154,6 +154,7 @@ export type Database = {
           contact_phone: string
           created_at: string
           current_shipment_stage: number | null
+          deleted_at: string | null
           delivery_address: string
           expected_delivery_date: string
           id: string
@@ -172,6 +173,7 @@ export type Database = {
           contact_phone: string
           created_at?: string
           current_shipment_stage?: number | null
+          deleted_at?: string | null
           delivery_address: string
           expected_delivery_date: string
           id?: string
@@ -190,6 +192,7 @@ export type Database = {
           contact_phone?: string
           created_at?: string
           current_shipment_stage?: number | null
+          deleted_at?: string | null
           delivery_address?: string
           expected_delivery_date?: string
           id?: string
@@ -210,7 +213,7 @@ export type Database = {
           id: string
           is_available: boolean
           name: string
-          price_per_kg: number | null
+          price_per_unit: number | null
           product_id: string
           sort_order: number
           updated_at: string
@@ -220,7 +223,7 @@ export type Database = {
           id?: string
           is_available?: boolean
           name: string
-          price_per_kg?: number | null
+          price_per_unit?: number | null
           product_id: string
           sort_order?: number
           updated_at?: string
@@ -230,7 +233,7 @@ export type Database = {
           id?: string
           is_available?: boolean
           name?: string
-          price_per_kg?: number | null
+          price_per_unit?: number | null
           product_id?: string
           sort_order?: number
           updated_at?: string
@@ -254,10 +257,9 @@ export type Database = {
           image_url: string | null
           is_available: boolean
           name: string
-          price_per_kg: number
+          price_per_unit: number
           slug: string
           updated_at: string
-          weight_range: string | null
         }
         Insert: {
           allow_size_selection?: boolean
@@ -267,10 +269,9 @@ export type Database = {
           image_url?: string | null
           is_available?: boolean
           name: string
-          price_per_kg: number
+          price_per_unit: number
           slug: string
           updated_at?: string
-          weight_range?: string | null
         }
         Update: {
           allow_size_selection?: boolean
@@ -280,10 +281,9 @@ export type Database = {
           image_url?: string | null
           is_available?: boolean
           name?: string
-          price_per_kg?: number
+          price_per_unit?: number
           slug?: string
           updated_at?: string
-          weight_range?: string | null
         }
         Relationships: []
       }

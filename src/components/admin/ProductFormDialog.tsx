@@ -36,8 +36,7 @@ const productSchema = z.object({
   name: z.string().min(1, "Name is required").max(100),
   slug: z.string().min(1, "Slug is required").max(100),
   description: z.string().max(1000).optional(),
-  weight_range: z.string().max(50).optional(),
-  price_per_kg: z.coerce.number().min(0, "Price must be positive"),
+  price_per_unit: z.coerce.number().min(0, "Price must be positive"),
   image_url: z.string().url().optional().or(z.literal("")),
   is_available: z.boolean(),
   allow_size_selection: z.boolean(),
@@ -80,8 +79,7 @@ export function ProductFormDialog({
       name: "",
       slug: "",
       description: "",
-      weight_range: "",
-      price_per_kg: 0,
+      price_per_unit: 0,
       image_url: "",
       is_available: true,
       allow_size_selection: true,
@@ -94,8 +92,7 @@ export function ProductFormDialog({
         name: product.name,
         slug: product.slug,
         description: product.description || "",
-        weight_range: product.weight_range || "",
-        price_per_kg: product.price_per_kg,
+        price_per_unit: product.price_per_unit,
         image_url: product.image_url || "",
         is_available: product.is_available,
         allow_size_selection: product.allow_size_selection,
@@ -106,8 +103,7 @@ export function ProductFormDialog({
         name: "",
         slug: "",
         description: "",
-        weight_range: "",
-        price_per_kg: 0,
+        price_per_unit: 0,
         image_url: "",
         is_available: true,
         allow_size_selection: true,
@@ -179,7 +175,6 @@ export function ProductFormDialog({
     onSubmit({
       ...values,
       description: values.description || undefined,
-      weight_range: values.weight_range || undefined,
       image_url: imageUrl,
     })
   }
@@ -250,24 +245,10 @@ export function ProductFormDialog({
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name="weight_range"
+                name="price_per_unit"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Weight Range</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="e.g. 4-6 kg" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="price_per_kg"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Price per kg (NOK)</FormLabel>
+                    <FormLabel>Price (ETB)</FormLabel>
                     <FormControl>
                       <Input
                         {...field}

@@ -69,12 +69,9 @@ const CatalogTeaser = () => {
                     <h3 className="font-serif text-xl text-foreground transition-colors group-hover:text-primary">
                       {product.name}
                     </h3>
-                    <p className="text-sm text-muted-foreground">
-                      {product.weight_range}
-                    </p>
                   </div>
                   <span className="text-xs font-medium tracking-wide text-primary">
-                    {formatPrice(product.price_per_kg)}/kg
+                    {formatPrice(product.price_per_unit)}
                   </span>
                 </div>
               </div>

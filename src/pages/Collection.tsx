@@ -92,9 +92,7 @@ const Collection = () => {
                     <h3 className="mb-4 font-serif text-xl text-foreground transition-colors group-hover:text-primary">
                       {product.name}
                     </h3>
-                    <p className="mb-5 text-sm text-muted-foreground">
-                      {product.weight_range}
-                    </p>
+
                     {product.description && (
                       <p className="mb-6 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
                         {product.description}
@@ -102,7 +100,7 @@ const Collection = () => {
                     )}
                     <div className="flex items-center justify-between border-t border-border pt-5">
                       <span className="text-sm font-medium text-primary">
-                        {formatPrice(product.price_per_kg)}/kg
+                        {formatPrice(product.price_per_unit)}
                       </span>
                       <span className="text-xs uppercase tracking-wide text-muted-foreground">
                         View Details

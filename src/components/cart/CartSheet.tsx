@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/sheet"
 import { useAuth } from "@/contexts/AuthContext"
 import { useCart } from "@/hooks/useCart"
+import { formatPrice } from "@/lib/format"
 import { Minus, Plus, ShoppingCart, Trash2 } from "lucide-react"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
@@ -29,13 +30,6 @@ export const CartSheet = () => {
   const handleCheckout = () => {
     setOpen(false)
     navigate("/checkout")
-  }
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(price)
   }
 
   if (!user) {
@@ -90,8 +84,8 @@ export const CartSheet = () => {
                 const price = item.product
                   ? getVariantPrice(
                       item.variant,
-                      item.product.price_per_kg,
-                      item.option?.price_per_kg,
+                      item.product.price_per_unit,
+                      item.option?.price_per_unit,
                     )
                   : 0
 

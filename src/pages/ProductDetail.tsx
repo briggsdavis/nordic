@@ -13,15 +13,16 @@ import { useAuth } from "@/contexts/AuthContext"
 import { useCart } from "@/hooks/useCart"
 import type { ProductOption } from "@/hooks/useProducts"
 import { supabase } from "@/integrations/supabase/client"
+import { formatPrice } from "@/lib/format"
 import { useQuery } from "@tanstack/react-query"
 import { ArrowLeft, Info, Minus, Plus, ShoppingCart } from "lucide-react"
 import { useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 
 const variants = [
-  { value: "100g", label: "100g", weight: 0.1 },
-  { value: "200g", label: "200g", weight: 0.2 },
-  { value: "300g", label: "300g", weight: 0.3 },
+  { value: "100g", label: "100g", weight: 1 },
+  { value: "200g", label: "200g", weight: 2 },
+  { value: "300g", label: "300g", weight: 3 },
 ]
 
 interface ProductWithOptions {
@@ -29,8 +30,7 @@ interface ProductWithOptions {
   name: string
   slug: string
   description: string | null
-  weight_range: string | null
-  price_per_kg: number
+  price_per_unit: number
   image_url: string | null
   is_available: boolean
   allow_size_selection: boolean
@@ -67,21 +67,14 @@ const ProductDetail = () => {
     product?.product_options?.filter((o) => o.is_available) || []
   const selectedOption =
     availableOptions.find((o) => o.id === selectedOptionId) || null
-  const effectivePricePerKg =
-    selectedOption?.price_per_kg ?? product?.price_per_kg ?? 0
+  const effectivePricePerUnit =
+    selectedOption?.price_per_unit ?? product?.price_per_unit ?? 0
 
   const selectedVariantData = variants.find((v) => v.value === selectedVariant)
   const unitPrice = product?.allow_size_selection
-    ? effectivePricePerKg * (selectedVariantData?.weight || 0.1)
-    : effectivePricePerKg
+    ? effectivePricePerUnit * (selectedVariantData?.weight || 0.1)
+    : effectivePricePerUnit
   const totalPrice = unitPrice * quantity
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(price)
-  }
 
   const handleAddToCart = () => {
     if (!user) {
@@ -172,13 +165,8 @@ const ProductDetail = () => {
                 {product.name}
               </h1>
               <p className="text-lg font-medium text-primary">
-                {formatPrice(effectivePricePerKg)}/kg
+                {formatPrice(effectivePricePerUnit)}
               </p>
-              {product.weight_range && (
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {product.weight_range}
-                </p>
-              )}
             </div>
 
             {product.description && (
@@ -202,15 +190,14 @@ const ProductDetail = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="__default__">
-                      Standard - {formatPrice(product.price_per_kg)}/kg
+                      Standard - {formatPrice(product.price_per_unit)}
                     </SelectItem>
                     {availableOptions.map((option) => (
                       <SelectItem key={option.id} value={option.id}>
                         {option.name} -{" "}
                         {formatPrice(
-                          option.price_per_kg ?? product.price_per_kg,
+                          option.price_per_unit ?? product.price_per_unit,
                         )}
-                        /kg
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -233,7 +220,7 @@ const ProductDetail = () => {
                     {variants.map((variant) => (
                       <SelectItem key={variant.value} value={variant.value}>
                         {variant.label} -{" "}
-                        {formatPrice(effectivePricePerKg * variant.weight)}
+                        {formatPrice(effectivePricePerUnit * variant.weight)}
                       </SelectItem>
                     ))}
                   </SelectContent>

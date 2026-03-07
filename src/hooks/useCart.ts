@@ -15,14 +15,13 @@ export interface CartItem {
   product?: {
     id: string
     name: string
-    price_per_kg: number
+    price_per_unit: number
     image_url: string | null
-    weight_range: string | null
   }
   option?: {
     id: string
     name: string
-    price_per_kg: number | null
+    price_per_unit: number | null
   } | null
 }
 
@@ -41,8 +40,8 @@ export const useCart = () => {
         .select(
           `
           *,
-          product:products(id, name, price_per_kg, image_url, weight_range),
-          option:product_options(id, name, price_per_kg)
+          product:products(id, name, price_per_unit, image_url),
+          option:product_options(id, name, price_per_unit)
         `,
         )
         .eq("user_id", user.id)
@@ -176,24 +175,24 @@ export const useCart = () => {
 
   const getVariantPrice = (
     variant: string,
-    pricePerKg: number,
-    optionPricePerKg?: number | null,
+    pricePerUnit: number,
+    optionPricePerUnit?: number | null,
   ): number => {
-    const weightMap: Record<string, number> = {
-      "100g": 0.1,
-      "200g": 0.2,
-      "300g": 0.3,
+    const multiplierMap: Record<string, number> = {
+      "100g": 1,
+      "200g": 2,
+      "300g": 3,
     }
-    const effectivePrice = optionPricePerKg ?? pricePerKg
-    return effectivePrice * (weightMap[variant] || 0.1)
+    const effectivePrice = optionPricePerUnit ?? pricePerUnit
+    return effectivePrice * (multiplierMap[variant] || 1)
   }
 
   const cartTotal = cartItems.reduce((total, item) => {
     const price = item.product
       ? getVariantPrice(
           item.variant,
-          item.product.price_per_kg,
-          item.option?.price_per_kg,
+          item.product.price_per_unit,
+          item.option?.price_per_unit,
         )
       : 0
     return total + price * item.quantity

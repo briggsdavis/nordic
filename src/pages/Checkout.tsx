@@ -19,6 +19,7 @@ import { useToast } from "@/hooks/use-toast"
 import { useCart } from "@/hooks/useCart"
 import { useOrders } from "@/hooks/useOrders"
 import { supabase } from "@/integrations/supabase/client"
+import { formatPrice } from "@/lib/format"
 import {
   AlertTriangle,
   ArrowLeft,
@@ -54,13 +55,6 @@ const Checkout = () => {
 
   const expectedDeliveryDate = new Date()
   expectedDeliveryDate.setDate(expectedDeliveryDate.getDate() + 3)
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(price)
-  }
 
   const copyToClipboard = (value: string, field: string) => {
     navigator.clipboard.writeText(value)
@@ -122,8 +116,8 @@ const Checkout = () => {
         unitPrice: item.product
           ? getVariantPrice(
               item.variant,
-              item.product.price_per_kg,
-              item.option?.price_per_kg,
+              item.product.price_per_unit,
+              item.option?.price_per_unit,
             )
           : 0,
         optionId: item.option_id,
@@ -378,7 +372,7 @@ const Checkout = () => {
               </CardHeader>
               <CardContent>
                 <div
-                  className={`rounded-2xl border-2 border-dashed p-6 text-center ${!paymentFile ? "border-muted-foreground/50" : "border-primary"}`}
+                  className={`rounded-2xl border-2 border-dashed ${!paymentFile ? "border-muted-foreground/50" : "border-primary"}`}
                 >
                   <input
                     type="file"
@@ -389,7 +383,7 @@ const Checkout = () => {
                   />
                   <label
                     htmlFor="payment-file"
-                    className="flex cursor-pointer flex-col items-center gap-2"
+                    className="flex w-full cursor-pointer flex-col items-center gap-2 p-6 text-center"
                     tabIndex={0}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" || e.key === " ") {
@@ -432,8 +426,8 @@ const Checkout = () => {
                   const price = item.product
                     ? getVariantPrice(
                         item.variant,
-                        item.product.price_per_kg,
-                        item.option?.price_per_kg,
+                        item.product.price_per_unit,
+                        item.option?.price_per_unit,
                       )
                     : 0
 

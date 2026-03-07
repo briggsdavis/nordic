@@ -5,7 +5,7 @@ export interface ProductOption {
   id: string
   product_id: string
   name: string
-  price_per_kg: number | null
+  price_per_unit: number | null
   is_available: boolean
   sort_order: number
 }
@@ -15,8 +15,7 @@ export interface Product {
   name: string
   slug: string
   description: string | null
-  weight_range: string | null
-  price_per_kg: number
+  price_per_unit: number
   image_url: string | null
   is_available: boolean
   created_at: string

@@ -15,6 +15,7 @@ import { useAuth } from "@/contexts/AuthContext"
 import { useAdminOrders } from "@/hooks/useAdminOrders"
 import { supabase } from "@/integrations/supabase/client"
 import type { Database } from "@/integrations/supabase/types"
+import { formatPrice } from "@/lib/format"
 import {
   CheckCircle2,
   Clock,
@@ -129,7 +130,7 @@ const Admin = () => {
                 <CardHeader className="pb-2">
                   <CardDescription>Total Revenue</CardDescription>
                   <CardTitle className="text-3xl text-green-600">
-                    ${totalRevenue.toLocaleString()}
+                    {formatPrice(totalRevenue)}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
