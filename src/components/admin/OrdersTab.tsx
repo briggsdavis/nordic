@@ -25,10 +25,21 @@ import {
 } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { OrderWithProfile, useAdminOrders } from "@/hooks/useAdminOrders"
+import type { Database } from "@/integrations/supabase/types"
 import { useState } from "react"
 import { OrderRow } from "./OrderRow"
 
-export const OrdersTab = () => {
+type OrderStatus = Database["public"]["Enums"]["order_status"]
+
+interface OrdersTabProps {
+  expandedOrderId: string | null
+  onExpandedChange: (id: string | null) => void
+}
+
+export const OrdersTab = ({
+  expandedOrderId,
+  onExpandedChange,
+}: OrdersTabProps) => {
   const {
     orders,
     pendingReviewOrders,
@@ -39,13 +50,13 @@ export const OrdersTab = () => {
     rejectPayment,
     deleteOrder,
     completeOrder,
+    updateOrderStatus,
   } = useAdminOrders()
-  const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [orderToDelete, setOrderToDelete] = useState<string | null>(null)
 
   const toggleOrderExpansion = (orderId: string) => {
-    setExpandedOrderId((prev) => (prev === orderId ? null : orderId))
+    onExpandedChange(expandedOrderId === orderId ? null : orderId)
   }
 
   const handleDeleteClick = (orderId: string) => {
@@ -99,6 +110,9 @@ export const OrdersTab = () => {
               onReject={() => rejectPayment.mutate(order.id)}
               onDelete={() => handleDeleteClick(order.id)}
               onComplete={() => completeOrder.mutate(order.id)}
+              onStatusChange={(status: OrderStatus) =>
+                updateOrderStatus.mutate({ orderId: order.id, status })
+              }
             />
           ))
         )}
@@ -125,7 +139,7 @@ export const OrdersTab = () => {
             Needs Review ({pendingReviewOrders.length})
           </TabsTrigger>
           <TabsTrigger value="transit">
-            Shipped ({inTransitOrders.length})
+            In Transit ({inTransitOrders.length})
           </TabsTrigger>
           <TabsTrigger value="completed">
             Completed ({completedOrders.length})
@@ -163,7 +177,7 @@ export const OrdersTab = () => {
         <TabsContent value="transit">
           <Card>
             <CardHeader>
-              <CardTitle>Shipped</CardTitle>
+              <CardTitle>In Transit</CardTitle>
               <CardDescription>Orders currently being shipped</CardDescription>
             </CardHeader>
             <CardContent>
