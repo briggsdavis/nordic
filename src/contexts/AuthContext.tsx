@@ -212,12 +212,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       if (event === "SIGNED_IN") {
-        setLoading(true)
+        const isNewSignIn =
+          currentUserIdRef.current === null ||
+          currentUserIdRef.current !== sessionData?.user?.id
+        if (isNewSignIn) {
+          setLoading(true)
+        }
         void handleSession(sessionData, {
           defer: true,
-          shouldFetch: true,
+          shouldFetch: isNewSignIn,
         }).finally(() => {
-          setLoading(false)
+          if (isNewSignIn) setLoading(false)
         })
         return
       }

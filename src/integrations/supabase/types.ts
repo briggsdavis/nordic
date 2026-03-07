@@ -247,6 +247,7 @@ export type Database = {
       }
       products: {
         Row: {
+          allow_size_selection: boolean
           created_at: string
           description: string | null
           id: string
@@ -259,6 +260,7 @@ export type Database = {
           weight_range: string | null
         }
         Insert: {
+          allow_size_selection?: boolean
           created_at?: string
           description?: string | null
           id?: string
@@ -271,6 +273,7 @@ export type Database = {
           weight_range?: string | null
         }
         Update: {
+          allow_size_selection?: boolean
           created_at?: string
           description?: string | null
           id?: string

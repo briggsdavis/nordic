@@ -142,7 +142,6 @@ export const OrderRow = ({
         <TableRow>
           <TableCell colSpan={7} className="bg-muted/20 p-6">
             <div className="space-y-6">
-
               {/* Customer + Delivery */}
               <div className="grid gap-6 md:grid-cols-2">
                 <div>
@@ -353,7 +352,6 @@ export const OrderRow = ({
                   Delete Order
                 </Button>
               </div>
-
             </div>
           </TableCell>
         </TableRow>

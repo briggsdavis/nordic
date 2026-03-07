@@ -33,6 +33,7 @@ interface ProductWithOptions {
   price_per_kg: number
   image_url: string | null
   is_available: boolean
+  allow_size_selection: boolean
   product_options: ProductOption[]
 }
 
@@ -70,7 +71,9 @@ const ProductDetail = () => {
     selectedOption?.price_per_kg ?? product?.price_per_kg ?? 0
 
   const selectedVariantData = variants.find((v) => v.value === selectedVariant)
-  const unitPrice = effectivePricePerKg * (selectedVariantData?.weight || 0.1)
+  const unitPrice = product?.allow_size_selection
+    ? effectivePricePerKg * (selectedVariantData?.weight || 0.1)
+    : effectivePricePerKg
   const totalPrice = unitPrice * quantity
 
   const formatPrice = (price: number) => {
@@ -88,7 +91,7 @@ const ProductDetail = () => {
 
     addToCart.mutate({
       productId: product!.id,
-      variant: selectedVariant,
+      variant: product!.allow_size_selection ? selectedVariant : "whole",
       quantity,
       optionId: selectedOptionId,
     })
@@ -216,25 +219,27 @@ const ProductDetail = () => {
             )}
 
             {/* Variant Selection */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Select Size</label>
-              <Select
-                value={selectedVariant}
-                onValueChange={setSelectedVariant}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {variants.map((variant) => (
-                    <SelectItem key={variant.value} value={variant.value}>
-                      {variant.label} -{" "}
-                      {formatPrice(effectivePricePerKg * variant.weight)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            {product.allow_size_selection && (
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Select Size</label>
+                <Select
+                  value={selectedVariant}
+                  onValueChange={setSelectedVariant}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {variants.map((variant) => (
+                      <SelectItem key={variant.value} value={variant.value}>
+                        {variant.label} -{" "}
+                        {formatPrice(effectivePricePerKg * variant.weight)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
 
             {/* Quantity */}
             <div className="space-y-2">
@@ -265,7 +270,8 @@ const ProductDetail = () => {
             <div className="space-y-2 border-t pt-6">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">
-                  {selectedVariant} × {quantity}
+                  {product.allow_size_selection ? selectedVariant : "unit"} ×{" "}
+                  {quantity}
                 </span>
                 <span>{formatPrice(totalPrice)}</span>
               </div>

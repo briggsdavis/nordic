@@ -297,6 +297,8 @@ const Checkout = () => {
                         })
                       }
                       placeholder="+1 234 567 8900"
+                      type="tel"
+                      pattern="^\+?[\d\s\-().]{7,20}$"
                     />
                   </div>
                 </div>

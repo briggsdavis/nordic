@@ -1,5 +1,4 @@
 import { ShipmentTimeline } from "@/components/shipment/ShipmentTimeline"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import {
   Collapsible,
@@ -41,43 +40,41 @@ export const OrderCard = ({ order }: OrderCardProps) => {
   return (
     <Card>
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <CardHeader className="p-6">
-          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-            <div className="flex items-center gap-3">
-              <div className="space-y-1">
-                <h3 className="font-medium">{order.reference_number}</h3>
-                <p className="text-sm text-muted-foreground">
-                  Ordered {formatDate(order.created_at)}
-                </p>
+        <CollapsibleTrigger asChild>
+          <CardHeader className="cursor-pointer p-6 hover:bg-muted/40 transition-colors rounded-t-lg select-none">
+            <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+              <div className="flex items-center gap-3">
+                <div className="space-y-1">
+                  <h3 className="font-medium">{order.reference_number}</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Ordered {formatDate(order.created_at)}
+                  </p>
+                </div>
+                <OrderStatusBadge status={order.status} />
               </div>
-              <OrderStatusBadge status={order.status} />
+              <div className="flex items-center gap-4">
+                <span className="font-medium">
+                  {formatPrice(Number(order.total_amount))}
+                </span>
+                <ChevronDown
+                  className={`h-4 w-4 transition-transform text-muted-foreground ${isOpen ? "rotate-180" : ""}`}
+                />
+              </div>
             </div>
-            <div className="flex items-center gap-4">
-              <span className="font-medium">
-                {formatPrice(Number(order.total_amount))}
-              </span>
-              <CollapsibleTrigger asChild>
-                <Button variant="ghost" size="sm">
-                  <ChevronDown
-                    className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
-                  />
-                </Button>
-              </CollapsibleTrigger>
-            </div>
-          </div>
-        </CardHeader>
+          </CardHeader>
+        </CollapsibleTrigger>
 
         <CollapsibleContent>
           <CardContent className="space-y-6 pt-0">
             {/* Shipment Timeline Section */}
-            {(order.status === "confirmed" ||
-              order.status === "shipped" ||
-              order.status === "delivered") && (
-              <div>
-                <h4 className="mb-3 text-sm font-medium">Shipment Tracking</h4>
-                <ShipmentTimeline orderId={order.id} compact />
-              </div>
-            )}
+            <div>
+              <h4 className="mb-3 text-sm font-medium">Shipment Tracking</h4>
+              <ShipmentTimeline
+                orderId={order.id}
+                orderStatus={order.status}
+                compact
+              />
+            </div>
 
             {/* Order Items */}
             <div>

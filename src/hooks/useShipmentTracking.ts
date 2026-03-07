@@ -24,6 +24,27 @@ export interface ShipmentStage {
   }
 }
 
+export interface ShipmentStageDefinition {
+  id: string
+  stage_number: number
+  stage_name: string
+  description: string
+  location: string
+}
+
+export const useShipmentStageDefinitions = () =>
+  useQuery({
+    queryKey: ["shipment-stage-definitions"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("shipment_stage_definitions")
+        .select("id, stage_number, stage_name, description, location")
+        .order("stage_number")
+      if (error) throw error
+      return data as ShipmentStageDefinition[]
+    },
+  })
+
 // Customer/admin read-only hook
 export const useShipmentStages = (orderId: string | undefined) => {
   const queryClient = useQueryClient()

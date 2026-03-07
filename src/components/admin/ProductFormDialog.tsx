@@ -40,6 +40,7 @@ const productSchema = z.object({
   price_per_kg: z.coerce.number().min(0, "Price must be positive"),
   image_url: z.string().url().optional().or(z.literal("")),
   is_available: z.boolean(),
+  allow_size_selection: z.boolean(),
 })
 
 type ProductFormValues = z.infer<typeof productSchema>
@@ -83,6 +84,7 @@ export function ProductFormDialog({
       price_per_kg: 0,
       image_url: "",
       is_available: true,
+      allow_size_selection: true,
     },
   })
 
@@ -96,6 +98,7 @@ export function ProductFormDialog({
         price_per_kg: product.price_per_kg,
         image_url: product.image_url || "",
         is_available: product.is_available,
+        allow_size_selection: product.allow_size_selection,
       })
       setImagePreview(product.image_url || null)
     } else {
@@ -107,6 +110,7 @@ export function ProductFormDialog({
         price_per_kg: 0,
         image_url: "",
         is_available: true,
+        allow_size_selection: true,
       })
       setImagePreview(null)
     }
@@ -359,6 +363,24 @@ export function ProductFormDialog({
                   </FormControl>
                   <FormLabel className="font-normal">
                     Available for purchase
+                  </FormLabel>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="allow_size_selection"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center space-x-3 space-y-0">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormLabel className="font-normal">
+                    Allow size selection (100g / 200g / 300g)
                   </FormLabel>
                 </FormItem>
               )}
