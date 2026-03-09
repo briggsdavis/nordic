@@ -54,7 +54,7 @@ const Origin = () => {
       <main aria-label="Origin story">
         {/* Hero Section */}
         <section
-          className="relative -mt-20 flex min-h-[70vh] items-end justify-center overflow-hidden pb-20"
+          className="relative -mt-28 flex min-h-[70vh] items-end justify-center overflow-hidden pb-20"
           aria-labelledby="origin-hero-title"
         >
           {/* Background Image */}

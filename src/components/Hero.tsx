@@ -6,7 +6,7 @@ import { Link } from "react-router-dom"
 const Hero = () => {
   return (
     <section
-      className="relative -mt-20 flex min-h-screen items-end justify-center overflow-hidden pb-32"
+      className="relative -mt-28 flex min-h-screen items-end justify-center overflow-hidden pb-32"
       aria-labelledby="hero-title"
     >
       {/* Background Image */}

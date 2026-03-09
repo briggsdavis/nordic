@@ -34,7 +34,7 @@ const CulinaryOpportunity = () => {
       <main aria-label="Culinary opportunity">
         {/* Hero Section */}
         <section
-          className="relative -mt-20 flex min-h-[75vh] items-end justify-center overflow-hidden pb-20"
+          className="relative -mt-28 flex min-h-[75vh] items-end justify-center overflow-hidden pb-20"
           aria-labelledby="culinary-hero-title"
         >
           <div className="absolute inset-0 z-0">

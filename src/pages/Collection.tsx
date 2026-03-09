@@ -17,7 +17,7 @@ const Collection = () => {
 
       <main>
         {/* Hero Section */}
-        <section className="relative -mt-20 flex min-h-[70vh] items-end justify-center overflow-hidden pb-20">
+        <section className="relative -mt-28 flex min-h-[70vh] items-end justify-center overflow-hidden pb-20">
           {/* Background Image */}
           <div className="absolute inset-0 z-0">
             <img

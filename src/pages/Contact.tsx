@@ -27,7 +27,7 @@ const Contact = () => {
       <main className="flex-1" aria-label="Contact Nordic Seafood">
         {/* Hero Section */}
         <section
-          className="relative -mt-20 flex min-h-[70vh] items-end justify-center overflow-hidden pb-20"
+          className="relative -mt-28 flex min-h-[70vh] items-end justify-center overflow-hidden pb-20"
           aria-labelledby="contact-hero-title"
         >
           {/* Background Image */}
