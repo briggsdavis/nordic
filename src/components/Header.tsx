@@ -69,22 +69,22 @@ const Header = () => {
 
   return (
     <header
-      className={`sticky left-0 right-0 top-0 z-50 duration-300 ${
+      className={`sticky left-0 right-0 top-0 z-50 overflow-hidden duration-300 ${
         isScrolled || !hasHeroImage
           ? "bg-card/95"
           : "bg-gradient-to-b from-black/40 to-transparent"
       }`}
     >
       <div className="container mx-auto px-6 lg:px-8">
-        <div className="grid h-20 grid-cols-[auto_1fr_auto] items-center md:grid-cols-3">
+        <div className="grid h-28 grid-cols-[auto_1fr_auto] items-center md:grid-cols-3">
           {/* Logo */}
           <Link to="/" className="group flex w-fit items-center gap-3">
             <div className="relative flex items-center justify-center">
               <img
                 src={
                   isScrolled || !hasHeroImage
-                    ? "/revisedsecond.png"
-                    : "/revisedinitial.png"
+                    ? "/vtwo.png"
+                    : "/vone.png"
                 }
                 alt="Nordic Seafood"
                 className="relative w-[120px] object-contain"

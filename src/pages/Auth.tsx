@@ -1,4 +1,3 @@
-import logo from "@/assets/logo.png"
 import LoginForm from "@/components/auth/LoginForm"
 import SignUpForm from "@/components/auth/SignUpForm"
 import { Button } from "@/components/ui/button"
@@ -65,15 +64,12 @@ const Auth = () => {
 
         {/* Logo */}
         <div className="mb-8 text-center">
-          <a href="/" className="inline-flex items-center gap-3">
+          <a href="/" className="inline-flex items-center">
             <img
-              src={logo}
+              src="/vtwo.png"
               alt="Nordic Seafood"
-              className="h-10 w-10 object-contain"
+              className="h-16 object-contain"
             />
-            <span className="font-serif text-2xl font-semibold text-foreground">
-              Nordic Seafood
-            </span>
           </a>
         </div>
 
