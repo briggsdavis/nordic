@@ -69,7 +69,7 @@ const Header = () => {
 
   return (
     <header
-      className={`sticky left-0 right-0 top-0 z-50 duration-300 ${
+      className={`sticky left-0 right-0 top-0 z-50 overflow-hidden duration-300 ${
         isScrolled || !hasHeroImage
           ? "bg-card/95"
           : "bg-gradient-to-b from-black/40 to-transparent"
