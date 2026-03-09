@@ -46,10 +46,10 @@ const NorwegianPartners = () => {
                   <h3 className="mb-1 font-serif text-2xl text-foreground md:text-3xl">
                     Brødrene Remø
                   </h3>
-                  <p className="text-sm font-medium text-primary">Est. 1918</p>
+                  <p className="text-sm font-medium text-primary">Est. 1923</p>
                 </div>
                 <p className="mb-6 leading-relaxed text-muted-foreground">
-                  With a heritage spanning over a century since 1918, Brødrene
+                  With a heritage spanning over a century since 1923, Brødrene
                   Remø has evolved from a coastal family shop on the Sunnmøre
                   coast into a global leader in sustainable seafood. They
                   combine time-honored seafaring wisdom with cutting-edge
@@ -111,9 +111,7 @@ const NorwegianPartners = () => {
                   <h3 className="mb-1 font-serif text-2xl text-foreground md:text-3xl">
                     Fishcorp of Norway
                   </h3>
-                  <p className="text-sm font-medium text-primary">
-                    Since 9th Century Tradition
-                  </p>
+                  <p className="text-sm font-medium text-primary">Est. 2017</p>
                 </div>
                 <p className="mb-6 leading-relaxed text-muted-foreground">
                   Drawing from over a millennium of tradition, Fishcorp of
