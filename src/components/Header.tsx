@@ -87,7 +87,7 @@ const Header = () => {
                     : "/vone.png"
                 }
                 alt="Nordic Seafood"
-                className="relative w-[120px] object-contain"
+                className="relative h-14 w-auto max-w-[120px] object-contain"
               />
             </div>
           </Link>
