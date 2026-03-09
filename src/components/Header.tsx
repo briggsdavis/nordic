@@ -76,7 +76,7 @@ const Header = () => {
       }`}
     >
       <div className="container mx-auto px-6 lg:px-8">
-        <div className="grid h-20 grid-cols-[auto_1fr_auto] items-center md:grid-cols-3">
+        <div className="grid h-28 grid-cols-[auto_1fr_auto] items-center md:grid-cols-3">
           {/* Logo */}
           <Link to="/" className="group flex w-fit items-center gap-3">
             <div className="relative flex items-center justify-center">
@@ -87,7 +87,7 @@ const Header = () => {
                     : "/vone.png"
                 }
                 alt="Nordic Seafood"
-                className="relative h-14 w-auto max-w-[120px] object-contain"
+                className="relative w-[120px] object-contain"
               />
             </div>
           </Link>
