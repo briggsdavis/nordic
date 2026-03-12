@@ -9,7 +9,6 @@ import type { OrderWithItems } from "@/hooks/useOrders"
 import { formatDate, formatPrice } from "@/lib/format"
 import { openStorageFile } from "@/lib/storage"
 import {
-  Calendar,
   ChevronDown,
   FileText,
   Loader2,
@@ -66,6 +65,16 @@ export const OrderCard = ({ order }: OrderCardProps) => {
 
         <CollapsibleContent>
           <CardContent className="space-y-6 pt-0">
+            {/* Reject Reason */}
+            {order.status === "rejected" && order.reject_reason && (
+              <div className="rounded-md border border-destructive/30 bg-destructive/5 p-3 text-sm">
+                <p className="mb-1 font-medium text-destructive">
+                  Payment Rejection Reason
+                </p>
+                <p className="text-muted-foreground">{order.reject_reason}</p>
+              </div>
+            )}
+
             {/* Shipment Timeline Section */}
             <div>
               <h4 className="mb-3 text-sm font-medium">Shipment Tracking</h4>
@@ -112,12 +121,12 @@ export const OrderCard = ({ order }: OrderCardProps) => {
                   <MapPin className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
                   <span>{order.delivery_address}</span>
                 </div>
-                <div className="flex items-center gap-2">
+                {/* <div className="flex items-center gap-2">
                   <Calendar className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
                   <span>
                     Expected: {formatDate(order.expected_delivery_date)}
                   </span>
-                </div>
+                </div> */}
               </div>
             </div>
 

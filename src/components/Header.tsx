@@ -81,11 +81,7 @@ const Header = () => {
           <Link to="/" className="group flex w-fit items-center gap-3">
             <div className="relative flex items-center justify-center">
               <img
-                src={
-                  isScrolled || !hasHeroImage
-                    ? "/vtwo.png"
-                    : "/vone.png"
-                }
+                src={isScrolled || !hasHeroImage ? "/vtwo.png" : "/vone.png"}
                 alt="Nordic Seafood"
                 className="relative w-[120px] object-contain"
               />

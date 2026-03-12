@@ -138,10 +138,19 @@ export const useAdminOrders = () => {
 
   // Reject receipt - transitions to rejected
   const rejectPayment = useMutation({
-    mutationFn: async (orderId: string) => {
+    mutationFn: async ({
+      orderId,
+      reason,
+    }: {
+      orderId: string
+      reason: string
+    }) => {
       const { error } = await supabase
         .from("orders")
-        .update({ status: "rejected" as OrderStatus })
+        .update({
+          status: "rejected" as OrderStatus,
+          reject_reason: reason || null,
+        })
         .eq("id", orderId)
       if (error) throw error
     },
@@ -151,6 +160,34 @@ export const useAdminOrders = () => {
         title: "Receipt rejected",
         description: "Customer will need to re-upload.",
       })
+    },
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message,
+      })
+    },
+  })
+
+  // Save admin note on an order
+  const saveNote = useMutation({
+    mutationFn: async ({
+      orderId,
+      note,
+    }: {
+      orderId: string
+      note: string
+    }) => {
+      const { error } = await supabase
+        .from("orders")
+        .update({ note: note || null })
+        .eq("id", orderId)
+      if (error) throw error
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-orders"] })
+      toast({ title: "Note saved" })
     },
     onError: (error) => {
       toast({
@@ -283,6 +320,7 @@ export const useAdminOrders = () => {
     updateOrderStatus,
     approvePayment,
     rejectPayment,
+    saveNote,
     uploadCertificate,
     deleteOrder,
     completeOrder,

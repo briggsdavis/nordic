@@ -48,6 +48,7 @@ export const OrdersTab = ({
     isLoading,
     approvePayment,
     rejectPayment,
+    saveNote,
     deleteOrder,
     completeOrder,
     updateOrderStatus,
@@ -68,7 +69,7 @@ export const OrdersTab = ({
     if (orderToDelete) {
       deleteOrder.mutate(orderToDelete, {
         onSuccess: () => {
-          setExpandedOrderId(null)
+          onExpandedChange(null)
           setOrderToDelete(null)
           setDeleteDialogOpen(false)
         },
@@ -107,7 +108,12 @@ export const OrdersTab = ({
               isExpanded={expandedOrderId === order.id}
               onToggle={() => toggleOrderExpansion(order.id)}
               onApprove={() => approvePayment.mutate(order.id)}
-              onReject={() => rejectPayment.mutate(order.id)}
+              onReject={(reason) =>
+                rejectPayment.mutate({ orderId: order.id, reason })
+              }
+              onSaveNote={(note) =>
+                saveNote.mutate({ orderId: order.id, note })
+              }
               onDelete={() => handleDeleteClick(order.id)}
               onComplete={() => completeOrder.mutate(order.id)}
               onStatusChange={(status: OrderStatus) =>

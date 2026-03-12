@@ -8,7 +8,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 const Auth = () => {
-  const [isLogin, setIsLogin] = useState(true)
+  const [isLogin, setIsLogin] = useState(false)
   const [showSkeleton, setShowSkeleton] = useState(false)
   const { user, loading } = useAuth()
   const navigate = useNavigate()

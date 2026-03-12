@@ -2,6 +2,13 @@ import { ShipmentStageManager } from "@/components/admin/ShipmentStageManager"
 import { OrderStatusBadge } from "@/components/orders/OrderStatusBadge"
 import { Button } from "@/components/ui/button"
 import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -9,14 +16,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Label } from "@/components/ui/label"
 import { TableCell, TableRow } from "@/components/ui/table"
+import { Textarea } from "@/components/ui/textarea"
 import type { OrderWithProfile } from "@/hooks/useAdminOrders"
 import type { Database } from "@/integrations/supabase/types"
 import { formatDate, formatPrice } from "@/lib/format"
 import { openStorageFile } from "@/lib/storage"
 import { cn } from "@/lib/utils"
 import {
-  Calendar,
   CheckCircle2,
   ChevronDown,
   ExternalLink,
@@ -30,7 +38,7 @@ import {
   User,
   XCircle,
 } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 type OrderStatus = Database["public"]["Enums"]["order_status"]
 
@@ -49,7 +57,8 @@ interface OrderRowProps {
   isExpanded: boolean
   onToggle: () => void
   onApprove: () => void
-  onReject: () => void
+  onReject: (reason: string) => void
+  onSaveNote: (note: string) => void
   onDelete: () => void
   onComplete: () => void
   onStatusChange: (status: OrderStatus) => void
@@ -61,11 +70,19 @@ export const OrderRow = ({
   onToggle,
   onApprove,
   onReject,
+  onSaveNote,
   onDelete,
   onComplete,
   onStatusChange,
 }: OrderRowProps) => {
   const [loadingFile, setLoadingFile] = useState<string | null>(null)
+  const [rejectDialogOpen, setRejectDialogOpen] = useState(false)
+  const [rejectReason, setRejectReason] = useState("")
+  const [noteValue, setNoteValue] = useState(order.note ?? "")
+
+  useEffect(() => {
+    setNoteValue(order.note ?? "")
+  }, [order.note])
 
   const handleViewFile = async (filePathOrUrl: string, fileId: string) => {
     setLoadingFile(fileId)
@@ -187,14 +204,14 @@ export const OrderRow = ({
                         </span>
                       </div>
                     )}
-                    {order.expected_delivery_date && (
+                    {/* {order.expected_delivery_date && (
                       <div className="flex items-center gap-2 text-sm">
                         <Calendar className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
                         <span className="text-muted-foreground">
                           Expected: {formatDate(order.expected_delivery_date)}
                         </span>
                       </div>
-                    )}
+                    )} */}
                   </div>
                 </div>
               </div>
@@ -312,6 +329,39 @@ export const OrderRow = ({
                 </div>
               )}
 
+              {/* Admin Note */}
+              {/* <div onClick={(e) => e.stopPropagation()}>
+                <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  Admin Note
+                </Label>
+                <div className="mt-2 flex gap-2">
+                  <Textarea
+                    value={noteValue}
+                    onChange={(e) => setNoteValue(e.target.value)}
+                    placeholder="Internal note (not visible to customer)..."
+                    className="min-h-[72px] resize-none text-sm"
+                  />
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="self-end"
+                    onClick={() => onSaveNote(noteValue)}
+                  >
+                    <Save className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div> */}
+
+              {/* Reject Reason (shown when rejected) */}
+              {order.status === "rejected" && order.reject_reason && (
+                <div className="rounded-md border border-destructive/30 bg-destructive/5 p-3 text-sm">
+                  <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-destructive">
+                    Reject Reason
+                  </p>
+                  <p className="text-muted-foreground">{order.reject_reason}</p>
+                </div>
+              )}
+
               {/* Action Buttons */}
               <div className="flex flex-wrap gap-2 border-t pt-4">
                 {order.status === "verifying" && (
@@ -331,7 +381,8 @@ export const OrderRow = ({
                       variant="destructive"
                       onClick={(event) => {
                         event.stopPropagation()
-                        onReject()
+                        setRejectReason("")
+                        setRejectDialogOpen(true)
                       }}
                     >
                       <XCircle className="mr-2 h-4 w-4" />
@@ -352,6 +403,47 @@ export const OrderRow = ({
                   Delete Order
                 </Button>
               </div>
+
+              {/* Reject Dialog */}
+              <Dialog
+                open={rejectDialogOpen}
+                onOpenChange={setRejectDialogOpen}
+              >
+                <DialogContent onClick={(e) => e.stopPropagation()}>
+                  <DialogHeader>
+                    <DialogTitle>Reject Payment</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-2">
+                    <Label htmlFor="reject-reason">
+                      Reason (shown to customer)
+                    </Label>
+                    <Textarea
+                      id="reject-reason"
+                      value={rejectReason}
+                      onChange={(e) => setRejectReason(e.target.value)}
+                      placeholder="e.g. Receipt image is unclear, please re-upload..."
+                      className="min-h-[100px]"
+                    />
+                  </div>
+                  <DialogFooter>
+                    <Button
+                      variant="outline"
+                      onClick={() => setRejectDialogOpen(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      onClick={() => {
+                        onReject(rejectReason)
+                        setRejectDialogOpen(false)
+                      }}
+                    >
+                      Reject
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </div>
           </TableCell>
         </TableRow>

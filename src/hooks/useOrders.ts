@@ -18,7 +18,9 @@ export interface Order {
   contact_phone: string
   additional_comments: string | null
   location_description: string | null
+  note: string | null
   preferred_delivery_time: string | null
+  reject_reason: string | null
   expected_delivery_date: string
   payment_receipt_url: string | null
   created_at: string

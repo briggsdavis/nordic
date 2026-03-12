@@ -159,9 +159,11 @@ export type Database = {
           expected_delivery_date: string
           id: string
           location_description: string | null
+          note: string | null
           payment_receipt_url: string | null
           preferred_delivery_time: string | null
           reference_number: string
+          reject_reason: string | null
           status: Database["public"]["Enums"]["order_status"]
           total_amount: number
           updated_at: string
@@ -178,9 +180,11 @@ export type Database = {
           expected_delivery_date: string
           id?: string
           location_description?: string | null
+          note?: string | null
           payment_receipt_url?: string | null
           preferred_delivery_time?: string | null
           reference_number: string
+          reject_reason?: string | null
           status?: Database["public"]["Enums"]["order_status"]
           total_amount: number
           updated_at?: string
@@ -197,9 +201,11 @@ export type Database = {
           expected_delivery_date?: string
           id?: string
           location_description?: string | null
+          note?: string | null
           payment_receipt_url?: string | null
           preferred_delivery_time?: string | null
           reference_number?: string
+          reject_reason?: string | null
           status?: Database["public"]["Enums"]["order_status"]
           total_amount?: number
           updated_at?: string
