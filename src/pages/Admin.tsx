@@ -10,9 +10,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useAuth } from "@/contexts/AuthContext"
 import { useAdminOrders } from "@/hooks/useAdminOrders"
+import {
+  useSiteSettings,
+  useSiteSettingsMutation,
+} from "@/hooks/useSiteSettings"
 import { supabase } from "@/integrations/supabase/client"
 import type { Database } from "@/integrations/supabase/types"
 import { formatPrice } from "@/lib/format"
@@ -22,6 +28,7 @@ import {
   DollarSign,
   LayoutDashboard,
   Package,
+  Settings,
   ShoppingBag,
   Users,
 } from "lucide-react"
@@ -35,6 +42,14 @@ const Admin = () => {
     useAdminOrders()
   const [users, setUsers] = useState<Profile[]>([])
   const [loadingUsers, setLoadingUsers] = useState(true)
+  const { data: siteSettings } = useSiteSettings()
+  const { update: updateSettings } = useSiteSettingsMutation()
+  const [settingsForm, setSettingsForm] = useState({
+    contact_phone: "",
+    contact_email: "",
+  })
+  const [settingsSaving, setSettingsSaving] = useState(false)
+  const [settingsSaved, setSettingsSaved] = useState(false)
 
   // Persist active tab across browser-tab switches / component remounts
   const [adminTab, setAdminTab] = useState(
@@ -58,6 +73,15 @@ const Admin = () => {
   useEffect(() => {
     fetchUsers()
   }, [])
+
+  useEffect(() => {
+    if (siteSettings) {
+      setSettingsForm({
+        contact_phone: siteSettings.contact_phone,
+        contact_email: siteSettings.contact_email,
+      })
+    }
+  }, [siteSettings])
 
   const fetchUsers = async () => {
     // Get all profiles
@@ -120,6 +144,10 @@ const Admin = () => {
             <TabsTrigger value="customers" className="gap-2">
               <Users className="h-4 w-4" />
               Customers
+            </TabsTrigger>
+            <TabsTrigger value="settings" className="gap-2">
+              <Settings className="h-4 w-4" />
+              Settings
             </TabsTrigger>
           </TabsList>
 
@@ -323,6 +351,70 @@ const Admin = () => {
                     </table>
                   </div>
                 )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Settings Tab */}
+          <TabsContent value="settings">
+            <Card className="max-w-lg">
+              <CardHeader>
+                <CardTitle>Contact Details</CardTitle>
+                <CardDescription>
+                  Displayed on the Contact page and footer.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form
+                  className="space-y-4"
+                  onSubmit={async (e) => {
+                    e.preventDefault()
+                    setSettingsSaving(true)
+                    setSettingsSaved(false)
+                    try {
+                      await updateSettings(settingsForm)
+                      setSettingsSaved(true)
+                    } finally {
+                      setSettingsSaving(false)
+                    }
+                  }}
+                >
+                  <div className="space-y-1.5">
+                    <Label htmlFor="contact_phone">Phone</Label>
+                    <Input
+                      id="contact_phone"
+                      value={settingsForm.contact_phone}
+                      onChange={(e) =>
+                        setSettingsForm((f) => ({
+                          ...f,
+                          contact_phone: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="contact_email">Email</Label>
+                    <Input
+                      id="contact_email"
+                      type="email"
+                      value={settingsForm.contact_email}
+                      onChange={(e) =>
+                        setSettingsForm((f) => ({
+                          ...f,
+                          contact_email: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Button type="submit" disabled={settingsSaving}>
+                      {settingsSaving ? "Saving..." : "Save"}
+                    </Button>
+                    {settingsSaved && (
+                      <span className="text-sm text-green-600">Saved</span>
+                    )}
+                  </div>
+                </form>
               </CardContent>
             </Card>
           </TabsContent>

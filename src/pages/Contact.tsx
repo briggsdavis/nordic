@@ -3,10 +3,16 @@ import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useSiteSettings } from "@/hooks/useSiteSettings"
 import { Clock, Mail, MapPin, MessageSquare, Phone } from "lucide-react"
 import { useEffect } from "react"
 
 const Contact = () => {
+  const { data: settings } = useSiteSettings()
+  const phone = settings?.contact_phone ?? "+251 911 000 000"
+  const email = settings?.contact_email ?? "orders@nordicseafood.et"
+  const phoneRaw = phone.replace(/\s+/g, "")
+
   useEffect(() => {
     document.title = "Nordic Seafood | Contact & B2B Orders"
     const description =
@@ -107,10 +113,10 @@ const Contact = () => {
                 </CardHeader>
                 <CardContent>
                   <a
-                    href="mailto:orders@nordicseafood.et"
+                    href={`mailto:${email}`}
                     className="text-primary hover:underline"
                   >
-                    orders@nordicseafood.et
+                    {email}
                   </a>
                   <p className="mt-2 text-sm text-muted-foreground">
                     Orders, invoices, and product availability
@@ -128,10 +134,10 @@ const Contact = () => {
                 </CardHeader>
                 <CardContent>
                   <a
-                    href="tel:+251911000000"
+                    href={`tel:${phoneRaw}`}
                     className="text-primary hover:underline"
                   >
-                    +251 911 000 000
+                    {phone}
                   </a>
                   <p className="mt-2 text-sm text-muted-foreground">
                     Saturday available for urgent delivery planning
@@ -181,12 +187,12 @@ const Contact = () => {
                             WhatsApp Business
                           </h3>
                           <a
-                            href="https://wa.me/251911000000"
+                            href={`https://wa.me/${phoneRaw.replace(/\+/g, "")}`}
                             className="text-primary hover:underline"
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            +251 911 000 000
+                            {phone}
                           </a>
                           <p className="mt-1 text-sm text-muted-foreground">
                             Fast responses for urgent supply requests
@@ -245,7 +251,7 @@ const Contact = () => {
                       Ready to discuss your order volumes and delivery cadence?
                     </p>
                     <Button asChild size="lg">
-                      <a href="mailto:orders@nordicseafood.et?subject=B2B Inquiry">
+                      <a href={`mailto:${email}?subject=B2B Inquiry`}>
                         Send Business Inquiry
                       </a>
                     </Button>

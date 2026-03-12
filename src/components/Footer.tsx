@@ -1,8 +1,14 @@
 import policies from "@/assets/policies.pdf"
 import terms from "@/assets/terms.pdf"
+import { useSiteSettings } from "@/hooks/useSiteSettings"
 import { Mail, MapPin, Phone } from "lucide-react"
 
 const Footer = () => {
+  const { data: settings } = useSiteSettings()
+  const phone = settings?.contact_phone ?? "+251 911 000 000"
+  const email = settings?.contact_email ?? "orders@nordicseafood.et"
+  const phoneRaw = phone.replace(/\s+/g, "")
+
   return (
     <footer className="border-t border-border bg-secondary">
       <div className="container mx-auto px-6 py-16 lg:px-8">
@@ -39,19 +45,19 @@ const Footer = () => {
               <li className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Mail className="h-4 w-4 flex-shrink-0" />
                 <a
-                  href="mailto:orders@nordicseafood.et"
+                  href={`mailto:${email}`}
                   className="transition-colors hover:text-primary"
                 >
-                  orders@nordicseafood.et
+                  {email}
                 </a>
               </li>
               <li className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Phone className="h-4 w-4 flex-shrink-0" />
                 <a
-                  href="tel:+251911000000"
+                  href={`tel:${phoneRaw}`}
                   className="transition-colors hover:text-primary"
                 >
-                  +251 911 000 000
+                  {phone}
                 </a>
               </li>
             </ul>
