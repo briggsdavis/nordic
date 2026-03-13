@@ -193,101 +193,100 @@ const SignUpForm = ({ onSwitchToLogin }: SignUpFormProps) => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="text-center">
-        <h2 className="font-serif text-2xl font-semibold text-foreground">
+        <h2 className="font-serif text-xl font-semibold text-foreground">
           Create Account
         </h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Join Nordic Seafood to place orders
-        </p>
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
-            control={form.control}
-            name="full_name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Full Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="John Doe" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+          <div className="grid grid-cols-2 gap-3">
+            <FormField
+              control={form.control}
+              name="full_name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Full Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="John Doe" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input type="email" placeholder="your@email.com" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input type="email" placeholder="your@email.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
-          <FormField
-            control={form.control}
-            name="phone_number"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Phone Number</FormLabel>
-                <FormControl>
-                  <Input
-                    type="tel"
-                    placeholder="9XX XXX XXX"
-                    value={field.value}
-                    onChange={(e) => {
-                      const formatted = formatPhoneNumber(e.target.value)
-                      field.onChange(formatted)
-                    }}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="grid grid-cols-2 gap-3">
+            <FormField
+              control={form.control}
+              name="phone_number"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Phone</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="tel"
+                      placeholder="9XX XXX XXX"
+                      value={field.value}
+                      onChange={(e) => {
+                        const formatted = formatPhoneNumber(e.target.value)
+                        field.onChange(formatted)
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="whatsapp_number"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  WhatsApp Number{" "}
-                  <span className="font-normal text-muted-foreground">
-                    (optional)
-                  </span>
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    type="tel"
-                    placeholder="9XX XXX XXX"
-                    value={field.value}
-                    onChange={(e) => {
-                      const formatted = formatPhoneNumber(e.target.value)
-                      field.onChange(formatted)
-                    }}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="whatsapp_number"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    WhatsApp{" "}
+                    <span className="font-normal text-muted-foreground">(optional)</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="tel"
+                      placeholder="9XX XXX XXX"
+                      value={field.value}
+                      onChange={(e) => {
+                        const formatted = formatPhoneNumber(e.target.value)
+                        field.onChange(formatted)
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
           <FormField
             control={form.control}
             name="primary_address"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Primary Address</FormLabel>
+                <FormLabel>Delivery Address</FormLabel>
                 <FormControl>
                   <Input placeholder="Your delivery address" {...field} />
                 </FormControl>
@@ -306,9 +305,9 @@ const SignUpForm = ({ onSwitchToLogin }: SignUpFormProps) => {
                   <RadioGroup
                     onValueChange={field.onChange}
                     defaultValue={field.value}
-                    className="flex gap-4"
+                    className="flex gap-3"
                   >
-                    <div className="flex flex-1 cursor-pointer items-center space-x-2 rounded-2xl border px-4 py-3 transition-colors hover:bg-muted/50">
+                    <div className="flex flex-1 cursor-pointer items-center space-x-2 rounded-xl border px-3 py-2 transition-colors hover:bg-muted/50">
                       <RadioGroupItem value="business" id="business" />
                       <label
                         htmlFor="business"
@@ -318,7 +317,7 @@ const SignUpForm = ({ onSwitchToLogin }: SignUpFormProps) => {
                         <span className="text-sm font-medium">Business</span>
                       </label>
                     </div>
-                    <div className="flex flex-1 cursor-pointer items-center space-x-2 rounded-2xl border px-4 py-3 transition-colors hover:bg-muted/50">
+                    <div className="flex flex-1 cursor-pointer items-center space-x-2 rounded-xl border px-3 py-2 transition-colors hover:bg-muted/50">
                       <RadioGroupItem value="individual" id="individual" />
                       <label
                         htmlFor="individual"
@@ -335,33 +334,35 @@ const SignUpForm = ({ onSwitchToLogin }: SignUpFormProps) => {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input type="password" placeholder="••••••••" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="grid grid-cols-2 gap-3">
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder="••••••••" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="confirm_password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Confirm Password</FormLabel>
-                <FormControl>
-                  <Input type="password" placeholder="••••••••" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="confirm_password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirm Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder="••••••••" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? (

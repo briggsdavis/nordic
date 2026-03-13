@@ -1,9 +1,8 @@
 import LoginForm from "@/components/auth/LoginForm"
 import SignUpForm from "@/components/auth/SignUpForm"
-import { Button } from "@/components/ui/button"
+import Header from "@/components/Header"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useAuth } from "@/contexts/AuthContext"
-import { ArrowLeft } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -48,44 +47,24 @@ const Auth = () => {
   }
 
   return (
-    <div className="to-arctic-mist/20 flex min-h-screen items-center justify-center bg-gradient-to-br from-ocean-deep/5 via-background p-4">
-      <div className="w-full max-w-md">
-        {/* Back Button */}
-        <div className="mb-6">
-          <Button
-            variant="ghost"
-            onClick={() => navigate("/")}
-            className="gap-2 text-muted-foreground hover:text-foreground"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to Home
-          </Button>
-        </div>
+    <div className="to-arctic-mist/20 min-h-screen bg-gradient-to-br from-ocean-deep/5 via-background">
+      <Header />
+      <div className="flex justify-center p-4 pt-12">
+        <div className="w-full max-w-md">
+          {/* Auth Card */}
+          <div className="rounded-3xl border border-border bg-card p-6 shadow-xl">
+            {isLogin ? (
+              <LoginForm onSwitchToSignUp={() => setIsLogin(false)} />
+            ) : (
+              <SignUpForm onSwitchToLogin={() => setIsLogin(true)} />
+            )}
+          </div>
 
-        {/* Logo */}
-        <div className="mb-8 text-center">
-          <a href="/" className="inline-flex items-center">
-            <img
-              src="/vtwo.png"
-              alt="Nordic Seafood"
-              className="h-16 object-contain"
-            />
-          </a>
+          {/* Footer */}
+          <p className="mt-6 text-center text-sm text-muted-foreground">
+            By continuing, you agree to our Terms of Service and Privacy Policy
+          </p>
         </div>
-
-        {/* Auth Card */}
-        <div className="rounded-3xl border border-border bg-card p-8 shadow-xl">
-          {isLogin ? (
-            <LoginForm onSwitchToSignUp={() => setIsLogin(false)} />
-          ) : (
-            <SignUpForm onSwitchToLogin={() => setIsLogin(true)} />
-          )}
-        </div>
-
-        {/* Footer */}
-        <p className="mt-6 text-center text-sm text-muted-foreground">
-          By continuing, you agree to our Terms of Service and Privacy Policy
-        </p>
       </div>
     </div>
   )
