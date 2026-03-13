@@ -32,7 +32,7 @@ const Header = () => {
   const isHomePage = location.pathname === "/"
   const hasHeroImage = [
     "/",
-    "/order",
+    "/products",
     "/contact",
     "/origin",
     "/for-chefs",
@@ -49,7 +49,7 @@ const Header = () => {
   const navLinks = [
     { href: "/", label: "Home", isRoute: true },
     { href: "/origin", label: "Origin", isRoute: true },
-    { href: "/order", label: "Order", isRoute: true },
+    { href: "/products", label: "Products", isRoute: true },
     { href: "/for-chefs", label: "For Chefs", isRoute: true },
     { href: "/contact", label: "Contact", isRoute: true },
   ]
@@ -69,14 +69,14 @@ const Header = () => {
 
   return (
     <header
-      className={`sticky left-0 right-0 top-0 z-50 overflow-hidden duration-300 ${
+      className={`sticky left-0 right-0 top-0 z-50 duration-300 ${
         isScrolled || !hasHeroImage
           ? "bg-card/95"
           : "bg-gradient-to-b from-black/40 to-transparent"
       }`}
     >
       <div className="container mx-auto px-6 lg:px-8">
-        <div className="grid h-28 grid-cols-[auto_1fr_auto] items-center md:grid-cols-3">
+        <div className="flex h-28 items-center gap-8">
           {/* Logo */}
           <Link to="/" className="group flex w-fit items-center gap-3">
             <div className="relative flex items-center justify-center">
@@ -89,13 +89,13 @@ const Header = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden items-center justify-center gap-8 md:flex">
+          <nav className="hidden flex-1 items-center justify-center gap-8 lg:flex">
             {navLinks.map((link) =>
               link.isRoute ? (
                 <Link
                   key={link.href}
                   to={link.href}
-                  className={`text-sm font-medium uppercase tracking-wide transition-colors hover:text-primary ${
+                  className={`whitespace-nowrap text-sm font-medium uppercase tracking-wide transition-colors hover:text-primary ${
                     isScrolled || !hasHeroImage
                       ? "text-foreground"
                       : "text-card"
@@ -107,7 +107,7 @@ const Header = () => {
                 <a
                   key={link.href}
                   href={link.href}
-                  className={`text-sm font-medium uppercase tracking-wide transition-colors hover:text-primary ${
+                  className={`whitespace-nowrap text-sm font-medium uppercase tracking-wide transition-colors hover:text-primary ${
                     isScrolled || !hasHeroImage
                       ? "text-foreground"
                       : "text-card"
@@ -120,7 +120,7 @@ const Header = () => {
           </nav>
 
           {/* Desktop Actions */}
-          <div className="hidden items-center justify-end gap-4 md:flex">
+          <div className="hidden items-center gap-4 lg:flex">
             <CartSheet />
 
             {loading ? (
@@ -178,7 +178,7 @@ const Header = () => {
 
           {/* Mobile Menu Toggle */}
           <button
-            className={`justify-self-end p-2 md:hidden ${isScrolled || !hasHeroImage ? "text-foreground" : "text-card"}`}
+            className={`ml-auto p-2 lg:hidden ${isScrolled || !hasHeroImage ? "text-foreground" : "text-card"}`}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? (
@@ -191,7 +191,7 @@ const Header = () => {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="absolute left-4 right-4 top-full mt-2 animate-fade-in rounded-2xl bg-card shadow-2xl ring-1 ring-border md:hidden">
+          <div className="absolute left-4 right-4 top-full mt-2 animate-fade-in rounded-2xl bg-card shadow-2xl ring-1 ring-border lg:hidden">
             <nav className="flex flex-col p-2">
               {/* Nav Links */}
               {navLinks.map((link) => (
@@ -240,6 +240,23 @@ const Header = () => {
                 </div>
                 <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
               </Link>
+
+              {/* Admin Row */}
+              {role === "admin" && (
+                <Link
+                  to="/admin"
+                  className="group flex items-center justify-between rounded-lg px-4 py-3 transition-colors hover:bg-muted"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <div className="flex items-center gap-3">
+                    <Shield className="h-4 w-4 text-muted-foreground" />
+                    <span className="font-medium text-foreground">
+                      Admin Dashboard
+                    </span>
+                  </div>
+                  <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+                </Link>
+              )}
 
               {/* Sign Out */}
               {user && (

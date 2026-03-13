@@ -136,7 +136,7 @@ const ProductDetail = () => {
         <Button
           variant="ghost"
           className="mb-8 gap-2"
-          onClick={() => navigate("/order")}
+          onClick={() => navigate("/products")}
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Order

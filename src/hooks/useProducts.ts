@@ -30,6 +30,7 @@ export const useProducts = () => {
       const { data, error } = await supabase
         .from("products")
         .select("*, product_options(*)")
+        .eq("is_available", true)
         .order("created_at", { ascending: true })
 
       if (error) {

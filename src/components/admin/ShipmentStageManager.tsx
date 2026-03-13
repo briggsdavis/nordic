@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button"
 import {
   Tooltip,
   TooltipContent,
@@ -9,6 +10,7 @@ import {
   useShipmentStages,
 } from "@/hooks/useShipmentTracking"
 import { cn } from "@/lib/utils"
+import { useState } from "react"
 
 interface ShipmentStageManagerProps {
   orderId: string
@@ -21,36 +23,49 @@ export function ShipmentStageManager({
 }: ShipmentStageManagerProps): JSX.Element {
   const { data: stages } = useShipmentStages(orderId)
   const { batchUpdateStages } = useAdminShipmentStages(orderId)
+  const [pendingStageNumber, setPendingStageNumber] = useState<number | null>(
+    null,
+  )
+
+  const savedCompletedCount =
+    stages?.filter((s) => s.status === "completed").length ?? 0
+  const displayCompletedCount = pendingStageNumber ?? savedCompletedCount
+  const totalCount = stages?.length ?? 0
+  const isDirty =
+    pendingStageNumber !== null && pendingStageNumber !== savedCompletedCount
 
   function handleStageClick(clickedStageNumber: number): void {
-    if (!stages) return
+    setPendingStageNumber(clickedStageNumber)
+  }
+
+  function handleSave(): void {
+    if (!stages || pendingStageNumber === null) return
 
     const updates = stages
       .map((stage) => ({
         stageId: stage.id,
-        status: (stage.stage_number <= clickedStageNumber
+        status: (stage.stage_number <= pendingStageNumber
           ? "completed"
           : "pending") as const,
       }))
       .filter((update, idx) => stages[idx].status !== update.status)
 
-    const allWillBeComplete = clickedStageNumber === stages.length
+    const allWillBeComplete = pendingStageNumber === stages.length
 
-    if (updates.length > 0) {
-      batchUpdateStages.mutate(
-        { updates },
-        {
-          onSuccess: () => {
-            if (allWillBeComplete) onAllStagesComplete?.()
-          },
+    batchUpdateStages.mutate(
+      { updates },
+      {
+        onSuccess: () => {
+          setPendingStageNumber(null)
+          if (allWillBeComplete) onAllStagesComplete?.()
         },
-      )
-    }
+      },
+    )
   }
 
-  const completedCount =
-    stages?.filter((s) => s.status === "completed").length ?? 0
-  const totalCount = stages?.length ?? 0
+  function handleCancel(): void {
+    setPendingStageNumber(null)
+  }
 
   return (
     <div className="space-y-4">
@@ -63,7 +78,7 @@ export function ShipmentStageManager({
                   onClick={() => handleStageClick(stage.stage_number)}
                   className={cn(
                     "flex flex-1 items-center justify-center border-r transition-none last:border-r-0 hover:opacity-80",
-                    stage.status === "completed"
+                    stage.stage_number <= displayCompletedCount
                       ? "bg-primary text-primary-foreground"
                       : "bg-muted text-muted-foreground",
                   )}
@@ -82,8 +97,29 @@ export function ShipmentStageManager({
         </div>
       </TooltipProvider>
 
-      <div className="text-center text-sm text-muted-foreground">
-        Stage {completedCount} of {totalCount} completed
+      <div className="flex items-center justify-between">
+        <span className="text-sm text-muted-foreground">
+          Stage {displayCompletedCount} of {totalCount} completed
+        </span>
+        {isDirty && (
+          <div className="flex gap-2">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={handleCancel}
+              disabled={batchUpdateStages.isPending}
+            >
+              Cancel
+            </Button>
+            <Button
+              size="sm"
+              onClick={handleSave}
+              disabled={batchUpdateStages.isPending}
+            >
+              Save
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   )

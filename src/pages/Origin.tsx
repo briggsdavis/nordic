@@ -242,7 +242,7 @@ const Origin = () => {
                   size="lg"
                   className="gap-2 px-8 py-6 text-sm font-medium uppercase tracking-wide"
                 >
-                  <Link to="/order">
+                  <Link to="/products">
                     Order Now
                     <ArrowRight className="h-4 w-4" />
                   </Link>

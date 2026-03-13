@@ -70,7 +70,7 @@ const CulinaryOpportunity = () => {
                   size="lg"
                   className="w-full bg-primary px-8 py-6 text-sm font-medium uppercase tracking-wide text-primary-foreground hover:bg-primary/90 sm:w-auto"
                 >
-                  <Link to="/order">
+                  <Link to="/products">
                     <ShoppingBag className="mr-2 h-4 w-4" />
                     Order Now
                   </Link>
@@ -192,7 +192,7 @@ const CulinaryOpportunity = () => {
                   size="lg"
                   className="gap-2 px-8 py-6 text-sm font-medium uppercase tracking-wide"
                 >
-                  <Link to="/order">
+                  <Link to="/products">
                     Order Now
                     <ArrowRight className="h-4 w-4" />
                   </Link>
@@ -269,7 +269,7 @@ const CulinaryOpportunity = () => {
                 size="lg"
                 className="w-full gap-2 bg-primary px-8 py-6 text-sm font-medium uppercase tracking-wide text-primary-foreground hover:bg-primary/90 sm:w-auto"
               >
-                <Link to="/order">
+                <Link to="/products">
                   <ShoppingBag className="h-4 w-4" />
                   Order Now
                 </Link>

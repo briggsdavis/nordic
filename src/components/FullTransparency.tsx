@@ -116,11 +116,11 @@ const FullTransparency = () => {
                 </div>
                 <div>
                   <h4 className="mb-1 font-serif text-xl text-foreground">
-                    Under 2 Days
+                    Express Cold-Chain Delivery
                   </h4>
                   <p className="text-sm text-muted-foreground">
-                    Cold-chain delivery from Norway to Addis Ababa in under 48
-                    hours.
+                    Unbroken cold-chain logistics from Norwegian fjords directly
+                    to Addis Ababa.
                   </p>
                 </div>
               </div>
@@ -166,7 +166,7 @@ const FullTransparency = () => {
                 size="lg"
                 className="w-full gap-2 text-sm font-medium uppercase tracking-wide sm:w-auto"
               >
-                <Link to="/order">Order Now</Link>
+                <Link to="/products">Order Now</Link>
               </Button>
             </div>
           </div>

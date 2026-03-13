@@ -1,5 +1,3 @@
-import policies from "@/assets/policies.pdf"
-import terms from "@/assets/terms.pdf"
 import { useSiteSettings } from "@/hooks/useSiteSettings"
 import { Mail, MapPin, Phone } from "lucide-react"
 
@@ -66,40 +64,21 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 md:flex-row">
-          <div className="flex flex-col items-center gap-2 text-xs text-muted-foreground md:flex-row md:gap-4">
-            <p>© 2026 Nordic Seafood Ethiopia. All rights reserved.</p>
-            <span className="hidden md:inline">·</span>
-            <p>
-              made by{" "}
-              <a
-                href="https://briggsdavis.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-medium transition-colors hover:text-primary"
-              >
-                BriggsDavis
-              </a>
-            </p>
-          </div>
+          <p className="text-xs text-muted-foreground">
+            © 2026 Nordic Seafood Ethiopia. All rights reserved.
+          </p>
 
-          <div className="flex gap-6 text-xs text-muted-foreground">
+          <p className="text-xs text-muted-foreground">
+            Made by{" "}
             <a
-              href={policies}
+              href="https://briggsdavis.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="transition-colors hover:text-foreground"
+              className="font-medium transition-colors hover:text-primary"
             >
-              Policies
+              Briggs Davis
             </a>
-            <a
-              href={terms}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-colors hover:text-foreground"
-            >
-              Terms
-            </a>
-          </div>
+          </p>
         </div>
       </div>
     </footer>
