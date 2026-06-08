@@ -81,7 +81,9 @@ export const useCart = () => {
         query = query.is("option_id", null)
       }
 
-      const { data: existing } = await query.single()
+      const { data: existing, error: existingError } = await query.maybeSingle()
+
+      if (existingError) throw existingError
 
       if (existing) {
         // Update quantity
