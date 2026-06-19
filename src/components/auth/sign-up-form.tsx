@@ -1,0 +1,376 @@
+import { Button } from "@/components/ui/button"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { useToast } from "@/hooks/use-toast"
+import { supabase } from "@/integrations/supabase/client"
+import { formatPhoneNumber, unformatPhoneNumber } from "@/lib/phone-utils"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { AuthError } from "@supabase/supabase-js"
+import { Building2, Loader2, User } from "lucide-react"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
+import { z } from "zod"
+
+const signUpSchema = z
+  .object({
+    full_name: z.string().trim().min(2, { message: "Name must be at least 2 characters" }).max(100),
+    email: z.string().trim().email({ message: "Invalid email address" }).max(255),
+    phone_number: z.string().trim().min(1, { message: "Please enter a phone number" }).max(20),
+    whatsapp_number: z.string().trim().max(20).optional().or(z.literal("")),
+    primary_address: z.string().trim().min(1, { message: "Please enter an address" }).max(500),
+    account_type: z.enum(["business", "individual"], {
+      required_error: "Please select an account type",
+    }),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters" })
+      .regex(/[a-z]/, { message: "Password must include a lowercase letter" })
+      .regex(/[A-Z]/, { message: "Password must include an uppercase letter" })
+      .regex(/[0-9]/, { message: "Password must include a number" }),
+    confirm_password: z.string(),
+  })
+  .refine((data) => data.password === data.confirm_password, {
+    message: "Passwords don't match",
+    path: ["confirm_password"],
+  })
+
+type SignUpFormValues = z.infer<typeof signUpSchema>
+
+interface SignUpFormProps {
+  onSwitchToLogin: () => void
+}
+
+const shouldRetry = (error: AuthError) => {
+  const message = error.message.toLowerCase()
+  return (
+    error.status === 500 ||
+    error.status === 502 ||
+    error.status === 503 ||
+    message.includes("network") ||
+    message.includes("fetch") ||
+    message.includes("timeout")
+  )
+}
+
+const getSignUpErrorMessage = (error: AuthError) => {
+  const message = error.message.toLowerCase()
+
+  if (message.includes("already registered")) {
+    return "This email is already registered. Please sign in instead."
+  }
+  if (error.status === 429 || message.includes("rate limit")) {
+    return "Too many attempts. Please wait a moment and try again."
+  }
+  if (message.includes("password")) {
+    return "Password does not meet requirements. Please choose a stronger one."
+  }
+  if (shouldRetry(error)) {
+    return "Network issue. Please try again."
+  }
+
+  return error.message
+}
+
+const runAuthRequest = async <T,>(
+  request: () => Promise<{ data: T | null; error: AuthError | null }>,
+  retries = 1,
+) => {
+  let lastError: AuthError | null = null
+
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    const { data, error } = await request()
+
+    if (!error) {
+      return { data, error: null }
+    }
+
+    lastError = error
+
+    if (attempt < retries && shouldRetry(error)) {
+      await new Promise((resolve) => setTimeout(resolve, 400 * (attempt + 1)))
+      continue
+    }
+    break
+  }
+
+  return { data: null, error: lastError }
+}
+
+const SignUpForm = ({ onSwitchToLogin }: SignUpFormProps) => {
+  const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
+  const { toast } = useToast()
+
+  const form = useForm<SignUpFormValues>({
+    resolver: zodResolver(signUpSchema),
+    defaultValues: {
+      full_name: "",
+      email: "",
+      phone_number: "",
+      whatsapp_number: "",
+      primary_address: "",
+      account_type: "individual",
+      password: "",
+      confirm_password: "",
+    },
+  })
+
+  const onSubmit = async (values: SignUpFormValues) => {
+    setIsLoading(true)
+
+    try {
+      const { data, error } = await runAuthRequest(() =>
+        supabase.auth.signUp({
+          email: values.email,
+          password: values.password,
+          options: {
+            emailRedirectTo: `${window.location.origin}/`,
+            data: {
+              full_name: values.full_name,
+              phone_number: unformatPhoneNumber(values.phone_number),
+              whatsapp_number: values.whatsapp_number
+                ? unformatPhoneNumber(values.whatsapp_number)
+                : null,
+              primary_address: values.primary_address,
+              account_type: values.account_type,
+            },
+          },
+        }),
+      )
+
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Registration failed",
+          description: getSignUpErrorMessage(error),
+        })
+        return
+      }
+
+      if (data?.session) {
+        toast({
+          title: "Account created!",
+          description: "Welcome to Nordic Seafood. You are now logged in.",
+        })
+        navigate("/portal")
+        return
+      }
+
+      toast({
+        title: "Check your email",
+        description: "We sent a confirmation link. Verify your email, then sign in.",
+      })
+      onSwitchToLogin()
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="text-center">
+        <h2 className="font-serif text-xl font-semibold text-foreground">Create Account</h2>
+      </div>
+
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+          <div className="grid grid-cols-2 gap-3">
+            <FormField
+              control={form.control}
+              name="full_name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Full Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="John Doe" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input type="email" placeholder="your@email.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <FormField
+              control={form.control}
+              name="phone_number"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Phone</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="tel"
+                      placeholder="9XX XXX XXX"
+                      value={field.value}
+                      onChange={(e) => {
+                        const formatted = formatPhoneNumber(e.target.value)
+                        field.onChange(formatted)
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="whatsapp_number"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    WhatsApp <span className="font-normal text-muted-foreground">(optional)</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="tel"
+                      placeholder="9XX XXX XXX"
+                      value={field.value}
+                      onChange={(e) => {
+                        const formatted = formatPhoneNumber(e.target.value)
+                        field.onChange(formatted)
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <FormField
+            control={form.control}
+            name="primary_address"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Delivery Address</FormLabel>
+                <FormControl>
+                  <Input placeholder="Your delivery address" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="account_type"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Account Type</FormLabel>
+                <FormControl>
+                  <RadioGroup
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    className="flex gap-3"
+                  >
+                    <div className="flex flex-1 cursor-pointer items-center space-x-2 rounded-xl border px-3 py-2 transition-colors hover:bg-muted/50">
+                      <RadioGroupItem value="business" id="business" />
+                      <label
+                        htmlFor="business"
+                        className="flex flex-1 cursor-pointer items-center gap-2"
+                      >
+                        <Building2 className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm font-medium">Business</span>
+                      </label>
+                    </div>
+                    <div className="flex flex-1 cursor-pointer items-center space-x-2 rounded-xl border px-3 py-2 transition-colors hover:bg-muted/50">
+                      <RadioGroupItem value="individual" id="individual" />
+                      <label
+                        htmlFor="individual"
+                        className="flex flex-1 cursor-pointer items-center gap-2"
+                      >
+                        <User className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm font-medium">Individual</span>
+                      </label>
+                    </div>
+                  </RadioGroup>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="grid grid-cols-2 gap-3">
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder="••••••••" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="confirm_password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirm Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder="••••••••" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Creating account...
+              </>
+            ) : (
+              "Create Account"
+            )}
+          </Button>
+        </form>
+      </Form>
+
+      <div className="text-center">
+        <p className="text-sm text-muted-foreground">
+          Already have an account?{" "}
+          <button
+            type="button"
+            onClick={onSwitchToLogin}
+            className="font-medium text-primary hover:underline"
+          >
+            Sign in
+          </button>
+        </p>
+      </div>
+    </div>
+  )
+}
+
+export default SignUpForm
