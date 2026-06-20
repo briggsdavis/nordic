@@ -7,7 +7,14 @@ import { Minus, Plus, ShoppingCart, Trash2 } from "lucide-react"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 
-export const CartSheet = () => {
+import { cn } from "@/lib/utils"
+
+type CartSheetProps = {
+  className?: string
+  iconOnly?: boolean
+}
+
+export const CartSheet = ({ className, iconOnly = false }: CartSheetProps) => {
   const { user } = useAuth()
   const navigate = useNavigate()
   const {
@@ -28,9 +35,15 @@ export const CartSheet = () => {
 
   if (!user) {
     return (
-      <Button variant="outline" onClick={() => navigate("/auth")} className="gap-2">
+      <Button
+        variant="outline"
+        size={iconOnly ? "icon" : "default"}
+        onClick={() => navigate("/auth")}
+        className={cn("gap-2", className)}
+        aria-label="Cart"
+      >
         <ShoppingCart className="h-4 w-4" />
-        Cart
+        {iconOnly ? <span className="sr-only">Cart</span> : "Cart"}
       </Button>
     )
   }
@@ -38,9 +51,14 @@ export const CartSheet = () => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="outline" className="relative gap-2">
+        <Button
+          variant="outline"
+          size={iconOnly ? "icon" : "default"}
+          className={cn("relative gap-2", className)}
+          aria-label="Cart"
+        >
           <ShoppingCart className="h-4 w-4" />
-          Cart
+          {iconOnly ? <span className="sr-only">Cart</span> : "Cart"}
           {cartCount > 0 && (
             <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
               {cartCount}

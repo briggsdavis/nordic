@@ -8,14 +8,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useAuth } from "@/contexts/auth-context"
-import { useCart } from "@/hooks/use-cart"
 import {
   ChevronDown,
   ChevronRight,
   LogOut,
   Menu,
   Shield,
-  ShoppingCart,
   User,
   X,
 } from "lucide-react"
@@ -26,7 +24,6 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { user, profile, role, signOut, loading } = useAuth()
-  const { cartCount } = useCart()
   const navigate = useNavigate()
   const location = useLocation()
   const isHomePage = location.pathname === "/"
@@ -166,13 +163,23 @@ const Header = () => {
             )}
           </div>
 
-          {/* Mobile Menu Toggle */}
-          <button
-            className={`ml-auto p-2 lg:hidden ${isScrolled || !hasHeroImage ? "text-foreground" : "text-card"}`}
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
+          {/* Mobile Actions */}
+          <div className="ml-auto flex items-center gap-2 lg:hidden">
+            <CartSheet
+              iconOnly
+              className={
+                !isScrolled && hasHeroImage
+                  ? "border-card/30 bg-card/10 text-card hover:bg-card/20 hover:text-card"
+                  : ""
+              }
+            />
+            <button
+              className={`p-2 ${isScrolled || !hasHeroImage ? "text-foreground" : "text-card"}`}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
@@ -191,24 +198,6 @@ const Header = () => {
                   <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
                 </Link>
               ))}
-
-              {/* Cart Row */}
-              <Link
-                to={user ? "/checkout" : "/auth"}
-                className="group flex items-center justify-between rounded-lg px-4 py-3 transition-colors hover:bg-muted"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                <div className="flex items-center gap-3">
-                  <ShoppingCart className="h-4 w-4 text-muted-foreground" />
-                  <span className="font-medium text-foreground">Cart</span>
-                  {cartCount > 0 && (
-                    <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-xs font-medium text-primary-foreground">
-                      {cartCount}
-                    </span>
-                  )}
-                </div>
-                <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
-              </Link>
 
               {/* Portal Row */}
               <Link
