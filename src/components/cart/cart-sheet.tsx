@@ -24,6 +24,7 @@ export const CartSheet = ({ className, iconOnly = false }: CartSheetProps) => {
     updateQuantity,
     removeFromCart,
     getVariantPrice,
+    hasUnavailableItems,
     isLoading,
   } = useCart()
   const [open, setOpen] = useState(false)
@@ -113,6 +114,11 @@ export const CartSheet = ({ className, iconOnly = false }: CartSheetProps) => {
                         {item.variant}
                       </p>
                       <p className="text-sm font-medium">{formatPrice(price)}</p>
+                      {item.product?.is_available === false && (
+                        <p className="text-xs font-medium text-red-600 dark:text-red-400">
+                          No longer available — remove to checkout
+                        </p>
+                      )}
                     </div>
                     <div className="flex flex-col items-end gap-2">
                       <Button
@@ -163,9 +169,19 @@ export const CartSheet = ({ className, iconOnly = false }: CartSheetProps) => {
                 <span>Total</span>
                 <span>{formatPrice(cartTotal)}</span>
               </div>
-              <Button className="w-full" size="lg" onClick={handleCheckout}>
+              <Button
+                className="w-full"
+                size="lg"
+                onClick={handleCheckout}
+                disabled={hasUnavailableItems}
+              >
                 Proceed to Checkout
               </Button>
+              {hasUnavailableItems && (
+                <p className="text-center text-xs text-red-600 dark:text-red-400">
+                  Remove unavailable items to continue.
+                </p>
+              )}
             </div>
           </>
         )}

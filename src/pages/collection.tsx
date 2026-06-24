@@ -1,6 +1,7 @@
 import collectionHero from "@/assets/collection.jpg"
 import Footer from "@/components/footer"
 import Header from "@/components/header"
+import { AvailabilityBadge } from "@/components/products/availability-badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useProducts } from "@/hooks/use-products"
 import { formatPrice } from "@/lib/format"
@@ -89,9 +90,12 @@ const Collection = () => {
                     />
                   </div>
                   <div className="p-8">
-                    <h3 className="mb-4 font-serif text-xl text-foreground transition-colors group-hover:text-primary">
-                      {product.name}
-                    </h3>
+                    <div className="mb-4 flex items-start justify-between gap-3">
+                      <h3 className="font-serif text-xl text-foreground transition-colors group-hover:text-primary">
+                        {product.name}
+                      </h3>
+                      <AvailabilityBadge isAvailable={product.is_available} />
+                    </div>
 
                     {product.description && (
                       <p className="mb-6 line-clamp-2 text-sm leading-relaxed text-muted-foreground">

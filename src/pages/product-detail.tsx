@@ -1,5 +1,6 @@
 import Footer from "@/components/footer"
 import Header from "@/components/header"
+import { AvailabilityBadge } from "@/components/products/availability-badge"
 import { Button } from "@/components/ui/button"
 import {
   Select,
@@ -50,11 +51,12 @@ const ProductDetail = () => {
   const { data: product, isLoading } = useQuery({
     queryKey: ["product", slug],
     queryFn: async () => {
+      // Unavailable products are still shown (with a badge); ordering is
+      // blocked instead of hiding the product.
       const { data, error } = await supabase
         .from("products")
         .select("*, product_options(*)")
         .eq("slug", slug)
-        .eq("is_available", true)
         .single()
 
       if (error) throw error
@@ -74,6 +76,8 @@ const ProductDetail = () => {
   const totalPrice = unitPrice * quantity
 
   const handleAddToCart = () => {
+    if (!product?.is_available) return
+
     if (!user) {
       navigate(`/auth?returnTo=/products/${slug}`)
       return
@@ -154,7 +158,10 @@ const ProductDetail = () => {
           {/* Product Info */}
           <div className="space-y-6">
             <div>
-              <h1 className="mb-2 font-serif text-4xl text-foreground">{product.name}</h1>
+              <div className="mb-2 flex items-center gap-3">
+                <h1 className="font-serif text-4xl text-foreground">{product.name}</h1>
+                <AvailabilityBadge isAvailable={product.is_available} />
+              </div>
               <p className="text-lg font-medium text-primary">
                 {formatPrice(effectivePricePerUnit)}
               </p>
@@ -247,10 +254,14 @@ const ProductDetail = () => {
               className="w-full"
               size="lg"
               onClick={handleAddToCart}
-              disabled={addToCart.isPending}
+              disabled={addToCart.isPending || !product.is_available}
             >
               <ShoppingCart className="mr-2 h-5 w-5" />
-              {addToCart.isPending ? "Adding..." : "Add to Cart"}
+              {!product.is_available
+                ? "Currently Unavailable"
+                : addToCart.isPending
+                  ? "Adding..."
+                  : "Add to Cart"}
             </Button>
 
             {/* Payment Notice */}
