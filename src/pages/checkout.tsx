@@ -30,7 +30,7 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 const Checkout = () => {
   const navigate = useNavigate()
   const { user, profile } = useAuth()
-  const { cartItems, cartTotal, clearCart, getVariantPrice } = useCart()
+  const { cartItems, cartTotal, clearCart, getVariantPrice, hasUnavailableItems } = useCart()
   const { createOrder } = useOrders()
   const { data: siteSettings } = useSiteSettings()
   const { toast } = useToast()
@@ -75,6 +75,14 @@ const Checkout = () => {
 
   const handleSubmitClick = () => {
     if (!formData.contactName || !formData.contactPhone || !formData.deliveryAddress) {
+      return
+    }
+    if (hasUnavailableItems) {
+      toast({
+        variant: "destructive",
+        title: "Unavailable items in cart",
+        description: "Please remove unavailable items before placing your order.",
+      })
       return
     }
     setShowWarning(true)
@@ -427,7 +435,8 @@ const Checkout = () => {
                     !formData.contactName ||
                     !formData.contactPhone ||
                     !formData.deliveryAddress ||
-                    !paymentFile
+                    !paymentFile ||
+                    hasUnavailableItems
                   }
                 >
                   {isUploading ? (

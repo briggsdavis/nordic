@@ -1,3 +1,4 @@
+import { AvailabilityBadge } from "@/components/products/availability-badge"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useProducts } from "@/hooks/use-products"
@@ -61,10 +62,11 @@ const CatalogTeaser = () => {
                   />
                 </div>
                 <div className="flex items-start justify-between">
-                  <div>
+                  <div className="space-y-2">
                     <h3 className="font-serif text-xl text-foreground transition-colors group-hover:text-primary">
                       {product.name}
                     </h3>
+                    <AvailabilityBadge isAvailable={product.is_available} />
                   </div>
                   <span className="text-xs font-medium tracking-wide text-primary">
                     {formatPrice(product.price_per_unit)}

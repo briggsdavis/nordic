@@ -27,10 +27,11 @@ export const useProducts = () => {
   return useQuery({
     queryKey: ["products"],
     queryFn: async (): Promise<Product[]> => {
+      // Unavailable products are still shown to customers (with an
+      // "Unavailable" badge); they just can't be ordered.
       const { data, error } = await supabase
         .from("products")
         .select("*, product_options(*)")
-        .eq("is_available", true)
         .order("created_at", { ascending: true })
 
       if (error) {

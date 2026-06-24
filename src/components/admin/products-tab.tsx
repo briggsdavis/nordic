@@ -96,7 +96,10 @@ export function ProductsTab() {
         is_available: !product.is_available,
       })
       toast({
-        title: product.is_available ? "Product hidden" : "Product available",
+        title: product.is_available ? "Product marked unavailable" : "Product marked available",
+        description: product.is_available
+          ? "It stays visible to customers but can't be ordered."
+          : "Customers can order it again.",
       })
     } catch (error) {
       toast({

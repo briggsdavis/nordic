@@ -17,6 +17,7 @@ export interface CartItem {
     name: string
     price_per_unit: number
     image_url: string | null
+    is_available: boolean
   }
   option?: {
     id: string
@@ -40,7 +41,7 @@ export const useCart = () => {
         .select(
           `
           *,
-          product:products(id, name, price_per_unit, image_url),
+          product:products(id, name, price_per_unit, image_url, is_available),
           option:product_options(id, name, price_per_unit)
         `,
         )
@@ -180,6 +181,8 @@ export const useCart = () => {
 
   const cartCount = cartItems.reduce((count, item) => count + item.quantity, 0)
 
+  const hasUnavailableItems = cartItems.some((item) => item.product?.is_available === false)
+
   return {
     cartItems,
     isLoading,
@@ -190,5 +193,6 @@ export const useCart = () => {
     cartTotal,
     cartCount,
     getVariantPrice,
+    hasUnavailableItems,
   }
 }
