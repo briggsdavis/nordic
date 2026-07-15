@@ -1,10 +1,10 @@
+import { ArrowRight, Award, CheckCircle, Ship, Snowflake } from "lucide-react"
+import { useEffect } from "react"
+import { Link } from "react-router-dom"
 import originHero from "@/assets/origin.jpg"
 import Footer from "@/components/footer"
 import Header from "@/components/header"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Award, CheckCircle, Ship, Snowflake } from "lucide-react"
-import { useEffect } from "react"
-import { Link } from "react-router-dom"
 
 const Origin = () => {
   useEffect(() => {
@@ -68,10 +68,10 @@ const Origin = () => {
           </div>
 
           {/* Content */}
-          <div className="container relative z-10 mx-auto px-6 text-center lg:px-8">
+          <div className="relative z-10 container mx-auto px-6 text-center lg:px-8">
             <div className="mx-auto max-w-3xl">
               <p
-                className="mb-4 animate-fade-in-up text-xs uppercase tracking-[0.3em] text-card/80 opacity-0 md:text-sm"
+                className="mb-4 animate-fade-in-up text-xs tracking-[0.3em] text-card/80 uppercase opacity-0 md:text-sm"
                 style={{ animationDelay: "0.2s" }}
               >
                 Our Story
@@ -84,7 +84,7 @@ const Origin = () => {
                 From Norwegian Fjords to Ethiopian Kitchens
               </h1>
               <p
-                className="mx-auto max-w-2xl animate-fade-in-up text-lg font-light leading-relaxed text-card/90 opacity-0"
+                className="mx-auto max-w-2xl animate-fade-in-up text-lg leading-relaxed font-light text-card/90 opacity-0"
                 style={{ animationDelay: "0.6s" }}
               >
                 Nordic Seafood bridges two worlds, moving pristine Norwegian salmon into Ethiopia
@@ -99,13 +99,13 @@ const Origin = () => {
           <div className="container mx-auto px-6">
             <h2
               id="origin-values"
-              className="animate-fade-in mb-12 text-center font-serif text-3xl text-foreground opacity-0"
+              className="mb-12 animate-fade-in text-center font-serif text-3xl text-foreground opacity-0"
               style={{ animationDelay: "0.1s" }}
             >
               Our Core Values
             </h2>
             <div
-              className="animate-fade-in mx-auto grid max-w-5xl gap-8 opacity-0 md:grid-cols-2"
+              className="mx-auto grid max-w-5xl animate-fade-in gap-8 opacity-0 md:grid-cols-2"
               style={{ animationDelay: "0.3s" }}
             >
               {values.map((value) => (
@@ -128,7 +128,7 @@ const Origin = () => {
             <div className="mx-auto max-w-3xl">
               <h2
                 id="origin-story"
-                className="animate-fade-in mb-8 text-center font-serif text-3xl text-foreground opacity-0"
+                className="mb-8 animate-fade-in text-center font-serif text-3xl text-foreground opacity-0"
                 style={{ animationDelay: "0.1s" }}
               >
                 Our Story
@@ -154,13 +154,13 @@ const Origin = () => {
                 </p>
               </div>
               <div
-                className="animate-fade-in mt-10 text-center opacity-0"
+                className="mt-10 animate-fade-in text-center opacity-0"
                 style={{ animationDelay: "0.5s" }}
               >
                 <Button
                   asChild
                   size="lg"
-                  className="gap-2 px-8 py-6 text-sm font-medium uppercase tracking-wide"
+                  className="gap-2 px-8 py-6 text-sm font-medium tracking-wide uppercase"
                 >
                   <Link to="/for-chefs">
                     For Chefs
@@ -178,20 +178,20 @@ const Origin = () => {
             <div className="mx-auto max-w-3xl text-center">
               <h2
                 id="origin-promise"
-                className="animate-fade-in mb-6 font-serif text-3xl text-foreground opacity-0"
+                className="mb-6 animate-fade-in font-serif text-3xl text-foreground opacity-0"
                 style={{ animationDelay: "0.1s" }}
               >
                 The Nordic Promise
               </h2>
               <p
-                className="animate-fade-in mb-8 text-lg text-muted-foreground opacity-0"
+                className="mb-8 animate-fade-in text-lg text-muted-foreground opacity-0"
                 style={{ animationDelay: "0.3s" }}
               >
                 When you choose Nordic Seafood, you choose a partner committed to consistent supply,
                 transparent sourcing, and dependable logistics.
               </p>
               <div
-                className="animate-fade-in flex flex-wrap justify-center gap-4 text-sm text-foreground opacity-0"
+                className="flex animate-fade-in flex-wrap justify-center gap-4 text-sm text-foreground opacity-0"
                 style={{ animationDelay: "0.5s" }}
               >
                 <span className="rounded-full bg-primary/10 px-4 py-2">100% Norwegian Origin</span>
@@ -202,13 +202,13 @@ const Origin = () => {
                 <span className="rounded-full bg-primary/10 px-4 py-2">Vacuum Packed</span>
               </div>
               <div
-                className="animate-fade-in mt-10 flex flex-col items-center justify-center gap-4 opacity-0 sm:flex-row"
+                className="mt-10 flex animate-fade-in flex-col items-center justify-center gap-4 opacity-0 sm:flex-row"
                 style={{ animationDelay: "0.7s" }}
               >
                 <Button
                   asChild
                   size="lg"
-                  className="gap-2 px-8 py-6 text-sm font-medium uppercase tracking-wide"
+                  className="gap-2 px-8 py-6 text-sm font-medium tracking-wide uppercase"
                 >
                   <Link to="/for-chefs">
                     For Chefs
@@ -219,7 +219,7 @@ const Origin = () => {
                   asChild
                   variant="outline"
                   size="lg"
-                  className="gap-2 px-8 py-6 text-sm font-medium uppercase tracking-wide"
+                  className="gap-2 px-8 py-6 text-sm font-medium tracking-wide uppercase"
                 >
                   <Link to="/products">
                     Order Now

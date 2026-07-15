@@ -1,12 +1,11 @@
+import { Minus, Plus, ShoppingCart, Trash2 } from "lucide-react"
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { useAuth } from "@/contexts/auth-context"
 import { useCart } from "@/hooks/use-cart"
 import { formatPrice } from "@/lib/format"
-import { Minus, Plus, ShoppingCart, Trash2 } from "lucide-react"
-import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-
 import { cn } from "@/lib/utils"
 
 type CartSheetProps = {
@@ -61,7 +60,7 @@ export const CartSheet = ({ className, iconOnly = false }: CartSheetProps) => {
           <ShoppingCart className="h-4 w-4" />
           {iconOnly ? <span className="sr-only">Cart</span> : "Cart"}
           {cartCount > 0 && (
-            <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
+            <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
               {cartCount}
             </span>
           )}

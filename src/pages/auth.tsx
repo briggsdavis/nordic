@@ -1,10 +1,10 @@
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import LoginForm from "@/components/auth/login-form"
 import SignUpForm from "@/components/auth/sign-up-form"
 import Header from "@/components/header"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useAuth } from "@/contexts/auth-context"
-import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(false)

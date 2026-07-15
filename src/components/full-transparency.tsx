@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button"
 import { Award, Clock, Globe, Package, Shield, Truck } from "lucide-react"
 import { Link } from "react-router-dom"
+import { Button } from "@/components/ui/button"
 
 const FullTransparency = () => {
   return (
@@ -8,7 +8,7 @@ const FullTransparency = () => {
       <div className="container mx-auto px-6 lg:px-8">
         {/* Section Header */}
         <div
-          className="animate-fade-in mb-16 text-center opacity-0"
+          className="mb-16 animate-fade-in text-center opacity-0"
           style={{ animationDelay: "0.1s" }}
         >
           <h2 className="mb-4 font-serif text-4xl text-foreground md:text-5xl">
@@ -30,7 +30,7 @@ const FullTransparency = () => {
             <div>
               <div className="mb-4 inline-flex items-center gap-2 text-primary">
                 <Shield className="h-5 w-5" />
-                <span className="text-xs uppercase tracking-[0.3em]">Quality Assurance</span>
+                <span className="text-xs tracking-[0.3em] uppercase">Quality Assurance</span>
               </div>
               <h3 className="mb-6 font-serif text-3xl text-foreground">Track Every Step</h3>
             </div>
@@ -87,7 +87,7 @@ const FullTransparency = () => {
             <div>
               <div className="mb-4 inline-flex items-center gap-2 text-primary">
                 <Globe className="h-5 w-5" />
-                <span className="text-xs uppercase tracking-[0.3em]">Direct from Source</span>
+                <span className="text-xs tracking-[0.3em] uppercase">Direct from Source</span>
               </div>
               <h3 className="mb-6 font-serif text-3xl text-foreground">Direct from Source</h3>
             </div>
@@ -143,7 +143,7 @@ const FullTransparency = () => {
                 asChild
                 variant="outline"
                 size="lg"
-                className="w-full gap-2 text-sm font-medium uppercase tracking-wide sm:w-auto"
+                className="w-full gap-2 text-sm font-medium tracking-wide uppercase sm:w-auto"
               >
                 <Link to="/products">Order Now</Link>
               </Button>

@@ -1,3 +1,17 @@
+import {
+  CheckCircle2,
+  Clock,
+  DollarSign,
+  ExternalLink,
+  FileText,
+  LayoutDashboard,
+  Package,
+  Settings,
+  ShoppingBag,
+  Upload,
+  Users,
+} from "lucide-react"
+import { type ChangeEvent, useEffect, useState } from "react"
 import { OrdersTab } from "@/components/admin/orders-tab"
 import { ProductsTab } from "@/components/admin/products-tab"
 import Footer from "@/components/footer"
@@ -18,20 +32,6 @@ import { supabase } from "@/integrations/supabase/client"
 import type { Database } from "@/integrations/supabase/types"
 import { formatPrice } from "@/lib/format"
 import { uploadSiteDocument } from "@/lib/storage"
-import {
-  CheckCircle2,
-  Clock,
-  DollarSign,
-  ExternalLink,
-  FileText,
-  LayoutDashboard,
-  Package,
-  Settings,
-  ShoppingBag,
-  Upload,
-  Users,
-} from "lucide-react"
-import { type ChangeEvent, useEffect, useState } from "react"
 
 type Profile = Database["public"]["Tables"]["profiles"]["Row"]
 

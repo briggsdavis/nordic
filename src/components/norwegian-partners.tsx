@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button"
 import { ArrowRight, Building2, ExternalLink } from "lucide-react"
 import { Link } from "react-router-dom"
+import { Button } from "@/components/ui/button"
 
 const NorwegianPartners = () => {
   return (
@@ -8,12 +8,12 @@ const NorwegianPartners = () => {
       <div className="container mx-auto px-6 lg:px-8">
         {/* Section Header */}
         <div
-          className="animate-fade-in mb-16 text-center opacity-0"
+          className="mb-16 animate-fade-in text-center opacity-0"
           style={{ animationDelay: "0.1s" }}
         >
           <div className="mb-4 inline-flex items-center gap-2 text-muted-foreground">
             <Building2 className="h-4 w-4" />
-            <span className="text-xs uppercase tracking-[0.2em]">Sourcing Partners</span>
+            <span className="text-xs tracking-[0.2em] uppercase">Sourcing Partners</span>
           </div>
           <h2
             id="norwegian-partners-title"
@@ -31,7 +31,7 @@ const NorwegianPartners = () => {
         <div className="space-y-12" aria-label="Norwegian partners">
           {/* Brødrene Remø - Text Left, Image Right */}
           <div
-            className="animate-fade-in overflow-hidden rounded-2xl border border-border bg-card shadow-lg opacity-0 transition-all duration-300 hover:shadow-xl"
+            className="animate-fade-in overflow-hidden rounded-2xl border border-border bg-card opacity-0 shadow-lg transition-all duration-300 hover:shadow-xl"
             style={{ animationDelay: "0.3s" }}
           >
             <div className="grid gap-8 lg:grid-cols-2">
@@ -76,10 +76,10 @@ const NorwegianPartners = () => {
 
           {/* Fishcorp of Norway - Image Left, Text Right */}
           <div
-            className="animate-fade-in overflow-hidden rounded-2xl border border-border bg-card shadow-lg opacity-0 transition-all duration-300 hover:shadow-xl"
+            className="animate-fade-in overflow-hidden rounded-2xl border border-border bg-card opacity-0 shadow-lg transition-all duration-300 hover:shadow-xl"
             style={{ animationDelay: "0.5s" }}
           >
-            <div className="grid gap-8 lg:grid-cols-2 lg:grid-flow-dense">
+            <div className="grid gap-8 lg:grid-flow-dense lg:grid-cols-2">
               {/* Image - Left */}
               <div className="relative h-64 lg:h-auto">
                 <img
@@ -126,7 +126,7 @@ const NorwegianPartners = () => {
 
         {/* Culinary Opportunity CTA */}
         <div
-          className="animate-fade-in mt-16 text-center opacity-0"
+          className="mt-16 animate-fade-in text-center opacity-0"
           style={{ animationDelay: "0.7s" }}
         >
           <p className="mb-4 text-lg text-muted-foreground">
@@ -136,7 +136,7 @@ const NorwegianPartners = () => {
             asChild
             variant="outline"
             size="lg"
-            className="gap-2 text-sm font-medium uppercase tracking-wide"
+            className="gap-2 text-sm font-medium tracking-wide uppercase"
           >
             <Link to="/for-chefs">
               For Chefs

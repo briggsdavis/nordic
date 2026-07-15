@@ -1,11 +1,11 @@
+import { ChevronDown, FileText, Loader2, MapPin, Phone, User } from "lucide-react"
+import { useState } from "react"
 import { ShipmentTimeline } from "@/components/shipment/shipment-timeline"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import type { OrderWithItems } from "@/hooks/use-orders"
 import { formatDate, formatPrice } from "@/lib/format"
 import { openStorageFile } from "@/lib/storage"
-import { ChevronDown, FileText, Loader2, MapPin, Phone, User } from "lucide-react"
-import { useState } from "react"
 import { OrderStatusBadge } from "./order-status-badge"
 
 interface OrderCardProps {
@@ -29,7 +29,7 @@ export const OrderCard = ({ order }: OrderCardProps) => {
     <Card>
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
         <CollapsibleTrigger asChild>
-          <CardHeader className="cursor-pointer p-6 hover:bg-muted/40 transition-colors rounded-t-lg select-none">
+          <CardHeader className="cursor-pointer rounded-t-lg p-6 transition-colors select-none hover:bg-muted/40">
             <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
               <div className="flex items-center gap-3">
                 <div className="space-y-1">
@@ -43,7 +43,7 @@ export const OrderCard = ({ order }: OrderCardProps) => {
               <div className="flex items-center gap-4">
                 <span className="font-medium">{formatPrice(Number(order.total_amount))}</span>
                 <ChevronDown
-                  className={`h-4 w-4 transition-transform text-muted-foreground ${isOpen ? "rotate-180" : ""}`}
+                  className={`h-4 w-4 text-muted-foreground transition-transform ${isOpen ? "rotate-180" : ""}`}
                 />
               </div>
             </div>

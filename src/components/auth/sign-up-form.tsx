@@ -1,3 +1,10 @@
+import { zodResolver } from "@hookform/resolvers/zod"
+import { AuthError } from "@supabase/supabase-js"
+import { Building2, Loader2, User } from "lucide-react"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
+import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -12,13 +19,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useToast } from "@/hooks/use-toast"
 import { supabase } from "@/integrations/supabase/client"
 import { formatPhoneNumber, unformatPhoneNumber } from "@/lib/phone-utils"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { AuthError } from "@supabase/supabase-js"
-import { Building2, Loader2, User } from "lucide-react"
-import { useState } from "react"
-import { useForm } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
-import { z } from "zod"
 
 const signUpSchema = z
   .object({

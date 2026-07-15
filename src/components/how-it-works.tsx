@@ -29,7 +29,7 @@ const HowItWorks = () => {
     <section className="bg-secondary py-20 lg:py-28" aria-labelledby="how-it-works-title">
       <div className="container mx-auto px-6 lg:px-8">
         <div className="mb-12 text-center">
-          <p className="mb-4 text-xs uppercase tracking-[0.3em] text-primary">Simple Process</p>
+          <p className="mb-4 text-xs tracking-[0.3em] text-primary uppercase">Simple Process</p>
           <h2 id="how-it-works-title" className="font-serif text-4xl text-foreground md:text-5xl">
             How It Works
           </h2>
@@ -38,7 +38,7 @@ const HowItWorks = () => {
         {/* Timeline */}
         <div className="relative mx-auto max-w-5xl">
           {/* Horizontal connector line (desktop) */}
-          <div className="absolute left-0 right-0 top-16 hidden h-px bg-border lg:block" />
+          <div className="absolute top-16 right-0 left-0 hidden h-px bg-border lg:block" />
 
           <div className="grid gap-12 lg:grid-cols-3 lg:gap-8">
             {steps.map((step, index) => (
@@ -49,7 +49,7 @@ const HowItWorks = () => {
                 </div>
 
                 {/* Step number */}
-                <p className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-primary">
+                <p className="mb-2 text-xs font-medium tracking-[0.2em] text-primary uppercase">
                   Step {step.step}
                 </p>
 

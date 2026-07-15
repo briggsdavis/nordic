@@ -1,3 +1,5 @@
+import { ChevronDown, Pencil, Plus, Trash2, X } from "lucide-react"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -10,16 +12,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { toast } from "@/hooks/use-toast"
 import { useAdminProducts, type ProductWithOptions } from "@/hooks/use-admin-products"
+import { toast } from "@/hooks/use-toast"
 import { formatPrice } from "@/lib/format"
-import { ChevronDown, Pencil, Plus, Trash2, X } from "lucide-react"
-import { useState } from "react"
 import { DeleteProductDialog } from "./delete-product-dialog"
-import {
-  ProductFormDialog,
-  type ProductFormSubmission,
-} from "./product-form-dialog"
+import { ProductFormDialog, type ProductFormSubmission } from "./product-form-dialog"
 
 type Product = ProductWithOptions
 

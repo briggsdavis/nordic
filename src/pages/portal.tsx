@@ -1,3 +1,16 @@
+import {
+  Award,
+  Building2,
+  ChevronDown,
+  FileCheck,
+  FileText,
+  Package,
+  Save,
+  ShieldCheck,
+  User,
+} from "lucide-react"
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import certificateOfCompetence from "@/assets/certificate-of-competence.pdf"
 import freeSaleCertificate from "@/assets/free-sale-certificate.pdf"
 import managementSystemCertificate from "@/assets/management-system-certificate.pdf"
@@ -19,26 +32,13 @@ import { Input } from "@/components/ui/input"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useAuth } from "@/contexts/auth-context"
-import { useToast } from "@/hooks/use-toast"
 import { useOrders } from "@/hooks/use-orders"
 import { useSiteSettings } from "@/hooks/use-site-settings"
+import { useToast } from "@/hooks/use-toast"
 import { supabase } from "@/integrations/supabase/client"
 import type { Database } from "@/integrations/supabase/types"
 import { formatPhoneNumber } from "@/lib/phone-utils"
 import { extractFilePath, getSignedUrl } from "@/lib/storage"
-import {
-  Award,
-  Building2,
-  ChevronDown,
-  FileCheck,
-  FileText,
-  Package,
-  Save,
-  ShieldCheck,
-  User,
-} from "lucide-react"
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
 
 type AccountType = Database["public"]["Enums"]["account_type"]
 

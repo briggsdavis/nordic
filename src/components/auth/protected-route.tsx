@@ -1,7 +1,7 @@
-import { Skeleton } from "@/components/ui/skeleton"
-import { useAuth } from "@/contexts/auth-context"
 import { ReactNode, useEffect, useState } from "react"
 import { Navigate, useLocation } from "react-router-dom"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useAuth } from "@/contexts/auth-context"
 
 interface ProtectedRouteProps {
   children: ReactNode

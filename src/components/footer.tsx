@@ -1,5 +1,5 @@
-import { useSiteSettings } from "@/hooks/use-site-settings"
 import { Mail, MapPin, Phone } from "lucide-react"
+import { useSiteSettings } from "@/hooks/use-site-settings"
 
 const Footer = () => {
   const { data: settings } = useSiteSettings()

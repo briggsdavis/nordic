@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button"
 import { Award, MapPin, Package, ShoppingBag } from "lucide-react"
 import { Link } from "react-router-dom"
+import { Button } from "@/components/ui/button"
 
 const ServiceHighlight = () => {
   return (
@@ -11,7 +11,7 @@ const ServiceHighlight = () => {
           <div className="animate-fade-in space-y-8 opacity-0" style={{ animationDelay: "0.2s" }}>
             {/* Header */}
             <div>
-              <p className="mb-4 text-xs uppercase tracking-[0.3em] text-primary">How It Works</p>
+              <p className="mb-4 text-xs tracking-[0.3em] text-primary uppercase">How It Works</p>
               <h2 className="mb-6 font-serif text-4xl text-foreground md:text-5xl">
                 Sushi Grade Norwegian Salmon, Direct to Your Door
               </h2>
@@ -82,7 +82,7 @@ const ServiceHighlight = () => {
               <Button
                 asChild
                 size="lg"
-                className="gap-2 px-8 py-6 text-sm font-medium uppercase tracking-wide"
+                className="gap-2 px-8 py-6 text-sm font-medium tracking-wide uppercase"
               >
                 <Link to="/products">
                   <ShoppingBag className="h-4 w-4" />
@@ -94,18 +94,18 @@ const ServiceHighlight = () => {
 
           {/* Right Image */}
           <div
-            className="animate-fade-in relative opacity-0 lg:order-last"
+            className="relative animate-fade-in opacity-0 lg:order-last"
             style={{ animationDelay: "0.4s" }}
           >
             <div className="relative overflow-hidden rounded-2xl shadow-2xl">
               <img
                 src="/replacer.jpg"
                 alt="Norwegian salmon delivery route map from fjords to Ethiopia"
-                className="w-full h-auto"
+                className="h-auto w-full"
               />
               {/* Overlay Badge */}
-              <div className="absolute bottom-6 left-6 right-6 rounded-xl bg-card/95 p-6 backdrop-blur-sm">
-                <p className="mb-2 text-xs uppercase tracking-wide text-muted-foreground">
+              <div className="absolute right-6 bottom-6 left-6 rounded-xl bg-card/95 p-6 backdrop-blur-sm">
+                <p className="mb-2 text-xs tracking-wide text-muted-foreground uppercase">
                   Premium Quality
                 </p>
                 <p className="font-serif text-xl text-foreground">Norwegian Atlantic Salmon</p>
@@ -116,7 +116,7 @@ const ServiceHighlight = () => {
             </div>
 
             {/* Decorative Element */}
-            <div className="absolute -right-4 -top-4 -z-10 h-72 w-72 rounded-full bg-primary/5 blur-3xl" />
+            <div className="absolute -top-4 -right-4 -z-10 h-72 w-72 rounded-full bg-primary/5 blur-3xl" />
           </div>
         </div>
       </div>

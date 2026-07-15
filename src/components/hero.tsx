@@ -1,7 +1,7 @@
-import heroBanner from "@/assets/hero-banner.jpg"
-import { Button } from "@/components/ui/button"
 import { ChevronDown } from "lucide-react"
 import { Link } from "react-router-dom"
+import heroBanner from "@/assets/hero-banner.jpg"
+import { Button } from "@/components/ui/button"
 
 const Hero = () => {
   return (
@@ -20,11 +20,11 @@ const Hero = () => {
       </div>
 
       {/* Content */}
-      <div className="container relative z-10 mx-auto px-6 text-center lg:px-8">
+      <div className="relative z-10 container mx-auto px-6 text-center lg:px-8">
         <div className="mx-auto max-w-4xl">
           {/* Tagline */}
           <p
-            className="mb-6 animate-fade-in-up text-xs uppercase tracking-[0.3em] text-card/80 opacity-0 md:text-sm"
+            className="mb-6 animate-fade-in-up text-xs tracking-[0.3em] text-card/80 uppercase opacity-0 md:text-sm"
             style={{ animationDelay: "0.2s" }}
           >
             Exclusively from the fjords
@@ -43,7 +43,7 @@ const Hero = () => {
 
           {/* Subheadline */}
           <p
-            className="mx-auto mb-10 max-w-2xl animate-fade-in-up text-lg font-light leading-relaxed text-card/90 opacity-0 md:text-xl"
+            className="mx-auto mb-10 max-w-2xl animate-fade-in-up text-lg leading-relaxed font-light text-card/90 opacity-0 md:text-xl"
             style={{ animationDelay: "0.6s" }}
           >
             Norwegian salmon, delivered directly to Ethiopia. Temperature-controlled, traceable, and
@@ -58,7 +58,7 @@ const Hero = () => {
             <Button
               asChild
               size="lg"
-              className="w-full bg-primary px-8 py-6 text-sm font-medium uppercase tracking-wide text-primary-foreground hover:bg-primary/90 sm:w-auto"
+              className="w-full bg-primary px-8 py-6 text-sm font-medium tracking-wide text-primary-foreground uppercase hover:bg-primary/90 sm:w-auto"
             >
               <Link to="/products">Order Now</Link>
             </Button>
@@ -66,7 +66,7 @@ const Hero = () => {
               asChild
               variant="outline"
               size="lg"
-              className="w-full border-white/40 bg-transparent px-8 py-6 text-sm font-medium uppercase tracking-wide text-white hover:bg-white/10 hover:text-white sm:w-auto"
+              className="w-full border-white/40 bg-transparent px-8 py-6 text-sm font-medium tracking-wide text-white uppercase hover:bg-white/10 hover:text-white sm:w-auto"
             >
               <Link to="/for-chefs">For Chefs</Link>
             </Button>
@@ -79,7 +79,7 @@ const Hero = () => {
         className="absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 animate-fade-in flex-col items-center gap-2 opacity-0"
         style={{ animationDelay: "1.2s" }}
       >
-        <span className="text-xs uppercase tracking-[0.2em] text-card/60">Scroll to discover</span>
+        <span className="text-xs tracking-[0.2em] text-card/60 uppercase">Scroll to discover</span>
         <ChevronDown className="h-5 w-5 animate-bounce-subtle text-card/60" />
       </div>
     </section>

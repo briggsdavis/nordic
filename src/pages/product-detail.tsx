@@ -1,3 +1,7 @@
+import { useQuery } from "@tanstack/react-query"
+import { ArrowLeft, Info, Minus, Plus, ShoppingCart } from "lucide-react"
+import { useState } from "react"
+import { useNavigate, useParams } from "react-router-dom"
 import Footer from "@/components/footer"
 import Header from "@/components/header"
 import { AvailabilityBadge } from "@/components/products/availability-badge"
@@ -15,10 +19,6 @@ import { useCart } from "@/hooks/use-cart"
 import type { ProductOption } from "@/hooks/use-products"
 import { supabase } from "@/integrations/supabase/client"
 import { formatPrice } from "@/lib/format"
-import { useQuery } from "@tanstack/react-query"
-import { ArrowLeft, Info, Minus, Plus, ShoppingCart } from "lucide-react"
-import { useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
 
 const variants = [
   { value: "100g", label: "100g", weight: 1 },
@@ -144,7 +144,7 @@ const ProductDetail = () => {
     <div className="min-h-screen bg-background">
       <Header />
 
-      <main className="container mx-auto px-6 pb-32 pt-8">
+      <main className="container mx-auto px-6 pt-8 pb-32">
         {/* Back Button */}
         <Button variant="ghost" className="mb-8 gap-2" onClick={() => navigate("/products")}>
           <ArrowLeft className="h-4 w-4" />
@@ -182,11 +182,7 @@ const ProductDetail = () => {
                     }`}
                     aria-label={`View product image ${index + 1}`}
                   >
-                    <img
-                      src={image.image_url}
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
+                    <img src={image.image_url} alt="" className="h-full w-full object-cover" />
                   </button>
                 ))}
               </div>
@@ -194,10 +190,8 @@ const ProductDetail = () => {
 
             {product.specifications?.trim() ? (
               <section className="border-t pt-6">
-                <h2 className="mb-3 font-serif text-2xl text-foreground">
-                  Product Specifications
-                </h2>
-                <p className="whitespace-pre-line leading-relaxed text-muted-foreground">
+                <h2 className="mb-3 font-serif text-2xl text-foreground">Product Specifications</h2>
+                <p className="leading-relaxed whitespace-pre-line text-muted-foreground">
                   {product.specifications}
                 </p>
               </section>

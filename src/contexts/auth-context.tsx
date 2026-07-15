@@ -1,8 +1,8 @@
+import { Session, User } from "@supabase/supabase-js"
+import { createContext, ReactNode, useContext, useEffect, useRef, useState } from "react"
 import { useToast } from "@/hooks/use-toast"
 import { supabase } from "@/integrations/supabase/client"
 import type { Database } from "@/integrations/supabase/types"
-import { Session, User } from "@supabase/supabase-js"
-import { createContext, ReactNode, useContext, useEffect, useRef, useState } from "react"
 
 type Profile = Database["public"]["Tables"]["profiles"]["Row"]
 type AppRole = Database["public"]["Enums"]["app_role"]

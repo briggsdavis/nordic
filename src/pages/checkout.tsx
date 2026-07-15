@@ -1,3 +1,6 @@
+import { AlertTriangle, ArrowLeft, Check, Copy, Loader2, Upload } from "lucide-react"
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import Footer from "@/components/footer"
 import Header from "@/components/header"
 import {
@@ -15,15 +18,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useAuth } from "@/contexts/auth-context"
-import { useToast } from "@/hooks/use-toast"
 import { useCart } from "@/hooks/use-cart"
 import { useOrders } from "@/hooks/use-orders"
 import { useSiteSettings } from "@/hooks/use-site-settings"
+import { useToast } from "@/hooks/use-toast"
 import { supabase } from "@/integrations/supabase/client"
 import { formatPrice } from "@/lib/format"
-import { AlertTriangle, ArrowLeft, Check, Copy, Loader2, Upload } from "lucide-react"
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 
@@ -189,7 +189,7 @@ const Checkout = () => {
 
             {/* Highlighted Total */}
             <div className="rounded-xl bg-primary/10 px-6 py-4 text-center">
-              <p className="mb-1 text-xs uppercase tracking-widest text-primary">
+              <p className="mb-1 text-xs tracking-widest text-primary uppercase">
                 Amount to Transfer
               </p>
               <p className="font-serif text-4xl font-medium text-primary">

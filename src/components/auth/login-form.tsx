@@ -1,3 +1,10 @@
+import { zodResolver } from "@hookform/resolvers/zod"
+import { AuthError } from "@supabase/supabase-js"
+import { Loader2 } from "lucide-react"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
+import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -10,13 +17,6 @@ import {
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/hooks/use-toast"
 import { supabase } from "@/integrations/supabase/client"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { AuthError } from "@supabase/supabase-js"
-import { Loader2 } from "lucide-react"
-import { useState } from "react"
-import { useForm } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
-import { z } from "zod"
 
 const loginSchema = z.object({
   email: z.string().trim().email({ message: "Invalid email address" }),

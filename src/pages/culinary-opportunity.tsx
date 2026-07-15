@@ -1,9 +1,9 @@
-import Footer from "@/components/footer"
-import Header from "@/components/header"
-import { Button } from "@/components/ui/button"
 import { ArrowRight, ChefHat, ShoppingBag, Users } from "lucide-react"
 import { useEffect } from "react"
 import { Link } from "react-router-dom"
+import Footer from "@/components/footer"
+import Header from "@/components/header"
+import { Button } from "@/components/ui/button"
 
 const galleryImages = [
   { src: "/c1.jpg", alt: "Premium Norwegian salmon preparation" },
@@ -46,10 +46,10 @@ const CulinaryOpportunity = () => {
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-transparent" />
           </div>
 
-          <div className="container relative z-10 mx-auto px-6 text-center lg:px-8">
+          <div className="relative z-10 container mx-auto px-6 text-center lg:px-8">
             <div className="mx-auto max-w-3xl">
               <p
-                className="mb-4 animate-fade-in-up text-xs uppercase tracking-[0.3em] text-card/80 opacity-0 md:text-sm"
+                className="mb-4 animate-fade-in-up text-xs tracking-[0.3em] text-card/80 uppercase opacity-0 md:text-sm"
                 style={{ animationDelay: "0.2s" }}
               >
                 For Chefs
@@ -68,7 +68,7 @@ const CulinaryOpportunity = () => {
                 <Button
                   asChild
                   size="lg"
-                  className="w-full bg-primary px-8 py-6 text-sm font-medium uppercase tracking-wide text-primary-foreground hover:bg-primary/90 sm:w-auto"
+                  className="w-full bg-primary px-8 py-6 text-sm font-medium tracking-wide text-primary-foreground uppercase hover:bg-primary/90 sm:w-auto"
                 >
                   <Link to="/products">
                     <ShoppingBag className="mr-2 h-4 w-4" />
@@ -79,7 +79,7 @@ const CulinaryOpportunity = () => {
                   asChild
                   variant="outline"
                   size="lg"
-                  className="w-full border-white/40 bg-transparent px-8 py-6 text-sm font-medium uppercase tracking-wide text-white hover:bg-white/10 hover:text-white sm:w-auto"
+                  className="w-full border-white/40 bg-transparent px-8 py-6 text-sm font-medium tracking-wide text-white uppercase hover:bg-white/10 hover:text-white sm:w-auto"
                 >
                   <Link to="/contact">
                     <Users className="mr-2 h-4 w-4" />
@@ -97,7 +97,7 @@ const CulinaryOpportunity = () => {
             <div className="mx-auto max-w-3xl text-center">
               <div className="mb-4 inline-flex items-center gap-2 text-muted-foreground">
                 <ChefHat className="h-4 w-4" />
-                <span className="text-xs uppercase tracking-[0.3em]">For Chefs & Businesses</span>
+                <span className="text-xs tracking-[0.3em] uppercase">For Chefs & Businesses</span>
               </div>
               <h2 className="mb-6 font-serif text-3xl text-foreground md:text-4xl">
                 A Gateway to Culinary Excellence
@@ -124,7 +124,7 @@ const CulinaryOpportunity = () => {
             {/* Left Sticky Panel */}
             <div className="flex items-center justify-center bg-foreground px-6 py-20 lg:sticky lg:top-0 lg:h-screen lg:py-0">
               <div className="max-w-md text-center">
-                <p className="mb-6 text-xs uppercase tracking-[0.3em] text-card/60">
+                <p className="mb-6 text-xs tracking-[0.3em] text-card/60 uppercase">
                   Discover the Possibilities
                 </p>
                 <h2 className="mb-8 font-serif text-4xl leading-tight text-card md:text-5xl">
@@ -162,7 +162,7 @@ const CulinaryOpportunity = () => {
           <div className="container mx-auto px-6 lg:px-8">
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
               <div>
-                <p className="mb-4 text-xs uppercase tracking-[0.3em] text-primary">For Chefs</p>
+                <p className="mb-4 text-xs tracking-[0.3em] text-primary uppercase">For Chefs</p>
                 <h2 className="mb-6 font-serif text-3xl text-foreground md:text-4xl">
                   Transform Your Menu
                 </h2>
@@ -180,7 +180,7 @@ const CulinaryOpportunity = () => {
                 <Button
                   asChild
                   size="lg"
-                  className="gap-2 px-8 py-6 text-sm font-medium uppercase tracking-wide"
+                  className="gap-2 px-8 py-6 text-sm font-medium tracking-wide uppercase"
                 >
                   <Link to="/products">
                     Order Now
@@ -211,7 +211,7 @@ const CulinaryOpportunity = () => {
                 />
               </div>
               <div>
-                <p className="mb-4 text-xs uppercase tracking-[0.3em] text-primary">
+                <p className="mb-4 text-xs tracking-[0.3em] text-primary uppercase">
                   For Hotels, Restaurants & Retailers
                 </p>
                 <h2 className="mb-6 font-serif text-3xl text-foreground md:text-4xl">
@@ -229,7 +229,7 @@ const CulinaryOpportunity = () => {
                 <Button
                   asChild
                   size="lg"
-                  className="gap-2 px-8 py-6 text-sm font-medium uppercase tracking-wide"
+                  className="gap-2 px-8 py-6 text-sm font-medium tracking-wide uppercase"
                 >
                   <Link to="/contact">
                     Discuss a Partnership
@@ -255,7 +255,7 @@ const CulinaryOpportunity = () => {
               <Button
                 asChild
                 size="lg"
-                className="w-full gap-2 bg-primary px-8 py-6 text-sm font-medium uppercase tracking-wide text-primary-foreground hover:bg-primary/90 sm:w-auto"
+                className="w-full gap-2 bg-primary px-8 py-6 text-sm font-medium tracking-wide text-primary-foreground uppercase hover:bg-primary/90 sm:w-auto"
               >
                 <Link to="/products">
                   <ShoppingBag className="h-4 w-4" />
@@ -266,7 +266,7 @@ const CulinaryOpportunity = () => {
                 asChild
                 variant="outline"
                 size="lg"
-                className="w-full gap-2 border-card/30 bg-transparent px-8 py-6 text-sm font-medium uppercase tracking-wide text-card hover:bg-card/10 hover:text-card sm:w-auto"
+                className="w-full gap-2 border-card/30 bg-transparent px-8 py-6 text-sm font-medium tracking-wide text-card uppercase hover:bg-card/10 hover:text-card sm:w-auto"
               >
                 <Link to="/contact">
                   <Users className="h-4 w-4" />

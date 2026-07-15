@@ -1,3 +1,6 @@
+import { ChevronDown, ChevronRight, LogOut, Menu, Shield, User, X } from "lucide-react"
+import { useEffect, useState } from "react"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { CartSheet } from "@/components/cart/cart-sheet"
 import { Button } from "@/components/ui/button"
 import {
@@ -8,9 +11,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useAuth } from "@/contexts/auth-context"
-import { ChevronDown, ChevronRight, LogOut, Menu, Shield, User, X } from "lucide-react"
-import { useEffect, useState } from "react"
-import { Link, useLocation, useNavigate } from "react-router-dom"
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -54,7 +54,7 @@ const Header = () => {
 
   return (
     <header
-      className={`sticky left-0 right-0 top-0 z-50 duration-300 ${
+      className={`sticky top-0 right-0 left-0 z-50 duration-300 ${
         isScrolled || !hasHeroImage ? "bg-card/95" : "bg-gradient-to-b from-black/40 to-transparent"
       }`}
     >
@@ -78,7 +78,7 @@ const Header = () => {
                 <Link
                   key={link.href}
                   to={link.href}
-                  className={`whitespace-nowrap text-sm font-medium uppercase tracking-wide transition-colors hover:text-primary ${
+                  className={`text-sm font-medium tracking-wide whitespace-nowrap uppercase transition-colors hover:text-primary ${
                     isScrolled || !hasHeroImage ? "text-foreground" : "text-card"
                   }`}
                 >
@@ -88,7 +88,7 @@ const Header = () => {
                 <a
                   key={link.href}
                   href={link.href}
-                  className={`whitespace-nowrap text-sm font-medium uppercase tracking-wide transition-colors hover:text-primary ${
+                  className={`text-sm font-medium tracking-wide whitespace-nowrap uppercase transition-colors hover:text-primary ${
                     isScrolled || !hasHeroImage ? "text-foreground" : "text-card"
                   }`}
                 >
@@ -176,7 +176,7 @@ const Header = () => {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="absolute left-4 right-4 top-full mt-2 animate-fade-in rounded-2xl bg-card shadow-2xl ring-1 ring-border lg:hidden">
+          <div className="absolute top-full right-4 left-4 mt-2 animate-fade-in rounded-2xl bg-card shadow-2xl ring-1 ring-border lg:hidden">
             <nav className="flex flex-col p-2">
               {/* Nav Links */}
               {navLinks.map((link) => (
@@ -224,7 +224,7 @@ const Header = () => {
               {/* Sign Out */}
               {user && (
                 <button
-                  className="mt-2 border-t border-border pb-2 pt-3 text-center text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  className="mt-2 border-t border-border pt-3 pb-2 text-center text-sm text-muted-foreground transition-colors hover:text-foreground"
                   onClick={() => {
                     handleSignOut()
                     setIsMobileMenuOpen(false)

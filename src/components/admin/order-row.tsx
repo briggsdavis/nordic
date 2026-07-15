@@ -1,3 +1,18 @@
+import {
+  CheckCircle2,
+  ChevronDown,
+  ExternalLink,
+  FileText,
+  Loader2,
+  Mail,
+  MapPin,
+  Package,
+  Phone,
+  Trash2,
+  User,
+  XCircle,
+} from "lucide-react"
+import { useEffect, useState } from "react"
 import { ShipmentStageManager } from "@/components/admin/shipment-stage-manager"
 import { OrderStatusBadge } from "@/components/orders/order-status-badge"
 import { Button } from "@/components/ui/button"
@@ -24,21 +39,6 @@ import type { Database } from "@/integrations/supabase/types"
 import { formatDate, formatPrice } from "@/lib/format"
 import { openStorageFile } from "@/lib/storage"
 import { cn } from "@/lib/utils"
-import {
-  CheckCircle2,
-  ChevronDown,
-  ExternalLink,
-  FileText,
-  Loader2,
-  Mail,
-  MapPin,
-  Package,
-  Phone,
-  Trash2,
-  User,
-  XCircle,
-} from "lucide-react"
-import { useEffect, useState } from "react"
 
 type OrderStatus = Database["public"]["Enums"]["order_status"]
 
@@ -115,7 +115,7 @@ export const OrderRow = ({
         <TableCell onClick={(e) => e.stopPropagation()}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="cursor-pointer rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              <button className="cursor-pointer rounded focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none">
                 <OrderStatusBadge status={order.status} />
               </button>
             </DropdownMenuTrigger>
@@ -148,7 +148,7 @@ export const OrderRow = ({
               {/* Customer + Delivery */}
               <div className="grid gap-6 md:grid-cols-2">
                 <div>
-                  <h4 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  <h4 className="mb-3 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
                     Customer
                   </h4>
                   <div className="space-y-2">
@@ -174,7 +174,7 @@ export const OrderRow = ({
                 </div>
 
                 <div>
-                  <h4 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  <h4 className="mb-3 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
                     Delivery
                   </h4>
                   <div className="space-y-2">
@@ -200,7 +200,7 @@ export const OrderRow = ({
 
               {/* Order Items */}
               <div>
-                <h4 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                <h4 className="mb-3 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
                   Items
                 </h4>
                 <div className="space-y-2">
@@ -227,7 +227,7 @@ export const OrderRow = ({
                       <span className="font-medium">{formatPrice(Number(item.subtotal))}</span>
                     </div>
                   ))}
-                  <div className="flex items-center justify-between border-t pt-2 font-semibold text-sm">
+                  <div className="flex items-center justify-between border-t pt-2 text-sm font-semibold">
                     <span>Total</span>
                     <span>{formatPrice(Number(order.total_amount))}</span>
                   </div>
@@ -236,7 +236,7 @@ export const OrderRow = ({
 
               {/* Documents */}
               <div className="flex flex-wrap items-center gap-3">
-                <h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                <h4 className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
                   Docs:
                 </h4>
                 {order.payment_receipt_url ? (
@@ -289,7 +289,7 @@ export const OrderRow = ({
                 order.status === "shipped" ||
                 order.status === "delivered") && (
                 <div>
-                  <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  <h4 className="mb-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
                     Shipment Tracking
                   </h4>
                   <ShipmentStageManager orderId={order.id} onAllStagesComplete={onComplete} />
@@ -322,7 +322,7 @@ export const OrderRow = ({
               {/* Reject Reason (shown when rejected) */}
               {order.status === "rejected" && order.reject_reason && (
                 <div className="rounded-md border border-destructive/30 bg-destructive/5 p-3 text-sm">
-                  <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-destructive">
+                  <p className="mb-1 text-xs font-semibold tracking-wide text-destructive uppercase">
                     Reject Reason
                   </p>
                   <p className="text-muted-foreground">{order.reject_reason}</p>

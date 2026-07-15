@@ -1,10 +1,10 @@
+import { ArrowRight } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 import { AvailabilityBadge } from "@/components/products/availability-badge"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useProducts } from "@/hooks/use-products"
 import { formatPrice } from "@/lib/format"
-import { ArrowRight } from "lucide-react"
-import { useNavigate } from "react-router-dom"
 
 const CatalogTeaser = () => {
   const { data: products, isLoading } = useProducts()
@@ -15,11 +15,11 @@ const CatalogTeaser = () => {
       <div className="container mx-auto px-6 lg:px-8">
         {/* Section Header */}
         <div
-          className="animate-fade-in mb-16 flex flex-col opacity-0 md:flex-row md:items-end md:justify-between"
+          className="mb-16 flex animate-fade-in flex-col opacity-0 md:flex-row md:items-end md:justify-between"
           style={{ animationDelay: "0.1s" }}
         >
           <div>
-            <p className="mb-4 text-xs uppercase tracking-[0.3em] text-primary">Order</p>
+            <p className="mb-4 text-xs tracking-[0.3em] text-primary uppercase">Order</p>
             <h2 className="font-serif text-4xl text-foreground md:text-5xl">Premium Selection</h2>
           </div>
           <Button
@@ -27,14 +27,14 @@ const CatalogTeaser = () => {
             className="group mt-6 gap-2 md:mt-0"
             onClick={() => navigate("/products")}
           >
-            <span className="text-sm uppercase tracking-wide">Order Now</span>
+            <span className="text-sm tracking-wide uppercase">Order Now</span>
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Button>
         </div>
 
         {/* Products Grid */}
         <div
-          className="animate-fade-in mb-16 grid gap-8 opacity-0 md:grid-cols-3"
+          className="mb-16 grid animate-fade-in gap-8 opacity-0 md:grid-cols-3"
           style={{ animationDelay: "0.3s" }}
         >
           {isLoading ? (

@@ -1,7 +1,7 @@
-import { useShipmentStageDefinitions, useShipmentStages } from "@/hooks/use-shipment-tracking"
-import { cn } from "@/lib/utils"
 import { Check, Clock } from "lucide-react"
 import { Fragment } from "react"
+import { useShipmentStageDefinitions, useShipmentStages } from "@/hooks/use-shipment-tracking"
+import { cn } from "@/lib/utils"
 
 interface ShipmentTimelineProps {
   orderId: string
@@ -110,7 +110,7 @@ export const ShipmentTimeline = ({
                         </p>
                       )}
                       {stage.admin_notes && !compact && (
-                        <p className="mt-1 text-xs italic text-muted-foreground">
+                        <p className="mt-1 text-xs text-muted-foreground italic">
                           {stage.admin_notes}
                         </p>
                       )}
@@ -127,7 +127,7 @@ export const ShipmentTimeline = ({
                     {def.stage_number}
                   </div>
                   <div className="mt-2 w-24 text-center">
-                    <p className="text-xs font-medium leading-tight text-muted-foreground">
+                    <p className="text-xs leading-tight font-medium text-muted-foreground">
                       {def.stage_name}
                     </p>
                   </div>

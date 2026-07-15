@@ -1,3 +1,9 @@
+import { zodResolver } from "@hookform/resolvers/zod"
+import { ChevronLeft, ChevronRight, Star, Upload, X } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
+import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
@@ -14,12 +20,6 @@ import { Textarea } from "@/components/ui/textarea"
 import type { Tables } from "@/integrations/supabase/types"
 import { MAX_FILE_SIZE, formatFileSizeError } from "@/lib/format"
 import { deleteProductImage, uploadProductImage } from "@/lib/storage"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { ChevronLeft, ChevronRight, Star, Upload, X } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import { z } from "zod"
 
 type Product = Tables<"products"> & { product_images: Tables<"product_images">[] }
 
@@ -314,11 +314,7 @@ export function ProductFormDialog({
                 <FormItem>
                   <FormLabel>Product Specifications</FormLabel>
                   <FormControl>
-                    <Textarea
-                      {...field}
-                      placeholder="Product specifications..."
-                      rows={5}
-                    />
+                    <Textarea {...field} placeholder="Product specifications..." rows={5} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -360,7 +356,7 @@ export function ProductFormDialog({
                           className="h-full w-full object-cover"
                         />
                         {index === 0 ? (
-                          <span className="absolute left-2 top-2 rounded bg-primary px-2 py-1 text-xs text-primary-foreground">
+                          <span className="absolute top-2 left-2 rounded bg-primary px-2 py-1 text-xs text-primary-foreground">
                             Primary
                           </span>
                         ) : null}
@@ -460,7 +456,7 @@ export function ProductFormDialog({
               control={form.control}
               name="is_available"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-center space-x-3 space-y-0">
+                <FormItem className="flex flex-row items-center space-y-0 space-x-3">
                   <FormControl>
                     <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
@@ -473,7 +469,7 @@ export function ProductFormDialog({
               control={form.control}
               name="allow_size_selection"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-center space-x-3 space-y-0">
+                <FormItem className="flex flex-row items-center space-y-0 space-x-3">
                   <FormControl>
                     <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>

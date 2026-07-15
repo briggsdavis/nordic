@@ -1,3 +1,5 @@
+import { Package } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 import collectionHero from "@/assets/collection.jpg"
 import Footer from "@/components/footer"
 import Header from "@/components/header"
@@ -5,8 +7,6 @@ import { AvailabilityBadge } from "@/components/products/availability-badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useProducts } from "@/hooks/use-products"
 import { formatPrice } from "@/lib/format"
-import { Package } from "lucide-react"
-import { useNavigate } from "react-router-dom"
 
 const Collection = () => {
   const { data: products, isLoading } = useProducts()
@@ -30,10 +30,10 @@ const Collection = () => {
           </div>
 
           {/* Content */}
-          <div className="container relative z-10 mx-auto px-6 text-center lg:px-8">
+          <div className="relative z-10 container mx-auto px-6 text-center lg:px-8">
             <div className="mx-auto max-w-3xl">
               <p
-                className="mb-4 animate-fade-in-up text-xs uppercase tracking-[0.3em] text-card/80 opacity-0 md:text-sm"
+                className="mb-4 animate-fade-in-up text-xs tracking-[0.3em] text-card/80 uppercase opacity-0 md:text-sm"
                 style={{ animationDelay: "0.2s" }}
               >
                 Order
@@ -45,7 +45,7 @@ const Collection = () => {
                 Premium Norwegian Salmon
               </h1>
               <p
-                className="mx-auto max-w-2xl animate-fade-in-up text-lg font-light leading-relaxed text-card/90 opacity-0"
+                className="mx-auto max-w-2xl animate-fade-in-up text-lg leading-relaxed font-light text-card/90 opacity-0"
                 style={{ animationDelay: "0.6s" }}
               >
                 Browse our selection of premium-grade Atlantic salmon, sourced directly from
@@ -56,10 +56,10 @@ const Collection = () => {
         </section>
 
         {/* Products Section */}
-        <div className="container mx-auto px-6 pb-24 pt-20">
+        <div className="container mx-auto px-6 pt-20 pb-24">
           {isLoading ? (
             <div
-              className="animate-fade-in mx-auto grid max-w-5xl gap-8 opacity-0 md:grid-cols-2 lg:grid-cols-3"
+              className="mx-auto grid max-w-5xl animate-fade-in gap-8 opacity-0 md:grid-cols-2 lg:grid-cols-3"
               style={{ animationDelay: "0.2s" }}
             >
               {[1, 2, 3, 4, 5, 6].map((i) => (
@@ -73,7 +73,7 @@ const Collection = () => {
             </div>
           ) : products && products.length > 0 ? (
             <div
-              className="animate-fade-in mx-auto grid max-w-5xl gap-8 opacity-0 md:grid-cols-2 lg:grid-cols-3"
+              className="mx-auto grid max-w-5xl animate-fade-in gap-8 opacity-0 md:grid-cols-2 lg:grid-cols-3"
               style={{ animationDelay: "0.2s" }}
             >
               {products.map((product) => (
@@ -106,7 +106,7 @@ const Collection = () => {
                       <span className="text-sm font-medium text-primary">
                         {formatPrice(product.price_per_unit)}
                       </span>
-                      <span className="text-xs uppercase tracking-wide text-muted-foreground">
+                      <span className="text-xs tracking-wide text-muted-foreground uppercase">
                         View Details
                       </span>
                     </div>

@@ -74,7 +74,7 @@ const QualityPromise = () => {
       <div className="container mx-auto px-6 lg:px-8">
         {/* Section Header */}
         <div className="mb-20 text-center">
-          <p className="mb-4 text-xs uppercase tracking-[0.3em] text-primary">
+          <p className="mb-4 text-xs tracking-[0.3em] text-primary uppercase">
             Transparency at Every Step
           </p>
           <h2 className="mb-6 font-serif text-4xl text-foreground md:text-5xl lg:text-6xl">
@@ -89,7 +89,7 @@ const QualityPromise = () => {
         {/* Pipeline Steps */}
         <div className="relative mx-auto max-w-5xl">
           {/* Connecting Line */}
-          <div className="absolute bottom-0 left-6 top-0 w-px bg-border md:left-1/2 md:-translate-x-px" />
+          <div className="absolute top-0 bottom-0 left-6 w-px bg-border md:left-1/2 md:-translate-x-px" />
 
           {/* Steps */}
           <ol className="space-y-12 md:space-y-16" aria-label="Cold chain steps">
@@ -123,7 +123,7 @@ const QualityPromise = () => {
                   >
                     {/* Content */}
                     <div className={`w-1/2 ${isEven ? "pr-12 text-right" : "pl-12 text-left"}`}>
-                      <span className="mb-2 block text-xs uppercase tracking-wide text-muted-foreground">
+                      <span className="mb-2 block text-xs tracking-wide text-muted-foreground uppercase">
                         {step.location}
                       </span>
                       <h3 className="mb-2 font-serif text-2xl text-foreground">{step.title}</h3>
@@ -141,7 +141,7 @@ const QualityPromise = () => {
 
                   {/* Mobile Content */}
                   <div className="flex-1 md:hidden">
-                    <span className="mb-1 block text-xs uppercase tracking-wide text-muted-foreground">
+                    <span className="mb-1 block text-xs tracking-wide text-muted-foreground uppercase">
                       {step.location}
                     </span>
                     <h3 className="mb-1 font-serif text-xl text-foreground">{step.title}</h3>

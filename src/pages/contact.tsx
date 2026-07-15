@@ -1,11 +1,11 @@
+import { Clock, Mail, MapPin, MessageSquare, Phone } from "lucide-react"
+import { useEffect } from "react"
 import contactHero from "@/assets/contact.jpg"
 import Footer from "@/components/footer"
 import Header from "@/components/header"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useSiteSettings } from "@/hooks/use-site-settings"
-import { Clock, Mail, MapPin, MessageSquare, Phone } from "lucide-react"
-import { useEffect } from "react"
 
 const Contact = () => {
   const { data: settings } = useSiteSettings()
@@ -47,10 +47,10 @@ const Contact = () => {
           </div>
 
           {/* Content */}
-          <div className="container relative z-10 mx-auto px-6 text-center lg:px-8">
+          <div className="relative z-10 container mx-auto px-6 text-center lg:px-8">
             <div className="mx-auto max-w-3xl">
               <p
-                className="mb-4 animate-fade-in-up text-xs uppercase tracking-[0.3em] text-card/80 opacity-0 md:text-sm"
+                className="mb-4 animate-fade-in-up text-xs tracking-[0.3em] text-card/80 uppercase opacity-0 md:text-sm"
                 style={{ animationDelay: "0.2s" }}
               >
                 Contact Us
@@ -63,7 +63,7 @@ const Contact = () => {
                 Get in Touch Today
               </h1>
               <p
-                className="mx-auto max-w-2xl animate-fade-in-up text-lg font-light leading-relaxed text-card/90 opacity-0"
+                className="mx-auto max-w-2xl animate-fade-in-up text-lg leading-relaxed font-light text-card/90 opacity-0"
                 style={{ animationDelay: "0.6s" }}
               >
                 Whether you run a restaurant, hotel, or retail counter, we deliver chef-ready
@@ -77,7 +77,7 @@ const Contact = () => {
         <section className="py-16 lg:py-24" aria-labelledby="contact-details">
           <div className="container mx-auto px-6 lg:px-8">
             <div
-              className="animate-fade-in mx-auto grid max-w-5xl gap-8 opacity-0 md:grid-cols-2 lg:grid-cols-3"
+              className="mx-auto grid max-w-5xl animate-fade-in gap-8 opacity-0 md:grid-cols-2 lg:grid-cols-3"
               style={{ animationDelay: "0.2s" }}
             >
               <h2 id="contact-details" className="sr-only">
@@ -92,7 +92,7 @@ const Contact = () => {
                   <CardTitle className="font-serif text-xl">Visit Us</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <address className="not-italic text-muted-foreground">
+                  <address className="text-muted-foreground not-italic">
                     South African Street, Shimekit Commercial Center 10/12
                     <br />
                     Woreda 08, Lideta Sub City
@@ -146,7 +146,7 @@ const Contact = () => {
           <div className="container mx-auto px-6 lg:px-8">
             <div className="mx-auto max-w-3xl">
               <div
-                className="animate-fade-in mb-12 text-center opacity-0"
+                className="mb-12 animate-fade-in text-center opacity-0"
                 style={{ animationDelay: "0.1s" }}
               >
                 <h2

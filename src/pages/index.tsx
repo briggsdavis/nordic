@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import CatalogTeaser from "@/components/catalog-teaser"
 import Footer from "@/components/footer"
 import FullTransparency from "@/components/full-transparency"
@@ -7,7 +8,6 @@ import HowItWorks from "@/components/how-it-works"
 import NorwegianPartners from "@/components/norwegian-partners"
 import ServiceHighlight from "@/components/service-highlight"
 import TrimmingGuide from "@/components/trimming-guide"
-import { useEffect } from "react"
 
 const Index = () => {
   useEffect(() => {
