@@ -13,33 +13,45 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import type { Tables } from "@/integrations/supabase/types"
 import { MAX_FILE_SIZE, formatFileSizeError } from "@/lib/format"
-import { deleteProductImage, isSupabaseStorageUrl, uploadProductImage } from "@/lib/storage"
+import { deleteProductImage, uploadProductImage } from "@/lib/storage"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Upload, X } from "lucide-react"
+import { ChevronLeft, ChevronRight, Star, Upload, X } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 
-type Product = Tables<"products">
+type Product = Tables<"products"> & { product_images: Tables<"product_images">[] }
 
 const productSchema = z.object({
   name: z.string().min(1, "Name is required").max(100),
   slug: z.string().min(1, "Slug is required").max(100),
   description: z.string().max(1000).optional(),
+  specifications: z.string().max(5000).optional(),
   price_per_unit: z.coerce.number().min(0, "Price must be positive"),
-  image_url: z.string().url().optional().or(z.literal("")),
   is_available: z.boolean(),
   allow_size_selection: z.boolean(),
 })
 
-type ProductFormValues = z.infer<typeof productSchema>
+export type ProductFormValues = z.infer<typeof productSchema>
+
+export interface ProductFormSubmission {
+  values: ProductFormValues
+  imageUrls: string[]
+}
+
+interface PendingImage {
+  key: string
+  url: string
+  file?: File
+  persisted: boolean
+}
 
 interface ProductFormDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   product?: Product | null
-  onSubmit: (values: ProductFormValues) => void
+  onSubmit: (submission: ProductFormSubmission) => Promise<void>
   isSubmitting: boolean
 }
 
@@ -59,8 +71,9 @@ export function ProductFormDialog({
 }: ProductFormDialogProps) {
   const isEditing = !!product
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const [imageFile, setImageFile] = useState<File | null>(null)
-  const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [images, setImages] = useState<PendingImage[]>([])
+  const [removedImageUrls, setRemovedImageUrls] = useState<string[]>([])
+  const [imageUrlInput, setImageUrlInput] = useState("")
   const [isUploading, setIsUploading] = useState(false)
   const [useUrlMode, setUseUrlMode] = useState(false)
 
@@ -70,8 +83,8 @@ export function ProductFormDialog({
       name: "",
       slug: "",
       description: "",
+      specifications: "",
       price_per_unit: 0,
-      image_url: "",
       is_available: true,
       allow_size_selection: true,
     },
@@ -83,27 +96,46 @@ export function ProductFormDialog({
         name: product.name,
         slug: product.slug,
         description: product.description || "",
+        specifications: product.specifications || "",
         price_per_unit: product.price_per_unit,
-        image_url: product.image_url || "",
         is_available: product.is_available,
         allow_size_selection: product.allow_size_selection,
       })
-      setImagePreview(product.image_url || null)
+      const persistedImages = [...product.product_images]
+        .sort((a, b) => a.sort_order - b.sort_order)
+        .map((image) => ({
+          key: image.id,
+          url: image.image_url,
+          persisted: true,
+        }))
+      setImages((current) => {
+        current.forEach((image) => {
+          if (image.file) URL.revokeObjectURL(image.url)
+        })
+        return persistedImages
+      })
     } else {
       form.reset({
         name: "",
         slug: "",
         description: "",
+        specifications: "",
         price_per_unit: 0,
-        image_url: "",
         is_available: true,
         allow_size_selection: true,
       })
-      setImagePreview(null)
+      setImages((current) => {
+        current.forEach((image) => {
+          if (image.file) URL.revokeObjectURL(image.url)
+        })
+        return []
+      })
     }
-    setImageFile(null)
+    setRemovedImageUrls([])
+    setImageUrlInput("")
     setUseUrlMode(false)
-  }, [product, form])
+    if (fileInputRef.current) fileInputRef.current.value = ""
+  }, [open, product, form])
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.value
@@ -114,63 +146,120 @@ export function ProductFormDialog({
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
+    const files = Array.from(e.target.files || [])
+    if (files.length === 0) return
 
-    if (file.size > MAX_FILE_SIZE) {
-      toast.error(formatFileSizeError(file.size))
+    const oversizedFile = files.find((file) => file.size > MAX_FILE_SIZE)
+    if (oversizedFile) {
+      toast.error(formatFileSizeError(oversizedFile.size))
+      e.target.value = ""
       return
     }
 
-    setImageFile(file)
-    setImagePreview(URL.createObjectURL(file))
-    form.setValue("image_url", "")
+    setImages((current) => [
+      ...current,
+      ...files.map((file) => ({
+        key: crypto.randomUUID(),
+        url: URL.createObjectURL(file),
+        file,
+        persisted: false,
+      })),
+    ])
+    e.target.value = ""
   }
 
-  const clearImage = () => {
-    setImageFile(null)
-    setImagePreview(null)
-    form.setValue("image_url", "")
-    if (fileInputRef.current) fileInputRef.current.value = ""
+  const removeImage = (index: number) => {
+    setImages((current) => {
+      const image = current[index]
+      if (image.file) URL.revokeObjectURL(image.url)
+      if (image.persisted) setRemovedImageUrls((urls) => [...urls, image.url])
+      return current.filter((_, imageIndex) => imageIndex !== index)
+    })
+  }
+
+  const moveImage = (from: number, to: number) => {
+    if (to < 0 || to >= images.length) return
+    setImages((current) => {
+      const next = [...current]
+      const [image] = next.splice(from, 1)
+      next.splice(to, 0, image)
+      return next
+    })
+  }
+
+  const addImageUrl = () => {
+    const parsedUrl = z.string().url().safeParse(imageUrlInput.trim())
+    if (!parsedUrl.success) {
+      toast.error("Enter a valid image URL")
+      return
+    }
+
+    setImages((current) => [
+      ...current,
+      {
+        key: crypto.randomUUID(),
+        url: parsedUrl.data,
+        persisted: false,
+      },
+    ])
+    setImageUrlInput("")
   }
 
   const handleSubmit = async (values: ProductFormValues) => {
-    let imageUrl = values.image_url || undefined
+    setIsUploading(true)
+    const results = await Promise.allSettled(
+      images.map(async (image) => ({
+        url: image.file ? await uploadProductImage(image.file, values.slug) : image.url,
+        uploaded: !!image.file,
+      })),
+    )
 
-    if (imageFile) {
-      const slug = values.slug
-      if (!slug) {
-        toast.error("Slug is required to upload an image")
-        return
-      }
-
-      setIsUploading(true)
-      try {
-        // Delete old Supabase image if replacing
-        const oldUrl = product?.image_url
-        if (oldUrl && isSupabaseStorageUrl(oldUrl)) {
-          await deleteProductImage(oldUrl)
-        }
-
-        imageUrl = await uploadProductImage(imageFile, slug)
-      } catch (err) {
-        toast.error(`Image upload failed: ${err instanceof Error ? err.message : "Unknown error"}`)
-        setIsUploading(false)
-        return
-      }
+    const failedUpload = results.find((result) => result.status === "rejected")
+    if (failedUpload?.status === "rejected") {
+      await Promise.all(
+        results.flatMap((result) =>
+          result.status === "fulfilled" && result.value.uploaded
+            ? [deleteProductImage(result.value.url)]
+            : [],
+        ),
+      )
+      toast.error(
+        `Image upload failed: ${failedUpload.reason instanceof Error ? failedUpload.reason.message : "Unknown error"}`,
+      )
       setIsUploading(false)
+      return
     }
 
-    onSubmit({
-      ...values,
-      description: values.description || undefined,
-      image_url: imageUrl,
-    })
+    const imageUrls = results.flatMap((result) =>
+      result.status === "fulfilled" ? [result.value.url] : [],
+    )
+
+    try {
+      await onSubmit({
+        values: {
+          ...values,
+          description: values.description?.trim() || undefined,
+          specifications: values.specifications?.trim() || undefined,
+        },
+        imageUrls,
+      })
+      await Promise.all(removedImageUrls.map(deleteProductImage))
+    } catch {
+      await Promise.all(
+        results.flatMap((result) =>
+          result.status === "fulfilled" && result.value.uploaded
+            ? [deleteProductImage(result.value.url)]
+            : [],
+        ),
+      )
+    } finally {
+      setIsUploading(false)
+    }
   }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-h-screen overflow-y-auto sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle>{isEditing ? "Edit Product" : "Add New Product"}</DialogTitle>
         </DialogHeader>
@@ -218,6 +307,24 @@ export function ProductFormDialog({
               )}
             />
 
+            <FormField
+              control={form.control}
+              name="specifications"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Product Specifications</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      {...field}
+                      placeholder="Product specifications..."
+                      rows={5}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
@@ -234,45 +341,97 @@ export function ProductFormDialog({
               />
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Product Image</label>
+            <div className="space-y-3">
+              <div>
+                <label className="text-sm font-medium">Product Images</label>
+                <p className="text-xs text-muted-foreground">
+                  The first image is primary. Use the controls to reorder or remove images.
+                </p>
+              </div>
 
-              {(imagePreview || form.watch("image_url")) && (
-                <div className="relative w-full h-40 rounded-md overflow-hidden border">
-                  <img
-                    src={imagePreview || form.watch("image_url")}
-                    alt="Preview"
-                    className="h-full w-full object-cover"
-                  />
-                  <button
-                    type="button"
-                    onClick={clearImage}
-                    className="absolute top-2 right-2 rounded-full bg-black/60 p-1 text-white hover:bg-black/80"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
+              {images.length > 0 ? (
+                <div className="grid grid-cols-2 gap-3">
+                  {images.map((image, index) => (
+                    <div key={image.key} className="overflow-hidden rounded-md border">
+                      <div className="relative h-32 bg-muted">
+                        <img
+                          src={image.url}
+                          alt={`Product image ${index + 1}`}
+                          className="h-full w-full object-cover"
+                        />
+                        {index === 0 ? (
+                          <span className="absolute left-2 top-2 rounded bg-primary px-2 py-1 text-xs text-primary-foreground">
+                            Primary
+                          </span>
+                        ) : null}
+                      </div>
+                      <div className="flex items-center justify-between gap-1 p-2">
+                        <Button
+                          type="button"
+                          variant={index === 0 ? "secondary" : "ghost"}
+                          size="sm"
+                          onClick={() => moveImage(index, 0)}
+                          disabled={index === 0}
+                        >
+                          <Star className={`mr-1 h-3 w-3 ${index === 0 ? "fill-current" : ""}`} />
+                          {index === 0 ? "Primary" : "Make primary"}
+                        </Button>
+                        <div className="flex">
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => moveImage(index, index - 1)}
+                            disabled={index === 0}
+                            aria-label="Move image left"
+                          >
+                            <ChevronLeft className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => moveImage(index, index + 1)}
+                            disabled={index === images.length - 1}
+                            aria-label="Move image right"
+                          >
+                            <ChevronRight className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => removeImage(index)}
+                            aria-label="Remove image"
+                          >
+                            <X className="h-4 w-4 text-destructive" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              )}
+              ) : null}
 
               {useUrlMode ? (
-                <FormField
-                  control={form.control}
-                  name="image_url"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input {...field} placeholder="https://..." />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <div className="flex gap-2">
+                  <Input
+                    type="url"
+                    value={imageUrlInput}
+                    onChange={(event) => setImageUrlInput(event.target.value)}
+                    placeholder="https://..."
+                  />
+                  <Button type="button" variant="outline" onClick={addImageUrl}>
+                    Add
+                  </Button>
+                </div>
               ) : (
                 <>
                   <input
                     ref={fileInputRef}
                     type="file"
                     accept="image/*"
+                    multiple
                     onChange={handleFileChange}
                     className="hidden"
                   />
@@ -283,21 +442,17 @@ export function ProductFormDialog({
                     onClick={() => fileInputRef.current?.click()}
                   >
                     <Upload className="mr-2 h-4 w-4" />
-                    {imageFile ? imageFile.name : "Choose image"}
+                    Choose images
                   </Button>
                 </>
               )}
 
               <button
                 type="button"
-                onClick={() => {
-                  setUseUrlMode(!useUrlMode)
-                  setImageFile(null)
-                  if (fileInputRef.current) fileInputRef.current.value = ""
-                }}
+                onClick={() => setUseUrlMode((current) => !current)}
                 className="text-xs text-muted-foreground underline"
               >
-                {useUrlMode ? "Upload a file instead" : "Paste URL instead"}
+                {useUrlMode ? "Upload files instead" : "Add an image URL instead"}
               </button>
             </div>
 

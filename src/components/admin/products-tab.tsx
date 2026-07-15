@@ -16,7 +16,10 @@ import { formatPrice } from "@/lib/format"
 import { ChevronDown, Pencil, Plus, Trash2, X } from "lucide-react"
 import { useState } from "react"
 import { DeleteProductDialog } from "./delete-product-dialog"
-import { ProductFormDialog } from "./product-form-dialog"
+import {
+  ProductFormDialog,
+  type ProductFormSubmission,
+} from "./product-form-dialog"
 
 type Product = ProductWithOptions
 
@@ -55,13 +58,23 @@ export function ProductsTab() {
     setDeleteOpen(true)
   }
 
-  const handleFormSubmit = async (values: Omit<Product, "id" | "created_at" | "updated_at">) => {
+  const handleFormSubmit = async ({ values, imageUrls }: ProductFormSubmission) => {
+    const productValues = {
+      ...values,
+      description: values.description ?? null,
+      specifications: values.specifications ?? null,
+    }
+
     try {
       if (selectedProduct) {
-        await updateProduct.mutateAsync({ id: selectedProduct.id, ...values })
+        await updateProduct.mutateAsync({
+          id: selectedProduct.id,
+          updates: productValues,
+          imageUrls,
+        })
         toast({ title: "Product updated successfully" })
       } else {
-        await createProduct.mutateAsync(values)
+        await createProduct.mutateAsync({ product: productValues, imageUrls })
         toast({ title: "Product created successfully" })
       }
       setFormOpen(false)
@@ -71,6 +84,7 @@ export function ProductsTab() {
         description: error instanceof Error ? error.message : "Something went wrong",
         variant: "destructive",
       })
+      throw error
     }
   }
 

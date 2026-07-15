@@ -8,15 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useAuth } from "@/contexts/auth-context"
-import {
-  ChevronDown,
-  ChevronRight,
-  LogOut,
-  Menu,
-  Shield,
-  User,
-  X,
-} from "lucide-react"
+import { ChevronDown, ChevronRight, LogOut, Menu, Shield, User, X } from "lucide-react"
 import { useEffect, useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 

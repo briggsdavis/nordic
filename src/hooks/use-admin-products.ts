@@ -5,12 +5,34 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 type Product = Tables<"products">
 type ProductInsert = TablesInsert<"products">
 type ProductUpdate = TablesUpdate<"products">
+type ProductImage = Tables<"product_images">
 type ProductOption = Tables<"product_options">
 type ProductOptionInsert = TablesInsert<"product_options">
 type ProductOptionUpdate = TablesUpdate<"product_options">
 
 export interface ProductWithOptions extends Product {
+  product_images: ProductImage[]
   product_options: ProductOption[]
+}
+
+interface CreateProductInput {
+  product: ProductInsert
+  imageUrls: string[]
+}
+
+interface UpdateProductInput {
+  id: string
+  updates: ProductUpdate
+  imageUrls: string[]
+}
+
+const replaceProductImages = async (productId: string, imageUrls: string[]) => {
+  const { error } = await supabase.rpc("replace_product_images", {
+    _product_id: productId,
+    _image_urls: imageUrls,
+  })
+
+  if (error) throw error
 }
 
 export function useAdminProducts() {
@@ -25,7 +47,7 @@ export function useAdminProducts() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("products")
-        .select("*, product_options(*)")
+        .select("*, product_images(*), product_options(*)")
         .order("created_at", { ascending: false })
 
       if (error) throw error
@@ -34,20 +56,33 @@ export function useAdminProducts() {
   })
 
   const createProduct = useMutation({
-    mutationFn: async (product: ProductInsert) => {
-      const { data, error } = await supabase.from("products").insert(product).select().single()
+    mutationFn: async ({ product, imageUrls }: CreateProductInput) => {
+      const { data, error } = await supabase
+        .from("products")
+        .insert({ ...product, image_url: imageUrls[0] ?? null })
+        .select()
+        .single()
 
       if (error) throw error
+
+      try {
+        await replaceProductImages(data.id, imageUrls)
+      } catch (replaceError) {
+        await supabase.from("products").delete().eq("id", data.id)
+        throw replaceError
+      }
+
       return data
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-products"] })
       queryClient.invalidateQueries({ queryKey: ["products"] })
+      queryClient.invalidateQueries({ queryKey: ["product"] })
     },
   })
 
   const updateProduct = useMutation({
-    mutationFn: async ({ id, ...updates }: ProductUpdate & { id: string }) => {
+    mutationFn: async ({ id, updates, imageUrls }: UpdateProductInput) => {
       const { data, error } = await supabase
         .from("products")
         .update(updates)
@@ -56,11 +91,14 @@ export function useAdminProducts() {
         .single()
 
       if (error) throw error
+
+      await replaceProductImages(id, imageUrls)
       return data
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-products"] })
       queryClient.invalidateQueries({ queryKey: ["products"] })
+      queryClient.invalidateQueries({ queryKey: ["product"] })
     },
   })
 

@@ -84,7 +84,7 @@ export const isSupabaseStorageUrl = (url: string): boolean => url.includes("supa
 
 export async function uploadProductImage(file: File, productSlug: string): Promise<string> {
   const ext = file.name.split(".").pop()
-  const filePath = `${productSlug}/${Date.now()}.${ext}`
+  const filePath = `${productSlug}/${crypto.randomUUID()}.${ext}`
 
   const { error } = await supabase.storage
     .from(PRODUCT_IMAGES_BUCKET)
@@ -114,12 +114,10 @@ export async function uploadSiteDocument(file: File, slug: string): Promise<stri
   const ext = file.name.split(".").pop() || "pdf"
   const filePath = `documents/${slug}.${ext}`
 
-  const { error } = await supabase.storage
-    .from(SITE_DOCUMENTS_BUCKET)
-    .upload(filePath, file, {
-      cacheControl: "60",
-      upsert: true,
-    })
+  const { error } = await supabase.storage.from(SITE_DOCUMENTS_BUCKET).upload(filePath, file, {
+    cacheControl: "60",
+    upsert: true,
+  })
 
   if (error) throw error
 

@@ -475,7 +475,9 @@ const Admin = () => {
             <Card>
               <CardHeader>
                 <CardTitle>Company Documents</CardTitle>
-                <CardDescription>Replace public certificates shown in the customer portal.</CardDescription>
+                <CardDescription>
+                  Replace public certificates shown in the customer portal.
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {siteDocuments.map((document) => {

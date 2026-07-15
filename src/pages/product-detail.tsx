@@ -31,10 +31,16 @@ interface ProductWithOptions {
   name: string
   slug: string
   description: string | null
+  specifications: string | null
   price_per_unit: number
   image_url: string | null
   is_available: boolean
   allow_size_selection: boolean
+  product_images: Array<{
+    id: string
+    image_url: string
+    sort_order: number
+  }>
   product_options: ProductOption[]
 }
 
@@ -46,6 +52,7 @@ const ProductDetail = () => {
 
   const [selectedVariant, setSelectedVariant] = useState("100g")
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null)
+  const [selectedImageId, setSelectedImageId] = useState<string | null>(null)
   const [quantity, setQuantity] = useState(1)
 
   const { data: product, isLoading } = useQuery({
@@ -55,7 +62,7 @@ const ProductDetail = () => {
       // blocked instead of hiding the product.
       const { data, error } = await supabase
         .from("products")
-        .select("*, product_options(*)")
+        .select("*, product_images(*), product_options(*)")
         .eq("slug", slug)
         .single()
 
@@ -66,6 +73,11 @@ const ProductDetail = () => {
   })
 
   const availableOptions = product?.product_options?.filter((o) => o.is_available) || []
+  const productImages = product
+    ? [...product.product_images].sort((a, b) => a.sort_order - b.sort_order)
+    : []
+  const selectedImage =
+    productImages.find((image) => image.id === selectedImageId) || productImages[0]
   const selectedOption = availableOptions.find((o) => o.id === selectedOptionId) || null
   const effectivePricePerUnit = selectedOption?.price_per_unit ?? product?.price_per_unit ?? 0
 
@@ -140,19 +152,56 @@ const ProductDetail = () => {
         </Button>
 
         <div className="grid gap-12 md:grid-cols-2">
-          {/* Product Image */}
-          <div className="aspect-square overflow-hidden rounded-2xl bg-muted">
-            {product.image_url ? (
-              <img
-                src={product.image_url}
-                alt={product.name}
-                className="h-full w-full object-cover"
-              />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center text-muted-foreground">
-                No image available
+          {/* Product Images and Specifications */}
+          <div className="space-y-4">
+            <div className="aspect-square overflow-hidden rounded-2xl bg-muted">
+              {selectedImage ? (
+                <img
+                  src={selectedImage.image_url}
+                  alt={product.name}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center text-muted-foreground">
+                  No image available
+                </div>
+              )}
+            </div>
+
+            {productImages.length > 1 ? (
+              <div className="grid grid-cols-4 gap-3">
+                {productImages.map((image, index) => (
+                  <button
+                    key={image.id}
+                    type="button"
+                    onClick={() => setSelectedImageId(image.id)}
+                    className={`aspect-square overflow-hidden rounded-lg border-2 bg-muted transition-colors ${
+                      selectedImage?.id === image.id
+                        ? "border-primary"
+                        : "border-transparent hover:border-border"
+                    }`}
+                    aria-label={`View product image ${index + 1}`}
+                  >
+                    <img
+                      src={image.image_url}
+                      alt=""
+                      className="h-full w-full object-cover"
+                    />
+                  </button>
+                ))}
               </div>
-            )}
+            ) : null}
+
+            {product.specifications?.trim() ? (
+              <section className="border-t pt-6">
+                <h2 className="mb-3 font-serif text-2xl text-foreground">
+                  Product Specifications
+                </h2>
+                <p className="whitespace-pre-line leading-relaxed text-muted-foreground">
+                  {product.specifications}
+                </p>
+              </section>
+            ) : null}
           </div>
 
           {/* Product Info */}

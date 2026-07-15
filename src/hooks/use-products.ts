@@ -15,6 +15,7 @@ export interface Product {
   name: string
   slug: string
   description: string | null
+  specifications: string | null
   price_per_unit: number
   image_url: string | null
   is_available: boolean
